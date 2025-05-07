@@ -1,0 +1,17 @@
+[project]
+name = "downtime-panda"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Mikel12455", email = "105666282+Mikel12455@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+downtime-panda = "downtime_panda:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
