@@ -7,7 +7,10 @@ authors = [
     { name = "Mikel12455", email = "105666282+Mikel12455@users.noreply.github.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "flask>=3.1.0",
+    "waitress>=3.0.2",
+]
 
 [project.scripts]
 downtime-panda = "downtime_panda:main"
