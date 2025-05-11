@@ -3,8 +3,12 @@
 <body>
     <h1>Downtime Panda 2</h1>
 
-    <h2>{{response.url}}</h2>
-    <p>{{response.status_code}}</p>
+    <script>
+        var source = new EventSource('/ping');
+        source.onmessage = function (event) {
+            document.write(event.data);
+        };
+    </script>
 
 </body>
 

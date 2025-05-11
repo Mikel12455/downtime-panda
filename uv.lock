@@ -69,24 +69,32 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "flask" },
+    { name = "flask-sse" },
     { name = "requests" },
+    { name = "schedule" },
     { name = "waitress" },
 ]
 
 [package.dev-dependencies]
 dev = [
+    { name = "go-task-bin" },
     { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "flask", specifier = ">=3.1.0" },
+    { name = "flask-sse", specifier = ">=1.0.0" },
     { name = "requests", specifier = ">=2.32.3" },
+    { name = "schedule", specifier = ">=1.2.2" },
     { name = "waitress", specifier = ">=3.0.2" },
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff", specifier = ">=0.11.9" }]
+dev = [
+    { name = "go-task-bin", specifier = ">=3.43.3" },
+    { name = "ruff", specifier = ">=0.11.9" },
+]
 
 [[package]]
 name = "flask"
@@ -102,6 +110,36 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/89/50/dff6380f1c7f84135484e176e0cac8690af72fa90e932ad2a0a60e28c69b/flask-3.1.0.tar.gz", hash = "sha256:5f873c5184c897c8d9d1b05df1e3d01b14910ce69607a117bd3277098a5836ac", size = 680824, upload-time = "2024-11-13T18:24:38.127Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/af/47/93213ee66ef8fae3b93b3e29206f6b251e65c97bd91d8e1c5596ef15af0a/flask-3.1.0-py3-none-any.whl", hash = "sha256:d667207822eb83f1c4b50949b1623c8fc8d51f2341d65f72e1a1815397551136", size = 102979, upload-time = "2024-11-13T18:24:36.135Z" },
+]
+
+[[package]]
+name = "flask-sse"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flask" },
+    { name = "redis" },
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/38/31/82586853cb1c0fcc2b8b533891606a779acc0da7d4cda5c8d7f2c2b05a29/Flask-SSE-1.0.0.tar.gz", hash = "sha256:4f84714c2549a45e4f17bfc5f68ee8a9f298b22740a6844404d1c74551f2090d", size = 16190, upload-time = "2021-01-10T18:01:46.269Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/71/83/f9fe86f554a153fdd300fb8027121d508a2177605bd158d967ddd7325948/Flask_SSE-1.0.0-py2.py3-none-any.whl", hash = "sha256:f86d7ecff0607333755c444130c395e7a133fb7ae6cf76fbd29b1da36d34776b", size = 4952, upload-time = "2021-01-10T18:01:44.985Z" },
+]
+
+[[package]]
+name = "go-task-bin"
+version = "3.43.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2a/80/74a6d8e7dea0271055d2011bcbf09fbc47cbd9f20e2f369c0061c4a4cf39/go_task_bin-3.43.3.tar.gz", hash = "sha256:f62762d64b5811924df06ad326a433565b018a20a0e1c5a099276daa300c0512", size = 568635, upload-time = "2025-04-28T04:35:45.11Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/36/296db0b20ba0f9ea11aca8d32034a084262ce1421f10c77a68e72538650f/go_task_bin-3.43.3-py3-none-macosx_11_0_arm64.whl", hash = "sha256:38d0052c654603c050c77346c7c79419c1f9dfc654c53674735a544dca244752", size = 6352382, upload-time = "2025-04-28T04:35:27.563Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/2e/4b91bafbf184fab7f029737e04d4446d5119de74f4dde9f7828996acb086/go_task_bin-3.43.3-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:00331c3984c5f647964ddfc5f87c42c67c0896284e3f887991914cd28940c2a3", size = 6807106, upload-time = "2025-04-28T04:35:30.256Z" },
+    { url = "https://files.pythonhosted.org/packages/ee/08/7ab2a9f37bab168b7f1eb13783fdfa536d7297923ea66a3ac8ce4ba29847/go_task_bin-3.43.3-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:703e226720d078e4b894d91b33a6c6237a7ff7585679a413bd4c8a95568c86af", size = 6117566, upload-time = "2025-04-28T04:35:32.585Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/90/2cd35d7a06e7197fc90ad420eb6f71b23591c4bb2e30091a2d6d2be10c2e/go_task_bin-3.43.3-py3-none-manylinux2014_ppc64le.manylinux_2_17_ppc64le.musllinux_1_1_ppc64le.whl", hash = "sha256:7784f4200280f85630e8e4224d58e88f577d47fccc4dc389bcaff76bd9d9203f", size = 6089806, upload-time = "2025-04-28T04:35:34.417Z" },
+    { url = "https://files.pythonhosted.org/packages/11/ea/2ac7aab57b0b2c2dd3c1cf9fecfabbf7ca7301076d997dded04fa2673711/go_task_bin-3.43.3-py3-none-manylinux2014_s390x.manylinux_2_17_s390x.musllinux_1_1_s390x.whl", hash = "sha256:e6fb768b9a7a7bc24f70dcb53b9b3147debcbf41fd754d3bf160ca0d4c1bd841", size = 6566059, upload-time = "2025-04-28T04:35:36.763Z" },
+    { url = "https://files.pythonhosted.org/packages/c0/9a/97861874f58c7da8b6c9b743918ab11fd131c325fe59a03a19587402a4dc/go_task_bin-3.43.3-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.musllinux_1_1_x86_64.whl", hash = "sha256:9c2f4c2dfeb9fd36041c272dc5f16cbaea64cc9fd8e54f7023eadb086a4184a7", size = 6698477, upload-time = "2025-04-28T04:35:39.14Z" },
+    { url = "https://files.pythonhosted.org/packages/40/fd/597ae040c12660615fc2259114956dc5c614f1cdea71f76be55a8e855c87/go_task_bin-3.43.3-py3-none-win_amd64.whl", hash = "sha256:bea9669ed4e24dea06996aff06581e217c10c2f924b6ba2059d52a93c3a64c2a", size = 6893762, upload-time = "2025-04-28T04:35:40.927Z" },
+    { url = "https://files.pythonhosted.org/packages/63/8f/05cdd4610faebe109751d96f4ee6eaa40ac64b02ee9e4d372474ff314ba0/go_task_bin-3.43.3-py3-none-win_arm64.whl", hash = "sha256:f489b987814b8086f09617b678e911f1eed60955dba830c2d8f736d21dfc230b", size = 6217419, upload-time = "2025-04-28T04:35:43.044Z" },
 ]
 
 [[package]]
@@ -163,6 +201,15 @@ wheels = [
 ]
 
 [[package]]
+name = "redis"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/79/12/dffaaa4374b8d5f3b7ff5c40025c9db387e06264302d5a9da6043cd84e1f/redis-6.0.0.tar.gz", hash = "sha256:5446780d2425b787ed89c91ddbfa1be6d32370a636c8fdb687f11b1c26c1fa88", size = 4620969, upload-time = "2025-04-30T19:09:30.798Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/08/c8/68081c9d3531f7b2a4d663326b96a9dcbc2aef47df3c6b5c38dea90dff02/redis-6.0.0-py3-none-any.whl", hash = "sha256:a2e040aee2cdd947be1fa3a32e35a956cd839cc4c1dbbe4b2cdee5b9623fd27c", size = 268950, upload-time = "2025-04-30T19:09:28.432Z" },
+]
+
+[[package]]
 name = "requests"
 version = "2.32.3"
 source = { registry = "https://pypi.org/simple" }
@@ -200,6 +247,24 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/22/e6/7ed70048e89b01d728ccc950557a17ecf8df4127b08a56944b9d0bae61bc/ruff-0.11.9-py3-none-win32.whl", hash = "sha256:7fe1bc950e7d7b42caaee2a8a3bc27410547cc032c9558ee2e0f6d3b209e845a", size = 10548627, upload-time = "2025-05-09T16:19:33.657Z" },
     { url = "https://files.pythonhosted.org/packages/90/36/1da5d566271682ed10f436f732e5f75f926c17255c9c75cefb77d4bf8f10/ruff-0.11.9-py3-none-win_amd64.whl", hash = "sha256:52edaa4a6d70f8180343a5b7f030c7edd36ad180c9f4d224959c2d689962d964", size = 11634340, upload-time = "2025-05-09T16:19:35.815Z" },
     { url = "https://files.pythonhosted.org/packages/40/f7/70aad26e5877c8f7ee5b161c4c9fa0100e63fc4c944dc6d97b9c7e871417/ruff-0.11.9-py3-none-win_arm64.whl", hash = "sha256:bcf42689c22f2e240f496d0c183ef2c6f7b35e809f12c1db58f75d9aa8d630ca", size = 10741080, upload-time = "2025-05-09T16:19:39.605Z" },
+]
+
+[[package]]
+name = "schedule"
+version = "1.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/91/b525790063015759f34447d4cf9d2ccb52cdee0f1dd6ff8764e863bcb74c/schedule-1.2.2.tar.gz", hash = "sha256:15fe9c75fe5fd9b9627f3f19cc0ef1420508f9f9a46f45cd0769ef75ede5f0b7", size = 26452, upload-time = "2024-06-18T20:03:14.633Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/20/a7/84c96b61fd13205f2cafbe263cdb2745965974bdf3e0078f121dfeca5f02/schedule-1.2.2-py3-none-any.whl", hash = "sha256:5bef4a2a0183abf44046ae0d164cadcac21b1db011bdd8102e4a0c1e91e06a7d", size = 12220, upload-time = "2024-05-25T18:41:59.121Z" },
+]
+
+[[package]]
+name = "six"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031, upload-time = "2024-12-04T17:35:28.174Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050, upload-time = "2024-12-04T17:35:26.475Z" },
 ]
 
 [[package]]
