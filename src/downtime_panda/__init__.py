@@ -12,12 +12,14 @@ def index() -> str:
     return render_template("index.html")
 
 
-@app.route("/ping")
-def ping():
-    def pingStream():
+@app.route("/stream/ping/<website>")
+def ping(website: str):
+    def pingStream(website: str):
         while True:
-            time.sleep(5)
-            response = requests.head("https://www.google.com")
+            response = requests.head(website)
             yield f"data: {response.status_code}\n\n"
+            time.sleep(5)
 
-    return Response(pingStream(), mimetype="text/event-stream")
+    if not (website.startswith("http://") or website.startswith("https://")):
+        website = f"https://{website}"
+    return Response(pingStream(website), mimetype="text/event-stream")
