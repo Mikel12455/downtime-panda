@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------------------- #
+#                          DEVELOPMENT DOCKER COMPOSE                          #
+# ---------------------------------------------------------------------------- #
+services:
+
+  db:
+    image: postgres:17.5
+    container_name: db
+    restart: always
+    shm_size: 128mb
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+
+  db-webui:
+    image: clidey/whodb
+    container_name: db-webui
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - WHODB_POSTGRES_1={"host":"db","user":"root","password":"root","database":"postgres"}
