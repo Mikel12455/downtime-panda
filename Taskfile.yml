@@ -1,21 +1,19 @@
 # https://taskfile.dev
 
-version: '3'
-
-vars:
-  GREETING: Hello, World!
+version: "3"
 
 tasks:
-  default:
-    cmds:
-      - echo "{{.GREETING}}"
-    silent: true
-  
   dev:
     cmds:
-      - docker compose -f docker-compose.dev.yml down --remove-orphans
+      - task: dev-up
+
+  dev-up:
+    cmds:
       - docker compose -f docker-compose.dev.yml up -d --build
-      - task: dev-migrate
+
+  dev-down:
+    cmds:
+      - docker compose -f docker-compose.dev.yml down --remove-orphans
 
   dev-migrate:
     vars:
