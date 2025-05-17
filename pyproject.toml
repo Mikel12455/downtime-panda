@@ -9,9 +9,8 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "flask>=3.1.0",
-    "flask-sse>=1.0.0",
     "requests>=2.32.3",
-    "schedule>=1.2.2",
+    "sqlalchemy>=2.0.41",
     "waitress>=3.0.2",
 ]
 
@@ -24,6 +23,10 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "djlint>=1.36.4",
     "go-task-bin>=3.43.3",
     "ruff>=0.11.9",
 ]
+
+[tool.djlint]
+profile="jinja"
