@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "Mikel12455", email = "105666282+Mikel12455@users.noreply.github.com" }
+    { name = "Mikel12455", email = "105666282+Mikel12455@users.noreply.github.com" },
 ]
 requires-python = ">=3.13"
 dependencies = [
@@ -25,8 +25,10 @@ build-backend = "hatchling.build"
 dev = [
     "djlint>=1.36.4",
     "go-task-bin>=3.43.3",
+    "pre-commit>=4.2.0",
     "ruff>=0.11.9",
 ]
 
 [tool.djlint]
-profile="jinja"
+profile = "jinja"
+indent = 2
