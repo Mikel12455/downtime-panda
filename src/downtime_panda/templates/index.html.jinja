@@ -1,25 +1,24 @@
-<html>
-
-<head>
-
-</head>
-
-<body>
-    <h1>Downtime Panda 2</h1>
-
-    <div class="service-card">
-        <h2 class="name">Google</h2>
-        <p class="website">www.google.com</p>
-        <p class="status">Status: </p>
-    </div>
-
-    <div class="service-card">
-        <h2 class="name">Discord</h2>
-        <p class="website">discord.com</p>
-        <p class="status">Status: </p>
-    </div>
-
-    <script>
+{% extends "base.html.jinja" %}
+{% block title %}
+  {{ super() }}
+  Home
+{% endblock title %}
+{% block head %}
+  {{ super() }}
+{% endblock head %}
+{% block body %}
+  <h1>Downtime Panda</h1>
+  <div class="service-card">
+    <h2 class="name">Google</h2>
+    <p class="website">www.google.com</p>
+    <p class="status">Status:</p>
+  </div>
+  <div class="service-card">
+    <h2 class="name">Discord</h2>
+    <p class="website">discord.com</p>
+    <p class="status">Status:</p>
+  </div>
+  <script>
         const services = document.querySelectorAll(".service-card");
         let sources = [];
         for (const service of services) {
@@ -33,8 +32,5 @@
                 service_status.innerHTML = `Status: ${event.data}`;
             };
         }
-    </script>
-
-</body>
-
-</html>
+  </script>
+{% endblock body %}

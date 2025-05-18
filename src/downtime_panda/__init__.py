@@ -7,9 +7,10 @@ from flask.templating import render_template
 app = Flask(__name__)
 
 
+# ----------------------------------- HOME ----------------------------------- #
 @app.route("/")
 def index() -> str:
-    return render_template("index.html")
+    return render_template("index.html.jinja")
 
 
 @app.route("/stream/ping/<website>")
@@ -22,4 +23,5 @@ def ping(website: str):
 
     if not (website.startswith("http://") or website.startswith("https://")):
         website = f"https://{website}"
+
     return Response(pingStream(website), mimetype="text/event-stream")
