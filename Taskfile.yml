@@ -4,12 +4,9 @@ version: "3"
 
 tasks:
   dev-up:
-    vars:
-      PORT: 8080
-      HOST: 127.0.0.1
     cmds:
       - docker compose -f docker-compose.dev.yml up -d --build
-      - uv run flask --app downtime_panda:app run --port {{.PORT}} --host {{.HOST}} --debug
+      - task: run-flask
 
   dev-down:
     cmds:
@@ -31,5 +28,8 @@ tasks:
       - echo -- Migration {{.TODAY | date "2006/01/02 15:04:05"}} > {{.FOLDER}}/V{{.TODAY | date "20060102150405"}}__{{.DESCRIPTION | lower}}.sql
 
   run-flask:
+    vars:
+      PORT: 8080
+      HOST: 127.0.0.1
     cmds:
-      - uv run flask --debug --app downtime_panda:app run
+      - uv run flask --app downtime_panda run --port {{.PORT}} --host {{.HOST}} --debug
