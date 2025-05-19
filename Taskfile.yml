@@ -31,5 +31,12 @@ tasks:
     vars:
       PORT: 8080
       HOST: 127.0.0.1
+    env:
+      DTPANDA_DB_DIALECT: postgresql
+      DTPANDA_DB_HOST: localhost
+      DTPANDA_DB_PORT: 5432
+      DTPANDA_DB_USER: root
+      DTPANDA_DB_PASSWORD: root
+      DTPANDA_DB_DATABASE: postgres
     cmds:
       - uv run flask --app downtime_panda run --port {{.PORT}} --host {{.HOST}} --debug
