@@ -1,10 +1,10 @@
 {% extends "base.html.jinja" %}
 {% block title %}
-  Service Detail
+    Service Detail
 {% endblock title %}
 {% block head %}
-  {{ super() }}
-  <script>
+    {{ super() }}
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             const statusElem = document.getElementById("service-status");
             const source = new EventSource("/stream/ping/{{ service.uri | b64encode }}");
@@ -14,19 +14,19 @@
                 statusElem.textContent = data;
             };
         });
-  </script>
+    </script>
 {% endblock head %}
 {% block body %}
-  <h1>Service Detail</h1>
-  <ul>
-    <li>
-      <strong>Name:</strong> {{ service.name }}
-    </li>
-    <li>
-      <strong>URI:</strong> {{ service.uri }}
-    </li>
-    <li>
-      <strong>Status:</strong> <span id="service-status">Loading...</span>
-    </li>
-  </ul>
+    <h1>Service Detail</h1>
+    <ul>
+        <li>
+            <strong>Name:</strong> {{ service.name }}
+        </li>
+        <li>
+            <strong>URI:</strong> {{ service.uri }}
+        </li>
+        <li>
+            <strong>Status:</strong> <span id="service-status">Loading...</span>
+        </li>
+    </ul>
 {% endblock body %}

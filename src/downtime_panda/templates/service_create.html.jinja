@@ -1,23 +1,23 @@
 {% extends "base.html.jinja" %}
 {% block title %}
-  Create New Service
+    Create New Service
 {% endblock title %}
 {% block head %}
-  {{ super() }}
-  <h1>Create New Service</h1>
+    {{ super() }}
+    <h1>Create New Service</h1>
 {% endblock head %}
 {% block body %}
-  <form method="post" action="{{ url_for('service_create') }}">
-    <div>
-      <label for="name">Service Name:</label>
-      <input type="text" id="name" name="name" required>
-    </div>
-    <div>
-      <label for="uri">Service URI:</label>
-      <input type="url" id="uri" name="uri" required>
-    </div>
-    <div>
-      <button type="submit">Save Service</button>
-    </div>
-  </form>
+    <form method="post" action="{{ url_for('service_create') }}">
+        <div>
+            <label for="name">Service Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="uri">Service URI:</label>
+            <input type="url" id="uri" name="uri" required>
+        </div>
+        <div>
+            <button type="submit">Save Service</button>
+        </div>
+    </form>
 {% endblock body %}

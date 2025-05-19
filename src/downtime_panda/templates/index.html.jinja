@@ -1,36 +1,36 @@
 {% extends "base.html.jinja" %}
 {% block title %}
-  {{ super() }}
-  Home
+    {{ super() }}
+    Home
 {% endblock title %}
 {% block head %}
-  {{ super() }}
+    {{ super() }}
 {% endblock head %}
 {% block body %}
-  <h1>Downtime Panda</h1>
-  <div class="service-card">
-    <h2 class="name">Google</h2>
-    <p class="website">www.google.com</p>
-    <p class="status">Status:</p>
-  </div>
-  <div class="service-card">
-    <h2 class="name">Discord</h2>
-    <p class="website">discord.com</p>
-    <p class="status">Status:</p>
-  </div>
-  <script>
-      const services = document.querySelectorAll(".service-card");
-      let sources = [];
-      for (const service of services) {
-          let service_website = service.querySelector(".website");
-          source = new EventSource(`/stream/ping/${service_website.innerText}`)
-          sources.push(source); //new EventSource('/ping');
+    <h1>Downtime Panda</h1>
+    <div class="service-card">
+        <h2 class="name">Google</h2>
+        <p class="website">www.google.com</p>
+        <p class="status">Status:</p>
+    </div>
+    <div class="service-card">
+        <h2 class="name">Discord</h2>
+        <p class="website">discord.com</p>
+        <p class="status">Status:</p>
+    </div>
+    <script>
+        const services = document.querySelectorAll(".service-card");
+        let sources = [];
+        for (const service of services) {
+            let service_website = service.querySelector(".website");
+            source = new EventSource(`/stream/ping/${service_website.innerText}`)
+            sources.push(source); //new EventSource('/ping');
 
-          let service_status = service.querySelector(".status");
-          console.log(service_status);
-          source.onmessage = function(event) {
-              service_status.innerHTML = `Status: ${event.data}`;
-          };
-      }
-  </script>
+            let service_status = service.querySelector(".status");
+            console.log(service_status);
+            source.onmessage = function(event) {
+                service_status.innerHTML = `Status: ${event.data}`;
+            };
+        }
+    </script>
 {% endblock body %}

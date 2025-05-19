@@ -30,4 +30,4 @@ dev = [
 
 [tool.djlint]
 profile = "jinja"
-indent = 2
+indent = 4
