@@ -8,6 +8,20 @@ from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+
+class Base(DeclarativeBase):
+    pass
+
+
+db = SQLAlchemy(model_class=Base)
+
+
+class Service(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column()
+    uri: Mapped[str] = mapped_column()
+
+
 app = Flask(__name__)
 
 
@@ -18,30 +32,17 @@ def b64encode(data: str):
 app.jinja_env.filters["b64encode"] = b64encode
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-db = SQLAlchemy(model_class=Base)
-
-DB_DIALECT = os.environ.get("DTPANDA_DB_DIALECT")
-DB_HOST = os.environ.get("DTPANDA_DB_HOST")
-DB_PORT = os.environ.get("DTPANDA_DB_PORT")
-DB_USER = os.environ.get("DTPANDA_DB_USER")
-DB_PASSWORD = os.environ.get("DTPANDA_DB_PASSWORD")
-DB_DATABASE = os.environ.get("DTPANDA_DB_DATABASE")
+DB_DIALECT = os.getenv("DTPANDA_DB_DIALECT")
+DB_HOST = os.getenv("DTPANDA_DB_HOST")
+DB_PORT = os.getenv("DTPANDA_DB_PORT")
+DB_USER = os.getenv("DTPANDA_DB_USER")
+DB_PASSWORD = os.getenv("DTPANDA_DB_PASSWORD")
+DB_DATABASE = os.getenv("DTPANDA_DB_DATABASE")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
 )
 db.init_app(app)
-
-
-class Service(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column()
-    uri: Mapped[str] = mapped_column()
-
 
 with app.app_context():
     db.create_all()
