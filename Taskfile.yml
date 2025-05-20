@@ -3,6 +3,10 @@
 version: "3"
 
 tasks:
+  docker-build:
+    cmds:
+      - docker build -t downtime-panda .
+
   dev-up:
     cmds:
       - docker compose -f docker-compose.dev.yml up -d --build
@@ -32,7 +36,7 @@ tasks:
       PORT: 8080
       HOST: 127.0.0.1
     env:
-      DTPANDA_DB_DIALECT: postgresql
+      DTPANDA_DB_DIALECT: postgresql+psycopg
       DTPANDA_DB_HOST: localhost
       DTPANDA_DB_PORT: 5432
       DTPANDA_DB_USER: root
