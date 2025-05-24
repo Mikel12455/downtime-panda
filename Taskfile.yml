@@ -19,9 +19,17 @@ tasks:
   dev-migrate:
     vars:
       BIND_MOUNT: "--mount type=bind,src=${PWD}/database/migrations,dst=/flyway/sql"
-      DB_URL: "jdbc:postgresql://db:5432/postgres?connectTimeout=30&currentSchema=public&charSet=UTF-8"
+      DB_URL: "jdbc:postgresql://db:5432/postgres?connectTimeout=30&currentSchema=downtime_panda&charSet=UTF-8"
     cmds:
       - docker run --net="downtime-panda_default" --rm {{.BIND_MOUNT}} -e "FLYWAY_URL={{.DB_URL}}" -e "FLYWAY_USER=root" -e "FLYWAY_PASSWORD=root" flyway/flyway migrate
+
+  dev-migrate-clean:
+    vars:
+      BIND_MOUNT: "--mount type=bind,src=${PWD}/database/migrations,dst=/flyway/sql"
+      DB_URL: "jdbc:postgresql://db:5432/postgres?connectTimeout=30&currentSchema=downtime_panda&charSet=UTF-8"
+    cmds:
+      - docker run --net="downtime-panda_default" --rm {{.BIND_MOUNT}} -e "FLYWAY_CLEAN_DISABLED=false" -e "FLYWAY_URL={{.DB_URL}}" -e "FLYWAY_USER=root" -e "FLYWAY_PASSWORD=root" flyway/flyway clean
+      - task: dev-migrate
 
   make-migration:*:
     vars:
