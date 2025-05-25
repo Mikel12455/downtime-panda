@@ -3,25 +3,44 @@
 version: "3"
 
 tasks:
+# -------------------------------- FIRST SETUP ------------------------------- #
   setup:
     cmds:
       - echo "Setting up the environment..."
       - uv sync --dev
       - uv run pre-commit install
 
-  docker-build:
-    cmds:
-      - docker build -t downtime-panda .
+# ----------------------------------- BUILD ---------------------------------- #
+  docker-build: docker build -t downtime-panda .
 
+# -------------------------------- DEVELOPMENT ------------------------------- #
   dev-up:
     cmds:
-      - docker compose -f docker-compose.dev.yml up -d --build
+      - task: docker-up
       - task: run-flask
 
-  dev-down:
+  docker-up: docker compose -f docker-compose.dev.yml up -d --build
+
+  docker-down:
+    aliases: [dev-down]
     cmds:
       - docker compose -f docker-compose.dev.yml down --remove-orphans
 
+  run-flask:
+    vars:
+      PORT: 8080
+      HOST: 127.0.0.1
+    env:
+      DTPANDA_DB_DIALECT: postgresql+psycopg
+      DTPANDA_DB_HOST: localhost
+      DTPANDA_DB_PORT: 5432
+      DTPANDA_DB_USER: root
+      DTPANDA_DB_PASSWORD: root
+      DTPANDA_DB_DATABASE: postgres
+    cmds:
+      - uv run flask --app downtime_panda run --port {{.PORT}} --host {{.HOST}} --debug
+
+# -------------------------------- MIGRATIONS -------------------------------- #
   dev-migrate:
     vars:
       BIND_MOUNT: "--mount type=bind,src=${PWD}/database/migrations,dst=/flyway/sql"
@@ -44,17 +63,3 @@ tasks:
       FOLDER: "./database/migrations"
     cmds:
       - echo -- Migration {{.TODAY | date "2006/01/02 15:04:05"}} > {{.FOLDER}}/V{{.TODAY | date "20060102150405"}}__{{.DESCRIPTION | lower}}.sql
-
-  run-flask:
-    vars:
-      PORT: 8080
-      HOST: 127.0.0.1
-    env:
-      DTPANDA_DB_DIALECT: postgresql+psycopg
-      DTPANDA_DB_HOST: localhost
-      DTPANDA_DB_PORT: 5432
-      DTPANDA_DB_USER: root
-      DTPANDA_DB_PASSWORD: root
-      DTPANDA_DB_DATABASE: postgres
-    cmds:
-      - uv run flask --app downtime_panda run --port {{.PORT}} --host {{.HOST}} --debug
