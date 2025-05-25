@@ -5,22 +5,8 @@ import time
 import requests
 from flask import Flask, Response, redirect, request, url_for
 from flask.templating import render_template
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-db = SQLAlchemy(model_class=Base)
-
-
-class Service(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column()
-    uri: Mapped[str] = mapped_column()
-
+from downtime_panda import model
 
 app = Flask(__name__)
 
@@ -42,10 +28,10 @@ DB_DATABASE = os.getenv("DTPANDA_DB_DATABASE")
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
 )
-db.init_app(app)
+model.db.init_app(app)
 
 with app.app_context():
-    db.create_all()
+    model.db.create_all()
 
 
 # ----------------------------------- HOME ----------------------------------- #
@@ -58,12 +44,12 @@ def index() -> str:
 @app.route("/service/create", methods=["GET", "POST"])
 def service_create():
     if request.method == "POST":
-        service = Service(
+        service = model.Service(
             name=request.form["name"],
             uri=request.form["uri"],
         )
-        db.session.add(service)
-        db.session.commit()
+        model.db.session.add(service)
+        model.db.session.commit()
         return redirect(url_for("service_detail", id=service.id))
 
     return render_template("service_create.html.jinja")
@@ -71,7 +57,7 @@ def service_create():
 
 @app.route("/service/<int:id>")
 def service_detail(id):
-    service = db.get_or_404(Service, id)
+    service = model.db.get_or_404(model.Service, id)
     return render_template("service_detail.html.jinja", service=service)
 
 
