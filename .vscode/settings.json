@@ -2,5 +2,8 @@
     "[html][django-html][handlebars][hbs][mustache][jinja][jinja-html][nj][njk][nunjucks][twig]": {
         "editor.defaultFormatter": "monosans.djlint"
     },
-    "djlint.configuration": "pyproject.toml"
+    "djlint.configuration": "pyproject.toml",
+    "conventionalCommits.scopes": [
+        "database"
+    ]
 }
