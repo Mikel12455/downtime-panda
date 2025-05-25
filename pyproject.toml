@@ -8,9 +8,11 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "apscheduler>=3.11.0",
     "flask>=3.1.0",
     "flask-sqlalchemy>=3.1.1",
     "psycopg[binary,pool]>=3.2.9",
+    "pytz>=2025.2",
     "requests>=2.32.3",
     "sqlalchemy>=2.0.41",
     "waitress>=3.0.2",

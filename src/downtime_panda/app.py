@@ -1,8 +1,13 @@
 import base64
 import os
 import time
+from datetime import datetime
 
+import pytz
 import requests
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask, Response, redirect, request, url_for
 from flask.templating import render_template
 
@@ -33,6 +38,30 @@ model.db.init_app(app)
 with app.app_context():
     model.db.create_all()
 
+jobstore = SQLAlchemyJobStore(
+    url=app.config["SQLALCHEMY_DATABASE_URI"], tableschema="downtime_panda"
+)
+scheduler = BackgroundScheduler()
+scheduler.add_jobstore(jobstore)
+scheduler.timezone = pytz.utc
+scheduler.start()
+
+
+def ping_service(service_id: int) -> None:
+    with app.app_context():
+        service = model.db.session.get(model.Service, service_id)
+        app.logger.info(service)
+
+        pinged_at = datetime.now(pytz.utc)
+        response = requests.head(service.uri)
+        ping = model.Ping(
+            service_id=service.id,
+            http_status=response.status_code,
+            pinged_at=pinged_at,
+        )
+        service.ping.add(ping)
+        model.db.session.commit()
+
 
 # ----------------------------------- HOME ----------------------------------- #
 @app.route("/")
@@ -49,6 +78,19 @@ def service_create():
             uri=request.form["uri"],
         )
         model.db.session.add(service)
+        model.db.session.flush((service,))
+        model.db.session.refresh(service)
+
+        trigger = IntervalTrigger(seconds=5)
+        scheduler.add_job(
+            func=ping_service,
+            kwargs={"service_id": service.id},
+            trigger=trigger,
+            max_instances=1,
+            replace_existing=True,
+            id=str(service.id),
+        )
+
         model.db.session.commit()
         return redirect(url_for("service_detail", id=service.id))
 
