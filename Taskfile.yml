@@ -31,6 +31,7 @@ tasks:
       PORT: 8080
       HOST: 127.0.0.1
     env:
+      DTPANDA_DEBUG: true
       DTPANDA_DB_DIALECT: postgresql+psycopg
       DTPANDA_DB_HOST: localhost
       DTPANDA_DB_PORT: 5432

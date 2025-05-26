@@ -8,7 +8,7 @@ import requests
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from flask import Flask, Response, redirect, request, url_for
+from flask import Flask, Response, abort, redirect, request, url_for
 from flask.templating import render_template
 
 from downtime_panda import model
@@ -22,6 +22,8 @@ def b64encode(data: str):
 
 app.jinja_env.filters["b64encode"] = b64encode
 
+DEBUG = os.getenv("DTPANDA_DEBUG", "false").lower() in ("true", "1", "yes")
+app.config["DEBUG"] = DEBUG
 
 DB_DIALECT = os.getenv("DTPANDA_DB_DIALECT")
 DB_HOST = os.getenv("DTPANDA_DB_HOST")
@@ -41,10 +43,12 @@ with app.app_context():
 jobstore = SQLAlchemyJobStore(
     url=app.config["SQLALCHEMY_DATABASE_URI"], tableschema="downtime_panda"
 )
-scheduler = BackgroundScheduler()
-scheduler.add_jobstore(jobstore)
-scheduler.timezone = pytz.utc
-scheduler.start()
+
+if not (app.debug or DEBUG) or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    scheduler = BackgroundScheduler()
+    scheduler.add_jobstore(jobstore)
+    scheduler.timezone = pytz.utc
+    scheduler.start()
 
 
 def ping_service(service_id: int) -> None:
@@ -70,6 +74,41 @@ def index() -> str:
 
 
 # ---------------------------------- SERVICE --------------------------------- #
+@app.route("/service/<int:id>")
+def service_detail(id):
+    service = model.db.get_or_404(model.Service, id)
+    return render_template("service_detail.html.jinja", service=service)
+
+
+@app.route("/service/stream/<int:id>")
+def service_stream(id):
+    service = model.db.get_or_404(model.Service, id)
+
+    last_ping = model.db.session.scalars(service.ping.select()).first()
+
+    if not last_ping:
+        abort(404)
+
+    last_pinged_at = last_ping.pinged_at
+
+    def stream(service: model.Service, last_pinged_at: datetime):
+        with app.app_context():
+            while True:
+                new_pings = model.db.session.scalars(
+                    service.ping.select()
+                    .where(model.Ping.pinged_at > last_pinged_at)
+                    .order_by(model.Ping.pinged_at.desc())
+                ).all()
+
+                if new_pings:
+                    last_pinged_at = max(new_pings, key=lambda x: x.pinged_at).pinged_at
+                    yield f"data: {new_pings[0].dump_json()}\n\n"
+
+                time.sleep(1)
+
+    return Response(stream(service, last_pinged_at), mimetype="text/event-stream")
+
+
 @app.route("/service/create", methods=["GET", "POST"])
 def service_create():
     if request.method == "POST":
@@ -95,12 +134,6 @@ def service_create():
         return redirect(url_for("service_detail", id=service.id))
 
     return render_template("service_create.html.jinja")
-
-
-@app.route("/service/<int:id>")
-def service_detail(id):
-    service = model.db.get_or_404(model.Service, id)
-    return render_template("service_detail.html.jinja", service=service)
 
 
 @app.route("/stream/ping/<website>")

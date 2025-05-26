@@ -7,11 +7,11 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const statusElem = document.getElementById("service-status");
-            const source = new EventSource("/stream/ping/{{ service.uri | b64encode }}");
+            const source = new EventSource("/service/stream/{{ service.id }}");
             source.onmessage = function(event) {
                 // Assuming the event data is a JSON string with service_id and status
-                const data = JSON.parse(event.data);
-                statusElem.textContent = data;
+                // const data = JSON.parse(event.data);
+                statusElem.textContent = event.data;
             };
         });
     </script>

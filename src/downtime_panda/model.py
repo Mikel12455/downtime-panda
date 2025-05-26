@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
@@ -30,7 +31,7 @@ class Service(db.Model):
     uri: Mapped[str] = mapped_column()
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
-    ping: WriteOnlyMapped["Ping"] = relationship()
+    ping: WriteOnlyMapped["Ping"] = relationship(order_by="Ping.pinged_at.desc()")
 
     def __init__(self, name: str, uri: str):
         self.name = name
@@ -50,3 +51,14 @@ class Ping(db.Model):
         self.service_id = service_id
         self.http_response = http_status
         self.pinged_at = pinged_at
+
+    def dump_json(self):
+        return json.dumps(self.as_dict())
+
+    def as_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "service_id": self.service_id,
+            "http_response": self.http_response,
+            "pinged_at": self.pinged_at.isoformat(),
+        }
