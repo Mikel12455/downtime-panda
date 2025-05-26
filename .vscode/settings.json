@@ -3,6 +3,7 @@
         "editor.defaultFormatter": "monosans.djlint"
     },
     "djlint.configuration": "pyproject.toml",
+    "djlint.formatJs": false,
     "conventionalCommits.scopes": [
         "database"
     ]
