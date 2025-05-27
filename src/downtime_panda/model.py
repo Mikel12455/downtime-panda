@@ -62,3 +62,16 @@ class Ping(db.Model):
             "http_response": self.http_response,
             "pinged_at": self.pinged_at.isoformat(),
         }
+
+
+class User(db.Model):
+    __tablename__ = "user"
+    __table_args__ = {"schema": SCHEMA}
+    # ---------------------------------- COLUMNS --------------------------------- #
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(unique=True)
+    password_hash: Mapped[str] = mapped_column()
+
+    def __init__(self, username: str, password_hash: str):
+        self.username = username
+        self.password_hash = password_hash

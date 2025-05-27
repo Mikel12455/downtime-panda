@@ -10,10 +10,14 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask, Response, abort, redirect, request, url_for
 from flask.templating import render_template
+from flask_wtf import FlaskForm
+from wtforms import PasswordField, StringField
+from wtforms.validators import DataRequired
 
 from downtime_panda import model
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.getenv("DTPANDA_SECRET_KEY")
 
 
 def b64encode(data: str):
@@ -67,13 +71,17 @@ def ping_service(service_id: int) -> None:
         model.db.session.commit()
 
 
-# ----------------------------------- HOME ----------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                                     HOME                                     #
+# ---------------------------------------------------------------------------- #
 @app.route("/")
 def index() -> str:
     return render_template("index.html.jinja")
 
 
-# ---------------------------------- SERVICE --------------------------------- #
+# ---------------------------------------------------------------------------- #
+#                                    SERVICE                                   #
+# ---------------------------------------------------------------------------- #
 @app.route("/service/<int:id>")
 def service_detail(id):
     service = model.db.get_or_404(model.Service, id)
@@ -112,6 +120,7 @@ def service_stream(id):
 @app.route("/service/create", methods=["GET", "POST"])
 def service_create():
     if request.method == "POST":
+        # Insert a new service into the database
         service = model.Service(
             name=request.form["name"],
             uri=request.form["uri"],
@@ -120,12 +129,12 @@ def service_create():
         model.db.session.flush((service,))
         model.db.session.refresh(service)
 
+        # Schedule the ping job for the new service
         trigger = IntervalTrigger(seconds=5)
         scheduler.add_job(
             func=ping_service,
             kwargs={"service_id": service.id},
             trigger=trigger,
-            max_instances=1,
             replace_existing=True,
             id=str(service.id),
         )
@@ -134,6 +143,39 @@ def service_create():
         return redirect(url_for("service_detail", id=service.id))
 
     return render_template("service_create.html.jinja")
+
+
+# ---------------------------------------------------------------------------- #
+#                                     USER                                     #
+# ---------------------------------------------------------------------------- #
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    # POST
+    if request.method == "POST":
+        # Handle user registration logic here
+        return redirect(url_for("index"))
+
+    # GET
+    class RegisterForm(FlaskForm):
+        username = StringField(
+            "Username", description="Username", validators=[DataRequired()]
+        )
+        email = StringField("Email", description="Email", validators=[DataRequired()])
+        password = PasswordField(
+            "Password", description="Password", validators=[DataRequired()]
+        )
+        confirm_password = PasswordField(
+            "Confirm Password",
+            description="Confirm password",
+            validators=[DataRequired()],
+        )
+
+    return render_template("register.html.jinja", form=RegisterForm())
+
+
+@app.route("/user")
+def user_index():
+    return render_template("user_index.html.jinja")
 
 
 @app.route("/stream/ping/<website>")

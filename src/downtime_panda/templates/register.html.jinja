@@ -1,0 +1,27 @@
+{% extends "base.html.jinja" %}
+{% macro bootstrap_field(field) %}
+    <div class="form-group">
+        {{ field.label(class="form-label") }}
+        {{ field(class="form-control", placeholder=field.description, size=32) }}
+        {% if field.errors %}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}{{ error }}{% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+{% block title %}
+    Register
+{% endblock title %}
+{% block body %}
+    <h1>Register</h1>
+    <form method="post" action="{{ url_for('register') }}">
+        {{ form.hidden_tag() }}
+        {{ bootstrap_field(form.username) }}
+        {{ bootstrap_field(form.email) }}
+        {{ bootstrap_field(form.password) }}
+        {{ bootstrap_field(form.confirm_password) }}
+        <br>
+        <input type="submit" class="btn btn-primary" value="Register">
+    </form>
+{% endblock body %}
