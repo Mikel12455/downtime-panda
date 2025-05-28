@@ -12,7 +12,7 @@ from flask import Flask, Response, abort, redirect, request, url_for
 from flask.templating import render_template
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email, EqualTo
 
 from downtime_panda import model
 
@@ -150,27 +150,34 @@ def service_create():
 # ---------------------------------------------------------------------------- #
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    # POST
-    if request.method == "POST":
-        # Handle user registration logic here
-        return redirect(url_for("index"))
-
-    # GET
     class RegisterForm(FlaskForm):
         username = StringField(
-            "Username", description="Username", validators=[DataRequired()]
+            "Username",
+            description="Username",
+            validators=[DataRequired("Username is required")],
         )
-        email = StringField("Email", description="Email", validators=[DataRequired()])
+        email = StringField(
+            "Email",
+            description="Email",
+            validators=[DataRequired("Email is required"), Email()],
+        )
         password = PasswordField(
-            "Password", description="Password", validators=[DataRequired()]
+            "Password",
+            description="Password",
+            validators=[
+                DataRequired("Password is required"),
+            ],
         )
         confirm_password = PasswordField(
             "Confirm Password",
             description="Confirm password",
-            validators=[DataRequired()],
+            validators=[EqualTo("password", message="Passwords must match")],
         )
 
-    return render_template("register.html.jinja", form=RegisterForm())
+    form = RegisterForm()
+    if form.validate_on_submit():
+        return redirect(url_for("index"))
+    return render_template("register.html.jinja", form=form)
 
 
 @app.route("/user")

@@ -1,0 +1,20 @@
+<!-- Bootstrap Field Macro -->
+{% macro bootstrap_field(field) %}
+    <div class="form-group">
+        {{ field.label(class = "form-label") }}
+        {{ field(class="form-control {}".format("is-invalid" if field.errors) , placeholder=field.description, size=32, aria_describedby="{}Feedback".format(field.name) ) }}
+        {% if field.errors %}
+            <div id="{{ field.name }}Feedback" class="invalid-feedback">
+                {% for error in field.errors %}{{ error }}{% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+<!-- Navbar Element Macro -->
+{% macro navbar_element(text, route) %}
+    <li class="nav-item">
+        <a class="nav-link {{ 'active' if request.path == url_for(route) else '' }}"
+           aria-current="page"
+           href="{{ url_for(route) }}">{{ text }}</a>
+    </li>
+{% endmacro %}
