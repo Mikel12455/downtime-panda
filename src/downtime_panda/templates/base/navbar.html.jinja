@@ -19,11 +19,20 @@
                 {{ navbar_element('Home', 'index') }}
             </ul>
             <div class="d-flex">
-                <div class="btn-group" role="group">
-                    <a class="btn btn-primary" href="{{ url_for('index') }}">Login</a>
-                    <a class="btn btn-primary {{ 'active' if request.path == url_for("register") else '' }}"
-                       href="{{ url_for('register') }}">Register</a>
-                </div>
+                {% if current_user.is_authenticated %}
+                    Welcome, {{ current_user.username }}!
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-primary {{ 'active' if request.path == url_for("logout") else '' }}"
+                           href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                {% else %}
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-primary {{ active if request.path == url_for("login") else '' }}"
+                           href="{{ url_for('login') }}">Login</a>
+                        <a class="btn btn-primary {{ 'active' if request.path == url_for("register") else '' }}"
+                           href="{{ url_for('register') }}">Register</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

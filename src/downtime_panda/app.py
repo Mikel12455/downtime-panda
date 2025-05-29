@@ -3,21 +3,25 @@ import os
 import time
 from datetime import datetime
 
+import flask_login
 import pytz
 import requests
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from flask import Flask, Response, abort, redirect, request, url_for
+from flask import Flask, Response, abort, flash, redirect, request, url_for
 from flask.templating import render_template
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 
 from downtime_panda import model
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("DTPANDA_SECRET_KEY")
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 
 def b64encode(data: str):
@@ -74,6 +78,8 @@ def ping_service(service_id: int) -> None:
 # ---------------------------------------------------------------------------- #
 #                                     HOME                                     #
 # ---------------------------------------------------------------------------- #
+
+
 @app.route("/")
 def index() -> str:
     return render_template("index.html.jinja")
@@ -82,6 +88,8 @@ def index() -> str:
 # ---------------------------------------------------------------------------- #
 #                                    SERVICE                                   #
 # ---------------------------------------------------------------------------- #
+
+
 @app.route("/service/<int:id>")
 def service_detail(id):
     service = model.db.get_or_404(model.Service, id)
@@ -148,18 +156,34 @@ def service_create():
 # ---------------------------------------------------------------------------- #
 #                                     USER                                     #
 # ---------------------------------------------------------------------------- #
+
+
+@login_manager.user_loader
+def user_loader(id: str):
+    id = int(id)
+    return model.User.get_by_id(id)
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    def username_is_free(form, field):
+        if model.User.username_exists(field.data):
+            raise ValidationError("Username already exists.")
+
+    def email_is_free(form, field):
+        if model.User.email_exists(field.data):
+            raise ValidationError("Email already exists.")
+
     class RegisterForm(FlaskForm):
         username = StringField(
             "Username",
             description="Username",
-            validators=[DataRequired("Username is required")],
+            validators=[DataRequired("Username is required"), username_is_free],
         )
         email = StringField(
             "Email",
             description="Email",
-            validators=[DataRequired("Email is required"), Email()],
+            validators=[DataRequired("Email is required"), Email(), email_is_free],
         )
         password = PasswordField(
             "Password",
@@ -175,9 +199,53 @@ def register():
         )
 
     form = RegisterForm()
-    if form.validate_on_submit():
+    if not form.validate_on_submit():
+        return render_template("register.html.jinja", form=form)
+
+    try:
+        model.User.add_user(
+            username=form.username.data,
+            email=form.email.data,
+            password=form.password.data,
+        )
+    except ValueError as e:
+        flash("Error: " + str(e), "error")
+        return render_template("register.html.jinja", form=form, error=str(e))
+
+    return redirect(url_for("index"))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    class LoginForm(FlaskForm):
+        email = StringField(
+            "Email",
+            description="Email",
+            validators=[DataRequired("Email is required"), Email()],
+        )
+        password = PasswordField(
+            "Password",
+            description="Password",
+            validators=[DataRequired("Password is required")],
+        )
+
+    form = LoginForm()
+    if not form.validate_on_submit():
+        # GET
+        return render_template("login.html.jinja", form=form)
+
+    user = model.User.get_by_email(form.email.data)
+    if user and user.verify_password(form.password.data):
+        flask_login.login_user(user)
         return redirect(url_for("index"))
-    return render_template("register.html.jinja", form=form)
+
+    return render_template("login.html.jinja", form=form, error="Invalid credentials")
+
+
+@app.route("/logout")
+def logout():
+    flask_login.logout_user()
+    return redirect(url_for("index"))
 
 
 @app.route("/user")
