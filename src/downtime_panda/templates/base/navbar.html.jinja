@@ -22,15 +22,15 @@
                 {% if current_user.is_authenticated %}
                     Welcome, {{ current_user.username }}!
                     <div class="btn-group" role="group">
-                        <a class="btn btn-primary {{ 'active' if request.path == url_for("logout") else '' }}"
-                           href="{{ url_for('logout') }}">Logout</a>
+                        <a class="btn btn-primary {{ 'active' if request.path == url_for("user.logout") else '' }}"
+                           href="{{ url_for('user.logout') }}">Logout</a>
                     </div>
                 {% else %}
                     <div class="btn-group" role="group">
-                        <a class="btn btn-primary {{ active if request.path == url_for("login") else '' }}"
-                           href="{{ url_for('login') }}">Login</a>
-                        <a class="btn btn-primary {{ 'active' if request.path == url_for("register") else '' }}"
-                           href="{{ url_for('register') }}">Register</a>
+                        <a class="btn btn-primary {{ active if request.path == url_for("user.login") else '' }}"
+                           href="{{ url_for('user.login') }}">Login</a>
+                        <a class="btn btn-primary {{ 'active' if request.path == url_for("user.register") else '' }}"
+                           href="{{ url_for('user.register') }}">Register</a>
                     </div>
                 {% endif %}
             </div>

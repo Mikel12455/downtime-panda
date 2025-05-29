@@ -5,7 +5,7 @@
 {% endblock title %}
 {% block body %}
     <h1>Register</h1>
-    <form method="post" action="{{ url_for('register') }}">
+    <form method="post" action="{{ url_for('user.register') }}">
         {{ form.hidden_tag() }}
         {{ bootstrap_field(form.username) }}
         {{ bootstrap_field(form.email) }}
