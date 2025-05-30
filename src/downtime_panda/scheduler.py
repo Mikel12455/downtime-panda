@@ -1,3 +1,5 @@
+"""Scheduler for managing background jobs in Downtime Panda."""
+
 import pytz
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.background import BackgroundScheduler

@@ -1,3 +1,7 @@
+"""
+This module contains both Flask configuration and application constants for Downtime Panda.
+"""
+
 import os
 
 

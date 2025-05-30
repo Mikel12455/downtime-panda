@@ -1,3 +1,5 @@
+"""Defines the Flask application factory for Downtime Panda."""
+
 import os
 
 
