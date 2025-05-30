@@ -1,7 +1,7 @@
 {% from "macro.html.jinja" import navbar_element %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Downtime Panda</a>
+        <a class="navbar-brand" href="{{ url_for('home.index') }}">Downtime Panda</a>
         <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
@@ -16,7 +16,7 @@
              toggle="collapse"
              data-target=".navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                {{ navbar_element('Home', 'index') }}
+                {{ navbar_element('Home', 'home.index') }}
             </ul>
             <div class="d-flex">
                 {% if current_user.is_authenticated %}

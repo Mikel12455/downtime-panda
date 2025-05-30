@@ -1,4 +1,9 @@
-__all__ = ["User", "login_manager", "user_blueprint"]
+"""
+The user package provides functionality related to user management,
+including user views and blueprints for integration with the main application.
+"""
 
-from downtime_panda.user.model import User
-from downtime_panda.user.views import login_manager, user_blueprint
+__all__ = ["User", "user_blueprint"]
+
+from .model import User
+from .views import user_blueprint

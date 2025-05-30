@@ -32,13 +32,8 @@ tasks:
       HOST: 127.0.0.1
     env:
       DTPANDA_DEBUG: true
-      DTPANDA_DB_DIALECT: postgresql+psycopg
-      DTPANDA_DB_HOST: localhost
-      DTPANDA_DB_PORT: 5432
-      DTPANDA_DB_USER: root
-      DTPANDA_DB_PASSWORD: root
-      DTPANDA_DB_DATABASE: postgres
       DTPANDA_SECRET_KEY: test
+      DTPANDA_DB_URL: root:root@localhost:5432/postgres
     cmds:
       - uv run flask --app downtime_panda run --port {{.PORT}} --host {{.HOST}} --debug
 

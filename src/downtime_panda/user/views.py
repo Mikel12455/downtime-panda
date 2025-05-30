@@ -4,11 +4,13 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
 
+from downtime_panda.extensions import login_manager
+
 from .model import User
 
-user_blueprint = Blueprint("user", __name__, template_folder="templates")
-
-login_manager = flask_login.LoginManager()
+user_blueprint = Blueprint(
+    "user", __name__, static_folder="static", template_folder="templates"
+)
 
 
 @login_manager.user_loader
@@ -68,7 +70,7 @@ def register():
         flash("Error: " + str(e), "error")
         return render_template("register.html.jinja", form=form, error=str(e))
 
-    return redirect(url_for("index"))
+    return redirect(url_for("home.index"))
 
 
 # ---------------------------------------------------------------------------- #
@@ -96,7 +98,7 @@ def login():
     user = User.get_by_email(form.email.data)
     if user and user.verify_password(form.password.data):
         flask_login.login_user(user)
-        return redirect(url_for("index"))
+        return redirect(url_for("home.index"))
 
     return render_template("login.html.jinja", form=form, error="Invalid credentials")
 
@@ -107,4 +109,4 @@ def login():
 @user_blueprint.route("/logout")
 def logout():
     flask_login.logout_user()
-    return redirect(url_for("index"))
+    return redirect(url_for("home.index"))

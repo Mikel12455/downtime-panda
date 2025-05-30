@@ -1,32 +1,18 @@
 import json
 from datetime import datetime
 
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import (
-    DeclarativeBase,
-    Mapped,
-    WriteOnlyMapped,
-    mapped_column,
-    relationship,
-)
+from sqlalchemy.orm import Mapped, WriteOnlyMapped, mapped_column, relationship
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-db = SQLAlchemy(model_class=Base)
-
-
-SCHEMA = "downtime_panda"
+from downtime_panda.config import Consts
+from downtime_panda.extensions import db
 
 
 class Service(db.Model):
     """Service model to store service information and related pings."""
 
     __tablename__ = "service"
-    __table_args__ = {"schema": SCHEMA}
+    __table_args__ = {"schema": Consts.SCHEMA}
     # ---------------------------------- COLUMNS --------------------------------- #
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column()
@@ -44,10 +30,10 @@ class Ping(db.Model):
     """Ping model to store service ping data."""
 
     __tablename__ = "ping"
-    __table_args__ = {"schema": SCHEMA}
+    __table_args__ = {"schema": Consts.SCHEMA}
     # ---------------------------------- COLUMNS --------------------------------- #
     id: Mapped[int] = mapped_column(primary_key=True)
-    service_id: Mapped[int] = mapped_column(ForeignKey(f"{SCHEMA}.service.id"))
+    service_id: Mapped[int] = mapped_column(ForeignKey(f"{Consts.SCHEMA}.service.id"))
     http_response: Mapped[int] = mapped_column()
     pinged_at: Mapped[datetime] = mapped_column()
 

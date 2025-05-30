@@ -5,14 +5,15 @@ from argon2 import PasswordHasher
 from sqlalchemy import exists
 from sqlalchemy.orm import Mapped, mapped_column
 
-from downtime_panda.model import SCHEMA, db
+from downtime_panda.config import Consts
+from downtime_panda.extensions import db
 
 
 class User(db.Model, flask_login.UserMixin):
     """User model for authentication and user management."""
 
     __tablename__ = "user"
-    __table_args__ = {"schema": SCHEMA}
+    __table_args__ = {"schema": Consts.SCHEMA}
     # ---------------------------------- COLUMNS --------------------------------- #
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(unique=True)

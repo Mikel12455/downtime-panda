@@ -1,170 +1,41 @@
-import base64
 import os
-import time
-from datetime import datetime
-
-import pytz
-import requests
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.interval import IntervalTrigger
-from flask import Flask, Response, abort, redirect, request, url_for
-from flask.templating import render_template
-
-from . import model
-from .user import login_manager, user_blueprint
-
-app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("DTPANDA_SECRET_KEY")
-
-app.register_blueprint(user_blueprint, url_prefix="/user")
 
 
-login_manager.init_app(app)
+def create_app():
+    """Create and configure the Flask application."""
+    from flask import Flask
 
+    app = Flask(__name__)
 
-def b64encode(data: str):
-    return base64.b64encode(data.encode()).decode()
+    # ------------------------------- CONFIGURATION ------------------------------ #
+    from downtime_panda.config import Config
 
+    app.config.from_object(Config)
 
-app.jinja_env.filters["b64encode"] = b64encode
+    # -------------------------------- BLUEPRINTS -------------------------------- #
+    from downtime_panda.home import home_blueprint
+    from downtime_panda.service import service_blueprint
+    from downtime_panda.user import user_blueprint
 
-DEBUG = os.getenv("DTPANDA_DEBUG", "false").lower() in ("true", "1", "yes")
-app.config["DEBUG"] = DEBUG
+    app.register_blueprint(home_blueprint, url_prefix="/")
+    app.register_blueprint(service_blueprint, url_prefix="/service")
+    app.register_blueprint(user_blueprint, url_prefix="/user")
 
-DB_DIALECT = os.getenv("DTPANDA_DB_DIALECT")
-DB_HOST = os.getenv("DTPANDA_DB_HOST")
-DB_PORT = os.getenv("DTPANDA_DB_PORT")
-DB_USER = os.getenv("DTPANDA_DB_USER")
-DB_PASSWORD = os.getenv("DTPANDA_DB_PASSWORD")
-DB_DATABASE = os.getenv("DTPANDA_DB_DATABASE")
+    # -------------------------------- EXTENSIONS -------------------------------- #
+    from . import extensions
 
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}"
-)
-model.db.init_app(app)
+    extensions.login_manager.init_app(app)
+    extensions.db.init_app(app)
 
-with app.app_context():
-    model.db.create_all()
-
-jobstore = SQLAlchemyJobStore(
-    url=app.config["SQLALCHEMY_DATABASE_URI"], tableschema="downtime_panda"
-)
-
-if not (app.debug or DEBUG) or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-    scheduler = BackgroundScheduler()
-    scheduler.add_jobstore(jobstore)
-    scheduler.timezone = pytz.utc
-    scheduler.start()
-
-
-def ping_service(service_id: int) -> None:
     with app.app_context():
-        service = model.db.session.get(model.Service, service_id)
-        app.logger.info(service)
+        extensions.db.create_all()
 
-        pinged_at = datetime.now(pytz.utc)
-        response = requests.head(service.uri)
-        ping = model.Ping(
-            service_id=service.id,
-            http_status=response.status_code,
-            pinged_at=pinged_at,
-        )
-        service.ping.add(ping)
-        model.db.session.commit()
+    from .scheduler import scheduler
 
+    if (
+        not (app.debug or app.config["DEBUG"])
+        or os.environ.get("WERKZEUG_RUN_MAIN") == "true"
+    ):
+        scheduler.start()
 
-# ---------------------------------------------------------------------------- #
-#                                     HOME                                     #
-# ---------------------------------------------------------------------------- #
-
-
-@app.route("/")
-def index() -> str:
-    return render_template("index.html.jinja")
-
-
-# ---------------------------------------------------------------------------- #
-#                                    SERVICE                                   #
-# ---------------------------------------------------------------------------- #
-
-
-@app.route("/service/<int:id>")
-def service_detail(id):
-    service = model.db.get_or_404(model.Service, id)
-    return render_template("service_detail.html.jinja", service=service)
-
-
-@app.route("/service/stream/<int:id>")
-def service_stream(id):
-    service = model.db.get_or_404(model.Service, id)
-
-    last_ping = model.db.session.scalars(service.ping.select()).first()
-
-    if not last_ping:
-        abort(404)
-
-    last_pinged_at = last_ping.pinged_at
-
-    def stream(service: model.Service, last_pinged_at: datetime):
-        with app.app_context():
-            while True:
-                new_pings = model.db.session.scalars(
-                    service.ping.select()
-                    .where(model.Ping.pinged_at > last_pinged_at)
-                    .order_by(model.Ping.pinged_at.desc())
-                ).all()
-
-                if new_pings:
-                    last_pinged_at = max(new_pings, key=lambda x: x.pinged_at).pinged_at
-                    yield f"data: {new_pings[0].dump_json()}\n\n"
-
-                time.sleep(1)
-
-    return Response(stream(service, last_pinged_at), mimetype="text/event-stream")
-
-
-@app.route("/service/create", methods=["GET", "POST"])
-def service_create():
-    if request.method == "POST":
-        # Insert a new service into the database
-        service = model.Service(
-            name=request.form["name"],
-            uri=request.form["uri"],
-        )
-        model.db.session.add(service)
-        model.db.session.flush((service,))
-        model.db.session.refresh(service)
-
-        # Schedule the ping job for the new service
-        trigger = IntervalTrigger(seconds=5)
-        scheduler.add_job(
-            func=ping_service,
-            kwargs={"service_id": service.id},
-            trigger=trigger,
-            replace_existing=True,
-            id=str(service.id),
-        )
-
-        model.db.session.commit()
-        return redirect(url_for("service_detail", id=service.id))
-
-    return render_template("service_create.html.jinja")
-
-
-@app.route("/stream/ping/<website>")
-def ping(website: str):
-    def pingStream(website: str):
-        while True:
-            response = requests.head(website)
-            yield f"data: {response.status_code}\n\n"
-            time.sleep(5)
-
-    try:
-        website = base64.urlsafe_b64decode(website.encode()).decode()
-    except Exception:
-        return Response("Invalid base64 encoding", status=400)
-    if not (website.startswith("http://") or website.startswith("https://")):
-        website = f"https://{website}"
-
-    return Response(pingStream(website), mimetype="text/event-stream")
+    return app

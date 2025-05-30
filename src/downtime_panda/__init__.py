@@ -1,3 +1,3 @@
-__all__ = ["app"]
+__all__ = ["create_app"]
 
-from downtime_panda.app import app
+from downtime_panda.app import create_app
