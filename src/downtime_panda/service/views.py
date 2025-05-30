@@ -41,13 +41,13 @@ def ping_service(service_id: int) -> None:
         db.session.commit()
 
 
-@service_blueprint.route("/service/<int:id>")
+@service_blueprint.route("/<int:id>")
 def service_detail(id):
     service = db.get_or_404(Service, id)
     return render_template("detail.html.jinja", service=service)
 
 
-@service_blueprint.route("/service/stream/<int:id>")
+@service_blueprint.route("/stream/<int:id>")
 def service_stream(id):
     service = db.get_or_404(Service, id)
 
@@ -76,7 +76,7 @@ def service_stream(id):
     return Response(stream(service, last_pinged_at), mimetype="text/event-stream")
 
 
-@service_blueprint.route("/service/create", methods=["GET", "POST"])
+@service_blueprint.route("/create", methods=["GET", "POST"])
 def service_create():
     if request.method == "POST":
         # Insert a new service into the database
