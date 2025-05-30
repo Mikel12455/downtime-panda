@@ -9,10 +9,10 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask import Flask
 
 from . import extensions
+from .blueprints.home import home_blueprint
+from .blueprints.service import service_blueprint
+from .blueprints.user import user_blueprint
 from .config import Config, Consts
-from .home import home_blueprint
-from .service import service_blueprint
-from .user import user_blueprint
 
 
 def create_app():
