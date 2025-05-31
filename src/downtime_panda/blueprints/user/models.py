@@ -12,19 +12,25 @@ class User(db.Model, flask_login.UserMixin):
     """User model for authentication and user management."""
 
     __tablename__ = "user"
+
     # ---------------------------------- COLUMNS --------------------------------- #
     id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
     username: Mapped[str] = mapped_column(String(255), unique=True)
     email: Mapped[str] = mapped_column(String(255), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))
 
+    # ----------------------------- STANDARD METHODS ----------------------------- #
     def __init__(self, username: str, email: str, password_hash: str):
         self.username = username
         self.email = email
         self.password_hash = password_hash
 
+    def __repr__(self) -> str:
+        return f"<User {self.id}>"
+
+    # -------------------------------- CONSTRUCTOR ------------------------------- #
     @classmethod
-    def add_user(cls, username: str, email: str, password: str) -> Self:
+    def register(cls, username: str, email: str, password: str) -> Self:
         """Add a new user to the database.
 
         Args:
@@ -52,6 +58,7 @@ class User(db.Model, flask_login.UserMixin):
         db.session.commit()
         return user
 
+    # ---------------------------------- METHODS --------------------------------- #
     @classmethod
     def username_exists(cls, username: str) -> bool:
         """Check if a username already exists in the database."""

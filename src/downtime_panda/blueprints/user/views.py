@@ -61,7 +61,7 @@ def register():
         return render_template("register.html.jinja", form=form)
 
     try:
-        User.add_user(
+        User.register(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
@@ -69,6 +69,9 @@ def register():
     except ValueError as e:
         flash("Error: " + str(e), "error")
         return render_template("register.html.jinja", form=form, error=str(e))
+
+    user = User.get_by_email(form.email.data)
+    flask_login.login_user(user)
 
     return redirect(url_for("home.index"))
 
