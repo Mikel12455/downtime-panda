@@ -3,17 +3,6 @@
 # ---------------------------------------------------------------------------- #
 services:
 
-  # downtime-panda:
-  #   build: .
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8080:80
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #     flyway:
-  #       condition: service_completed_successfully
-
   db:
     image: postgres:17.5
     restart: unless-stopped
@@ -25,25 +14,12 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready", "-U", "root" ]
       interval: 5s
       timeout: 5s
       retries: 5
-
-  flyway:
-    image: flyway/flyway
-    restart: no
-    environment:
-      - FLYWAY_URL=jdbc:postgresql://db:5432/postgres?connectTimeout=30&currentSchema=public&charSet=UTF-8
-      - FLYWAY_USER=root
-      - FLYWAY_PASSWORD=root
-    volumes:
-      - ./database/migrations:/flyway/sql
-    command: migrate
-    depends_on:
-      db:
-        condition: service_healthy
 
   db-webui:
     image: clidey/whodb

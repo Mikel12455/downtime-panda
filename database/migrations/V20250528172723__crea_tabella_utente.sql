@@ -1,7 +1,0 @@
--- Migration 2025/05/28 17:27:23
-CREATE TABLE IF NOT EXISTS downtime_panda.user (
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL
-);
