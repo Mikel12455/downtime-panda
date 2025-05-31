@@ -4,6 +4,9 @@ This module contains both Flask configuration and application constants for Down
 
 import os
 
+import pytz
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+
 
 class Config:
     """
@@ -17,25 +20,32 @@ class Config:
     Set to True if the environment variable 'DTPANDA_DEBUG' is set to 'true', '1', or 'yes' (case-insensitive).
     """
 
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg://{os.getenv('DTPANDA_DB_URL')}"
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql+psycopg://{os.getenv('DTPANDA_DB_URL')}"
+        if os.getenv("DTPANDA_DB_URL")
+        else "postgresql+psycopg://root:root@localhost:5432/postgres"
+    )
     """
     The database connection URL for PostgreSQL using the psycopg driver.
     Constructed from the environment variable 'DTPANDA_DB_URL'.
     """
 
-    SECRET_KEY = os.getenv("DTPANDA_SECRET_KEY")
+    SECRET_KEY = os.getenv("DTPANDA_SECRET_KEY") or "a_very_secret_key"
     """
     The secret key used by Flask for cryptographic operations (e.g., session signing).
     Loaded from the environment variable 'DTPANDA_SECRET'.
     """
 
+    # -------------------------------- APSCHEDULER ------------------------------- #
+    SCHEDULER_JOBSTORES = {
+        "default": SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI),
+    }
+    """
+    Configuration for the APScheduler job store.
+    """
 
-class Consts:
+    SCHEDULER_TIMEZONE = pytz.utc
     """
-    Constants used throughout the Downtime Panda application.
-    """
-
-    SCHEMA = "downtime_panda"
-    """
-    The schema name used in the database for storing application data.
+    The timezone used by the APScheduler.
+    Set to UTC by default.
     """
