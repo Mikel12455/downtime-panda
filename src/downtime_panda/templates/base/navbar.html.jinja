@@ -20,11 +20,26 @@
             </ul>
             <div class="d-flex">
                 {% if current_user.is_authenticated %}
-                    Welcome, {{ current_user.username }}!
-                    <div class="btn-group" role="group">
-                        <a class="btn btn-primary {{ 'active' if request.path == url_for("user.logout") else '' }}"
-                           href="{{ url_for('user.logout') }}">Logout</a>
-                    </div>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">Welcome, {{ current_user.username }}!</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#">Your Profile</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ url_for('user.logout') }}">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 {% else %}
                     <div class="btn-group" role="group">
                         <a class="btn btn-primary {{ active if request.path == url_for("user.login") else '' }}"
