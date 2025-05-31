@@ -38,7 +38,9 @@ class Config:
 
     # -------------------------------- APSCHEDULER ------------------------------- #
     SCHEDULER_JOBSTORES = {
-        "default": SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI),
+        "default": SQLAlchemyJobStore(
+            url=SQLALCHEMY_DATABASE_URI, tablename="apscheduler_jobs"
+        ),
     }
     """
     Configuration for the APScheduler job store.
