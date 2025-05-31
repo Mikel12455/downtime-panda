@@ -18,7 +18,7 @@ from flask import (
 
 from downtime_panda.extensions import db, scheduler
 
-from .model import Ping, Service
+from .models import Ping, Service
 
 service_blueprint = Blueprint(
     "service", __name__, static_folder="static", template_folder="templates"

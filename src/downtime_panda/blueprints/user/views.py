@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Email, EqualTo
 
 from downtime_panda.extensions import login_manager
 
-from .model import User
+from .models import User
 
 user_blueprint = Blueprint(
     "user", __name__, static_folder="static", template_folder="templates"

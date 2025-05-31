@@ -5,5 +5,5 @@ including user views and blueprints for integration with the main application.
 
 __all__ = ["User", "user_blueprint"]
 
-from .model import User
+from .models import User
 from .views import user_blueprint
