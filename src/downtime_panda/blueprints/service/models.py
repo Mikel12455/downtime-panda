@@ -1,10 +1,9 @@
 import json
 from datetime import datetime
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, WriteOnlyMapped, mapped_column, relationship
 
-from downtime_panda.config import Consts
 from downtime_panda.extensions import db
 
 
@@ -12,11 +11,10 @@ class Service(db.Model):
     """Service model to store service information and related pings."""
 
     __tablename__ = "service"
-    __table_args__ = {"schema": Consts.SCHEMA}
     # ---------------------------------- COLUMNS --------------------------------- #
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column()
-    uri: Mapped[str] = mapped_column()
+    id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
+    uri: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
     ping: WriteOnlyMapped["Ping"] = relationship(order_by="Ping.pinged_at.desc()")
@@ -30,12 +28,13 @@ class Ping(db.Model):
     """Ping model to store service ping data."""
 
     __tablename__ = "ping"
-    __table_args__ = {"schema": Consts.SCHEMA}
     # ---------------------------------- COLUMNS --------------------------------- #
-    id: Mapped[int] = mapped_column(primary_key=True)
-    service_id: Mapped[int] = mapped_column(ForeignKey(f"{Consts.SCHEMA}.service.id"))
-    http_response: Mapped[int] = mapped_column()
-    pinged_at: Mapped[datetime] = mapped_column()
+    id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
+    service_id: Mapped[int] = mapped_column(
+        ForeignKey(Service.id, onupdate="CASCADE", ondelete="RESTRICT"), nullable=False
+    )
+    http_response: Mapped[int] = mapped_column(Integer(), nullable=False)
+    pinged_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     def __init__(self, service_id: int, http_status: int, pinged_at: datetime):
         self.service_id = service_id

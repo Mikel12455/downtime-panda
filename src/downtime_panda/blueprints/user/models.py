@@ -2,10 +2,9 @@ from typing import Self
 
 import flask_login
 from argon2 import PasswordHasher
-from sqlalchemy import exists
+from sqlalchemy import BigInteger, String, exists
 from sqlalchemy.orm import Mapped, mapped_column
 
-from downtime_panda.config import Consts
 from downtime_panda.extensions import db
 
 
@@ -13,12 +12,11 @@ class User(db.Model, flask_login.UserMixin):
     """User model for authentication and user management."""
 
     __tablename__ = "user"
-    __table_args__ = {"schema": Consts.SCHEMA}
     # ---------------------------------- COLUMNS --------------------------------- #
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True)
-    email: Mapped[str] = mapped_column(unique=True)
-    password_hash: Mapped[str] = mapped_column()
+    id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
+    username: Mapped[str] = mapped_column(String(255), unique=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
 
     def __init__(self, username: str, email: str, password_hash: str):
         self.username = username
