@@ -26,6 +26,14 @@ tasks:
     cmds:
       - docker compose -f docker-compose.dev.yml down --remove-orphans
 
+  run-flask-command:*:
+    vars:
+      command: "{{ index .MATCH 0 }}"
+    env:
+      FLASK_APP: downtime_panda
+    cmds:
+      - uv run flask {{.command}}
+
   run-flask:
     vars:
       PORT: 8080
