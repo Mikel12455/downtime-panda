@@ -9,19 +9,19 @@ from flask import (
     current_app,
     redirect,
     render_template,
-    request,
     stream_with_context,
     url_for,
 )
+from flask_wtf import FlaskForm
+from wtforms import StringField, URLField
+from wtforms.validators import DataRequired
 
 from downtime_panda.blueprints.service.jobs import ping_service
 from downtime_panda.extensions import db, scheduler
 
 from .models import Ping, Service
 
-service_blueprint = Blueprint(
-    "service", __name__, static_folder="static", template_folder="templates"
-)
+service_blueprint = Blueprint("service", __name__, template_folder="templates")
 
 
 # ------------------------------------ SSE ----------------------------------- #
@@ -69,14 +69,27 @@ def service_stream(id):
 
 @service_blueprint.route("/create", methods=["GET", "POST"])
 def service_create():
-    if request.method == "GET":
-        # Render the service creation form
-        return render_template("create.html.jinja")
+    class ServiceForm(FlaskForm):
+        name = StringField(
+            "Service Name",
+            description="Name of the service",
+            validators=[DataRequired("Service name is required")],
+        )
+        uri = URLField(
+            "URI",
+            description="URI of the service",
+            validators=[DataRequired("Service URI is required")],
+        )
+
+    form = ServiceForm()
+    if not form.validate_on_submit():
+        # Render the service creation form with validation errors
+        return render_template("create.html.jinja", form=form)
 
     # Insert a new service into the database
     service = Service(
-        name=request.form["name"],
-        uri=request.form["uri"],
+        name=form.name.data,
+        uri=form.uri.data,
     )
     db.session.add(service)
     db.session.flush((service,))
@@ -93,4 +106,4 @@ def service_create():
     )
 
     db.session.commit()
-    return redirect(url_for("service_detail", id=service.id))
+    return redirect(url_for(".service_detail", id=service.id))
