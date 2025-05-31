@@ -6,9 +6,8 @@ Create Date: 2025-05-31 14:14:17.122183
 
 """
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "91d00fdb3a1a"
@@ -57,4 +56,5 @@ def downgrade():
     op.drop_table("ping")
     op.drop_table("user")
     op.drop_table("service")
+    op.execute("TRUNCATE TABLE apscheduler_jobs")
     # ### end Alembic commands ###

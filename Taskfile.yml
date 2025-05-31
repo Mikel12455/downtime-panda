@@ -2,6 +2,9 @@
 
 version: "3"
 
+env:
+  FLASK_APP: downtime_panda
+
 tasks:
 # -------------------------------- FIRST SETUP ------------------------------- #
   setup:
@@ -29,8 +32,6 @@ tasks:
   run-flask-command:*:
     vars:
       command: "{{ index .MATCH 0 }}"
-    env:
-      FLASK_APP: downtime_panda
     cmds:
       - uv run flask {{.command}}
 
@@ -43,28 +44,15 @@ tasks:
       DTPANDA_SECRET_KEY: test
       DTPANDA_DB_URL: root:root@localhost:5432/postgres
     cmds:
-      - uv run flask --app downtime_panda run --port {{.PORT}} --host {{.HOST}} --debug
+      - uv run flask run --port {{.PORT}} --host {{.HOST}} --debug
 
 # -------------------------------- MIGRATIONS -------------------------------- #
-  dev-migrate:
-    vars:
-      BIND_MOUNT: "--mount type=bind,src=${PWD}/database/migrations,dst=/flyway/sql"
-      DB_URL: "jdbc:postgresql://db:5432/postgres?connectTimeout=30&currentSchema=downtime_panda&charSet=UTF-8"
-    cmds:
-      - docker run --net="downtime-panda_default" --rm {{.BIND_MOUNT}} -e "FLYWAY_URL={{.DB_URL}}" -e "FLYWAY_USER=root" -e "FLYWAY_PASSWORD=root" flyway/flyway migrate
+  dev-migrate: uv run flask db upgrade head
 
-  dev-migrate-clean:
-    vars:
-      BIND_MOUNT: "--mount type=bind,src=${PWD}/database/migrations,dst=/flyway/sql"
-      DB_URL: "jdbc:postgresql://db:5432/postgres?connectTimeout=30&currentSchema=downtime_panda&charSet=UTF-8"
-    cmds:
-      - docker run --net="downtime-panda_default" --rm {{.BIND_MOUNT}} -e "FLYWAY_CLEAN_DISABLED=false" -e "FLYWAY_URL={{.DB_URL}}" -e "FLYWAY_USER=root" -e "FLYWAY_PASSWORD=root" flyway/flyway clean
-      - task: dev-migrate
+  dev-migrate-clean: uv run flask db downgrade base
 
   make-migration:*:
     vars:
       DESCRIPTION: "{{index .MATCH 0}}"
-      TODAY: "{{now}}"
-      FOLDER: "./database/migrations"
     cmds:
-      - echo -- Migration {{.TODAY | date "2006/01/02 15:04:05"}} > {{.FOLDER}}/V{{.TODAY | date "20060102150405"}}__{{.DESCRIPTION | lower}}.sql
+      - uv run flask db migrate -m {{.DESCRIPTION}}
