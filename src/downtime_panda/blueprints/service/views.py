@@ -1,7 +1,6 @@
 import time
 from datetime import datetime
 
-from apscheduler.triggers.interval import IntervalTrigger
 from flask import (
     Blueprint,
     Response,
@@ -12,12 +11,12 @@ from flask import (
     stream_with_context,
     url_for,
 )
+from flask_login import current_user, login_required
 from flask_wtf import FlaskForm
 from wtforms import StringField, URLField
 from wtforms.validators import DataRequired
 
-from downtime_panda.blueprints.service.jobs import ping_service
-from downtime_panda.extensions import db, scheduler
+from downtime_panda.extensions import db
 
 from .models import Ping, Service
 
@@ -68,6 +67,7 @@ def service_stream(id):
 
 
 @service_blueprint.route("/create", methods=["GET", "POST"])
+@login_required
 def service_create():
     class ServiceForm(FlaskForm):
         name = StringField(
@@ -86,24 +86,14 @@ def service_create():
         # Render the service creation form with validation errors
         return render_template("create.html.jinja", form=form)
 
-    # Insert a new service into the database
-    service = Service(
+    # This tricks the user into thinking the service is created
+    # even if it already exists.
+    #
+    # Sorry user :(
+    service = Service.create_if_not_exists(
         name=form.name.data,
         uri=form.uri.data,
     )
-    db.session.add(service)
-    db.session.flush((service,))
-    db.session.refresh(service)
+    current_user.subscribe_to_service(service)
 
-    # Schedule the ping job for the new service
-    trigger = IntervalTrigger(seconds=5)
-    scheduler.add_job(
-        func=ping_service,
-        kwargs={"service_id": service.id},
-        trigger=trigger,
-        replace_existing=True,
-        id=str(service.id),
-    )
-
-    db.session.commit()
     return redirect(url_for(".service_detail", id=service.id))

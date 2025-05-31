@@ -2,10 +2,33 @@ from typing import Self
 
 import flask_login
 from argon2 import PasswordHasher
-from sqlalchemy import BigInteger, String, exists
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import (
+    BigInteger,
+    Column,
+    DateTime,
+    ForeignKey,
+    String,
+    Table,
+    func,
+    select,
+)
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from downtime_panda.blueprints.service.models import Service
 from downtime_panda.extensions import db
+
+subscription = Table(
+    "subscription",
+    db.metadata,
+    Column("user_id", BigInteger(), ForeignKey("user.id")),
+    Column("service_id", BigInteger(), ForeignKey("service.id")),
+    Column(
+        "created_at",
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+    ),
+)
 
 
 class User(db.Model, flask_login.UserMixin):
@@ -18,6 +41,9 @@ class User(db.Model, flask_login.UserMixin):
     username: Mapped[str] = mapped_column(String(255), unique=True)
     email: Mapped[str] = mapped_column(String(255), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))
+
+    # ------------------------------- RELATIONSHIPS ------------------------------ #
+    services: Mapped[list[Service]] = relationship(secondary=subscription)
 
     # ----------------------------- STANDARD METHODS ----------------------------- #
     def __init__(self, username: str, email: str, password_hash: str):
@@ -62,12 +88,17 @@ class User(db.Model, flask_login.UserMixin):
     @classmethod
     def username_exists(cls, username: str) -> bool:
         """Check if a username already exists in the database."""
-        return db.session.query(exists().where(cls.username == username)).scalar()
+        return (
+            db.session.execute(select(cls).filter_by(username=username)).first()
+            is not None
+        )
 
     @classmethod
     def email_exists(cls, email: str) -> bool:
         """Check if an email already exists in the database."""
-        return db.session.query(exists().where(cls.email == email)).scalar()
+        return (
+            db.session.execute(select(cls).filter_by(email=email)).first() is not None
+        )
 
     @classmethod
     def get_by_id(cls, user_id: int) -> Self | None:
@@ -98,3 +129,9 @@ class User(db.Model, flask_login.UserMixin):
             return True
         except Exception:
             return False
+
+    def subscribe_to_service(self, service: Service) -> None:
+        """Subscribe the user to a service."""
+        if service not in self.services:
+            self.services.append(service)
+            db.session.commit()
