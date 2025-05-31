@@ -1,4 +1,34 @@
 {% from "macro.html.jinja" import navbar_element %}
+{% macro logged_user_dropdown() %}
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               href="#"
+               role="button"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">Welcome, {{ current_user.username }}!</a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" href="#">Your Profile</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a class="dropdown-item text-danger" href="{{ url_for('user.logout') }}">Logout</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+{% endmacro %}
+{% macro user_login_buttons() %}
+    <div class="btn-group" role="group">
+        <a class="btn btn-primary {{ active if request.path == url_for("user.login") else '' }}"
+           href="{{ url_for('user.login') }}">Login</a>
+        <a class="btn btn-primary {{ 'active' if request.path == url_for("user.register") else '' }}"
+           href="{{ url_for('user.register') }}">Register</a>
+    </div>
+{% endmacro %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('home.index') }}">Downtime Panda</a>
@@ -20,33 +50,9 @@
             </ul>
             <div class="d-flex">
                 {% if current_user.is_authenticated %}
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle"
-                               href="#"
-                               role="button"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false">Welcome, {{ current_user.username }}!</a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="#">Your Profile</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-danger" href="{{ url_for('user.logout') }}">Logout</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    {{ logged_user_dropdown() }}
                 {% else %}
-                    <div class="btn-group" role="group">
-                        <a class="btn btn-primary {{ active if request.path == url_for("user.login") else '' }}"
-                           href="{{ url_for('user.login') }}">Login</a>
-                        <a class="btn btn-primary {{ 'active' if request.path == url_for("user.register") else '' }}"
-                           href="{{ url_for('user.register') }}">Register</a>
-                    </div>
+                    {{ user_login_buttons() }}
                 {% endif %}
             </div>
         </div>
