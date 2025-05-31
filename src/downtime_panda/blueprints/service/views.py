@@ -1,8 +1,6 @@
 import time
 from datetime import datetime
 
-import pytz
-import requests
 from apscheduler.triggers.interval import IntervalTrigger
 from flask import (
     Blueprint,
@@ -16,6 +14,7 @@ from flask import (
     url_for,
 )
 
+from downtime_panda.blueprints.service.jobs import ping_service
 from downtime_panda.extensions import db, scheduler
 
 from .models import Ping, Service
@@ -23,23 +22,6 @@ from .models import Ping, Service
 service_blueprint = Blueprint(
     "service", __name__, static_folder="static", template_folder="templates"
 )
-
-
-# ------------------------------- SCHEDULED JOB ------------------------------ #
-def ping_service(service_id: int) -> None:
-    with scheduler.app.app_context():
-        service = db.session.get(Service, service_id)
-        current_app.logger.info(service)
-
-        pinged_at = datetime.now(pytz.utc)
-        response = requests.head(service.uri)
-        ping = Ping(
-            service_id=service.id,
-            http_status=response.status_code,
-            pinged_at=pinged_at,
-        )
-        service.ping.add(ping)
-        db.session.commit()
 
 
 # ------------------------------------ SSE ----------------------------------- #
