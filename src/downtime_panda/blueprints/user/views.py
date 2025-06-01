@@ -1,9 +1,10 @@
 import flask_login
 from flask import Blueprint, flash, redirect, render_template, url_for
-from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, ValidationError
-from wtforms.validators import DataRequired, Email, EqualTo
 
+from downtime_panda.blueprints.user.forms import (
+    LoginForm,
+    RegisterForm,
+)
 from downtime_panda.extensions import login_manager
 
 from .models import User
@@ -24,38 +25,6 @@ def user_loader(id: str):
 # ---------------------------------------------------------------------------- #
 @user_blueprint.route("/register", methods=["GET", "POST"])
 def register():
-    def username_is_free(form, field):
-        if User.username_exists(field.data):
-            raise ValidationError("Username already exists.")
-
-    def email_is_free(form, field):
-        if User.email_exists(field.data):
-            raise ValidationError("Email already exists.")
-
-    class RegisterForm(FlaskForm):
-        username = StringField(
-            "Username",
-            description="Username",
-            validators=[DataRequired("Username is required"), username_is_free],
-        )
-        email = StringField(
-            "Email",
-            description="Email",
-            validators=[DataRequired("Email is required"), Email(), email_is_free],
-        )
-        password = PasswordField(
-            "Password",
-            description="Password",
-            validators=[
-                DataRequired("Password is required"),
-            ],
-        )
-        confirm_password = PasswordField(
-            "Confirm Password",
-            description="Confirm password",
-            validators=[EqualTo("password", message="Passwords must match")],
-        )
-
     form = RegisterForm()
     if not form.validate_on_submit():
         return render_template("register.html.jinja", form=form)
@@ -81,18 +50,6 @@ def register():
 # ---------------------------------------------------------------------------- #
 @user_blueprint.route("/login", methods=["GET", "POST"])
 def login():
-    class LoginForm(FlaskForm):
-        email = StringField(
-            "Email",
-            description="Email",
-            validators=[DataRequired("Email is required"), Email()],
-        )
-        password = PasswordField(
-            "Password",
-            description="Password",
-            validators=[DataRequired("Password is required")],
-        )
-
     form = LoginForm()
     if not form.validate_on_submit():
         # GET
