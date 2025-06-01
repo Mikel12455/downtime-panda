@@ -12,10 +12,8 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-from flask_wtf import FlaskForm
-from wtforms import StringField, URLField
-from wtforms.validators import DataRequired
 
+from downtime_panda.blueprints.service.forms import ServiceForm
 from downtime_panda.extensions import db
 
 from .models import Ping, Service
@@ -69,18 +67,6 @@ def service_stream(id):
 @service_blueprint.route("/create", methods=["GET", "POST"])
 @login_required
 def service_create():
-    class ServiceForm(FlaskForm):
-        name = StringField(
-            "Service Name",
-            description="Name of the service",
-            validators=[DataRequired("Service name is required")],
-        )
-        uri = URLField(
-            "URI",
-            description="URI of the service",
-            validators=[DataRequired("Service URI is required")],
-        )
-
     form = ServiceForm()
     if not form.validate_on_submit():
         # Render the service creation form with validation errors
