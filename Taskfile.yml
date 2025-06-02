@@ -47,9 +47,14 @@ tasks:
       - uv run flask run --port {{.PORT}} --host {{.HOST}} --debug
 
 # -------------------------------- MIGRATIONS -------------------------------- #
-  dev-migrate: uv run flask db upgrade head
+  dev-migrate-up: uv run flask db upgrade head
 
-  dev-migrate-clean: uv run flask db downgrade base
+  dev-migrate-down: uv run flask db downgrade base
+
+  dev-migrate-clean:
+    cmds:
+      - task: dev-migrate-down
+      - task: dev-migrate-up
 
   make-migration:*:
     vars:
