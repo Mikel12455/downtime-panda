@@ -1,0 +1,16 @@
+{% extends "base.html.jinja" %}
+{% from "macro.html.jinja" import bootstrap_field %}
+{% block title %}
+    Your Tokens
+{% endblock title %}
+{% block body %}
+    <h1>Your Tokens</h1>
+    <a href="{{ url_for('user.generate_token') }}" class="btn btn-primary">Create New Token</a>
+    <ul>
+        {% for api_token in current_user.api_tokens if current_user.api_tokens %}
+            <li>{{ api_token.token }}</li>
+        {% else %}
+            <li>You have no tokens.</li>
+        {% endfor %}
+    </ul>
+{% endblock body %}

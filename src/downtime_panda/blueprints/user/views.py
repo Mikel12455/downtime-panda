@@ -52,7 +52,6 @@ def register():
 def login():
     form = LoginForm()
     if not form.validate_on_submit():
-        # GET
         return render_template("login.html.jinja", form=form)
 
     user = User.get_by_email(form.email.data)
@@ -79,3 +78,19 @@ def logout():
 @flask_login.login_required
 def profile():
     return render_template("profile.html.jinja")
+
+
+# ---------------------------------------------------------------------------- #
+#                                    TOKENS                                    #
+# ---------------------------------------------------------------------------- #
+@user_blueprint.route("/tokens")
+@flask_login.login_required
+def tokens():
+    return render_template("tokens.html.jinja")
+
+
+@user_blueprint.route("/tokens/new")
+@flask_login.login_required
+def generate_token():
+    flask_login.current_user.create_token()
+    return redirect(url_for("user.tokens"))

@@ -1,3 +1,4 @@
+import secrets
 import uuid
 from typing import Self
 
@@ -54,10 +55,10 @@ class User(db.Model, flask_login.UserMixin):
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
     services: Mapped[list[Service]] = relationship(secondary=subscription)
-    # tokens: Mapped[list["APIToken"]] = relationship(
-    #     "APIToken",
-    #     back_populates="user",
-    # )
+    api_tokens: Mapped[list["APIToken"]] = relationship(
+        "APIToken",
+        back_populates="user",
+    )
 
     # ----------------------------- STANDARD METHODS ----------------------------- #
     def __init__(self, username: str, email: str, password_hash: str):
@@ -149,3 +150,13 @@ class User(db.Model, flask_login.UserMixin):
         if service not in self.services:
             self.services.append(service)
             db.session.commit()
+
+    def create_token(self):
+        """Create a new API token for the user."""
+        token = APIToken(user_id=self.id, token=secrets.token_hex(16))
+        self.api_tokens.append(token)
+        db.session.commit()
+
+
+from downtime_panda.blueprints.api.models import APIToken  # noqa: E402
+# Import APIToken after User to avoid circular import issues
