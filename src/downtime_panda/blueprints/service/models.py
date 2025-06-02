@@ -24,6 +24,7 @@ class Service(db.Model):
     # ------------------------------- RELATIONSHIPS ------------------------------ #
     ping: WriteOnlyMapped["Ping"] = relationship(order_by="Ping.pinged_at.desc()")
 
+    # ----------------------------- STANDARD METHODS ----------------------------- #
     def __init__(self, name: str, uri: str):
         self.name = name
         self.uri = uri
@@ -97,11 +98,16 @@ class Ping(db.Model):
     http_response: Mapped[int] = mapped_column(Integer(), nullable=False)
     pinged_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
+    # ----------------------------- STANDARD METHODS ----------------------------- #
     def __init__(self, service_id: int, http_status: int, pinged_at: datetime):
         self.service_id = service_id
         self.http_response = http_status
         self.pinged_at = pinged_at
 
+    def __repr__(self) -> str:
+        return f"<Ping {self.id} for Service {self.service_id}>"
+
+    # ---------------------------------- METHODS --------------------------------- #
     def dump_json(self):
         return json.dumps(self.as_dict())
 
