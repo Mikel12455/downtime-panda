@@ -7,6 +7,7 @@ from flask import (
     Response,
     abort,
     current_app,
+    flash,
     redirect,
     render_template,
     request,
@@ -102,4 +103,8 @@ def service_subscribe():
     )
     current_user.subscribe_to_service(service)
 
+    flash(
+        f"You have successfully subscribed to {service.name}.",
+        "success",
+    )
     return redirect(url_for(".service_detail", id=service.id))

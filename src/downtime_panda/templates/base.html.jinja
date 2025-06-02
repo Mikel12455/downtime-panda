@@ -23,8 +23,8 @@
     </head>
     <body class="d-flex flex-column min-vh-100">
         {% include "base/navbar.html.jinja" %}
-        {{ display_flash_messages() }}
         <div class="container p-1">
+            {{ display_flash_messages() }}
             {% block body %}
             {% endblock body %}
         </div>

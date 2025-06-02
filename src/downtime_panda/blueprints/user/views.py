@@ -42,6 +42,7 @@ def register():
     user = User.get_by_email(form.email.data)
     flask_login.login_user(user)
 
+    flash("You have been registered successfully.", "success")
     return redirect(url_for("home.index"))
 
 
@@ -57,9 +58,11 @@ def login():
     user = User.get_by_email(form.email.data)
     if user and user.verify_password(form.password.data):
         flask_login.login_user(user)
+        flash("You have been logged in successfully.", "success")
         return redirect(url_for("home.index"))
 
-    return render_template("login.html.jinja", form=form, error="Invalid credentials")
+    flash("Invalid email or password.", "danger")
+    return render_template("login.html.jinja", form=form)
 
 
 # ---------------------------------------------------------------------------- #
@@ -68,6 +71,7 @@ def login():
 @user_blueprint.route("/logout")
 def logout():
     flask_login.logout_user()
+    flash("You have been logged out successfully.", "success")
     return redirect(url_for("home.index"))
 
 
@@ -93,6 +97,7 @@ def tokens():
 @flask_login.login_required
 def generate_token():
     flask_login.current_user.create_token()
+    flash("New API token created successfully.", "success")
     return redirect(url_for("user.tokens"))
 
 
@@ -101,4 +106,5 @@ def generate_token():
 def revoke_token(token_id: int):
     """Delete an API token."""
     flask_login.current_user.revoke_token(token_id)
+    flash("API token revoked successfully.", "success")
     return redirect(url_for("user.tokens"))
