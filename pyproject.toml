@@ -12,6 +12,7 @@ dependencies = [
     "argon2-cffi>=23.1.0",
     "flask>=3.1.0",
     "flask-apscheduler>=1.13.1",
+    "flask-httpauth>=4.8.0",
     "flask-login>=0.6.3",
     "flask-migrate>=4.1.0",
     "flask-moment>=1.0.6",

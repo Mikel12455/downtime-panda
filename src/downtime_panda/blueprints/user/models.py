@@ -17,7 +17,6 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from downtime_panda.blueprints.service.models import Service
 from downtime_panda.extensions import db
 
 subscription = Table(
@@ -54,7 +53,7 @@ class User(db.Model, flask_login.UserMixin):
     password_hash: Mapped[str] = mapped_column(String(255))
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
-    services: Mapped[list[Service]] = relationship(secondary=subscription)
+    services: Mapped[list["Service"]] = relationship(secondary=subscription)
     api_tokens: Mapped[list["APIToken"]] = relationship(
         "APIToken",
         back_populates="user",
@@ -145,7 +144,7 @@ class User(db.Model, flask_login.UserMixin):
         except Exception:
             return False
 
-    def subscribe_to_service(self, service: Service) -> None:
+    def subscribe_to_service(self, service: "Service") -> None:
         """Subscribe the user to a service."""
         if service not in self.services:
             self.services.append(service)
@@ -171,6 +170,15 @@ class User(db.Model, flask_login.UserMixin):
         db.session.delete(token_to_remove)
         db.session.commit()
 
+    @classmethod
+    def get_by_token(cls, token: str) -> Self | None:
+        """Validate an API token and return the associated user if valid."""
+
+        api_token = db.session.query(APIToken).filter_by(token=token).first()
+        if api_token:
+            return api_token.user
+        return None
+
 
 from downtime_panda.blueprints.api.models import APIToken  # noqa: E402
-# Import APIToken after User to avoid circular import issues
+from downtime_panda.blueprints.service.models import Service  # noqa: E402

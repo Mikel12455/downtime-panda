@@ -85,6 +85,12 @@ class Service(db.Model):
             service.ping.add(ping)
             db.session.commit()
 
+    def get_latest_ping(self) -> "Ping | None":
+        """Get the latest ping for the service."""
+        return db.session.execute(
+            select(Ping).filter_by(service_id=self.id).order_by(Ping.pinged_at.desc())
+        ).scalar()
+
 
 class Ping(db.Model):
     """Ping model to store service ping data."""
@@ -109,9 +115,9 @@ class Ping(db.Model):
 
     # ---------------------------------- METHODS --------------------------------- #
     def dump_json(self):
-        return json.dumps(self.as_dict())
+        return json.dumps(self.to_dict())
 
-    def as_dict(self) -> dict:
+    def to_dict(self) -> dict:
         return {
             "id": self.id,
             "service_id": self.service_id,
