@@ -33,6 +33,7 @@ def create_app():
     extensions.db.init_app(app)
     extensions.migrate.init_app(app, extensions.db)
     extensions.scheduler.init_app(app)
+    extensions.moment.init_app(app)
 
     # -------------------------- SCHEDULER CONFIGURATION ------------------------- #
     if (
