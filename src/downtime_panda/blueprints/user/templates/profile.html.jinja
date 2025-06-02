@@ -1,0 +1,9 @@
+{% extends "base.html.jinja" %}
+{% block title %}
+    Your Profile
+{% endblock title %}
+{% block body %}
+    <h1>Your Profile</h1>
+    <p>Username: {{ current_user.username }}</p>
+    <p>Email: {{ current_user.email }}</p>
+{% endblock body %}

@@ -70,3 +70,12 @@ def login():
 def logout():
     flask_login.logout_user()
     return redirect(url_for("home.index"))
+
+
+# ---------------------------------------------------------------------------- #
+#                                    PROFILE                                   #
+# ---------------------------------------------------------------------------- #
+@user_blueprint.route("/profile")
+@flask_login.login_required
+def profile():
+    return render_template("profile.html.jinja")

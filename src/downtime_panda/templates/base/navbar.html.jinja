@@ -9,7 +9,13 @@
                aria-expanded="false">Welcome, {{ current_user.username }}!</a>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="dropdown-item" href="#">Your Profile</a>
+                    <a class="dropdown-item" href="{{ url_for('user.profile') }}">Your Profile</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Your Services</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">Your API Tokens</a>
                 </li>
                 <li>
                     <hr class="dropdown-divider">
