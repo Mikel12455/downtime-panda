@@ -157,6 +157,20 @@ class User(db.Model, flask_login.UserMixin):
         self.api_tokens.append(token)
         db.session.commit()
 
+    def revoke_token(self, token_id: int) -> None:
+        """Revoke an API token for the user."""
+        token_to_remove = db.session.execute(
+            select(APIToken).filter_by(id=token_id, user_id=self.id)
+        ).scalar_one_or_none()
+
+        if not token_to_remove:
+            raise ValueError(
+                f"Token with ID {token_id} does not exist or does not belong to the user."
+            )
+
+        db.session.delete(token_to_remove)
+        db.session.commit()
+
 
 from downtime_panda.blueprints.api.models import APIToken  # noqa: E402
 # Import APIToken after User to avoid circular import issues

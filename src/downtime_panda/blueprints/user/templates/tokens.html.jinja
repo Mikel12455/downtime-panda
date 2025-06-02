@@ -5,7 +5,21 @@
 {% endblock title %}
 {% block body %}
     <h1>Your Tokens</h1>
-    <a href="{{ url_for('user.generate_token') }}" class="btn btn-primary">Create New Token</a>
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            {% if current_user.api_tokens %}
+                You currently have {{ current_user.api_tokens|length }} API token(s).
+            {% else %}
+                You currently have no API tokens. Create one to start using the API.
+            {% endif %}
+        </div>
+        <div class="col">
+            <form action="{{ url_for('user.generate_token') }}" method="post">
+                <button type="submit" class="btn btn-primary">Create New Token</button>
+            </form>
+        </div>
+    </div>
+    <hr />
     {% if current_user.api_tokens %}
         <table class="table table-striped table-hover">
             <thead>
@@ -21,7 +35,8 @@
                         <td>{{ api_token.token }}</td>
                         <td>{{ moment(api_token.created_at).format("dddd, MMMM Do YYYY, h:mm:ss A") }}</td>
                         <td>
-                            <form action="#" method="post">
+                            <form action="{{ url_for('user.revoke_token', token_id=api_token.id) }}"
+                                  method="post">
                                 <button type="submit" class="btn btn-danger btn-sm">Revoke</button>
                             </form>
                         </td>
@@ -29,7 +44,5 @@
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>You have no tokens.</p>
     {% endif %}
 {% endblock body %}

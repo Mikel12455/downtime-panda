@@ -83,14 +83,22 @@ def profile():
 # ---------------------------------------------------------------------------- #
 #                                    TOKENS                                    #
 # ---------------------------------------------------------------------------- #
-@user_blueprint.route("/tokens")
+@user_blueprint.get("/tokens")
 @flask_login.login_required
 def tokens():
     return render_template("tokens.html.jinja")
 
 
-@user_blueprint.route("/tokens/new")
+@user_blueprint.post("/tokens/new")
 @flask_login.login_required
 def generate_token():
     flask_login.current_user.create_token()
+    return redirect(url_for("user.tokens"))
+
+
+@user_blueprint.post("/tokens/revoke/<int:token_id>")
+@flask_login.login_required
+def revoke_token(token_id: int):
+    """Delete an API token."""
+    flask_login.current_user.revoke_token(token_id)
     return redirect(url_for("user.tokens"))
