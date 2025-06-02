@@ -1,17 +1,17 @@
 {% extends "base.html.jinja" %}
 {% from "macro.html.jinja" import bootstrap_field %}
 {% block title %}
-    Create New Service
+    Subscribe to a New Service
 {% endblock title %}
 {% block head %}
     {{ super() }}
 {% endblock head %}
 {% block body %}
-    <h1>Create New Service</h1>
+    <h1>Subscribe to a New Service</h1>
     <form method="post" action="{{ url_for('.service_create') }}">
         {{ form.hidden_tag() }}
         {{ bootstrap_field(form.name) }}
         {{ bootstrap_field(form.uri) }}
-        <input type="submit" class="btn btn-primary" value="Login">
+        <input type="submit" class="btn btn-primary" value="Subscribe">
     </form>
 {% endblock body %}

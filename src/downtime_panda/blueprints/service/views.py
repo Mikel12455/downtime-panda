@@ -1,5 +1,6 @@
 import time
 from datetime import datetime
+from http import HTTPStatus
 
 from flask import (
     Blueprint,
@@ -8,6 +9,7 @@ from flask import (
     current_app,
     redirect,
     render_template,
+    request,
     stream_with_context,
     url_for,
 )
@@ -47,6 +49,24 @@ def service_detail(id):
     return render_template("detail.html.jinja", service=service)
 
 
+@service_blueprint.route("/fetch/<int:id>")
+def fetch_latest_pings(id):
+    service = db.get_or_404(Service, id)
+    latest_timestamp = request.form.get("latest_timestamp", None)
+    if not latest_timestamp:
+        abort(HTTPStatus.BAD_REQUEST, description="Missing latest_timestamp")
+
+    latest_pings = db.session.scalars(
+        service.ping.select()
+        .order_by(Ping.pinged_at.desc())
+        .filter_by(Ping.pinged_at > latest_timestamp)
+    ).all()
+
+    return {
+        "latest_pings": [ping.dump_json() for ping in latest_pings],
+    }
+
+
 @service_blueprint.route("/stream/<int:id>")
 def service_stream(id):
     service = db.get_or_404(Service, id)
@@ -66,11 +86,11 @@ def service_stream(id):
 
 @service_blueprint.route("/create", methods=["GET", "POST"])
 @login_required
-def service_create():
+def service_subscribe():
     form = ServiceForm()
     if not form.validate_on_submit():
         # Render the service creation form with validation errors
-        return render_template("create.html.jinja", form=form)
+        return render_template("subscribe.html.jinja", form=form)
 
     # This tricks the user into thinking the service is created
     # even if it already exists.
