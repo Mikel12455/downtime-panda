@@ -1,3 +1,4 @@
+import uuid
 from typing import Self
 
 import flask_login
@@ -9,6 +10,7 @@ from sqlalchemy import (
     ForeignKey,
     String,
     Table,
+    Uuid,
     func,
     select,
 )
@@ -20,13 +22,21 @@ from downtime_panda.extensions import db
 subscription = Table(
     "subscription",
     db.metadata,
-    Column("user_id", BigInteger(), ForeignKey("user.id")),
-    Column("service_id", BigInteger(), ForeignKey("service.id")),
+    Column("user_id", BigInteger(), ForeignKey("user.id"), primary_key=True),
+    Column("service_id", BigInteger(), ForeignKey("service.id"), primary_key=True),
     Column(
         "created_at",
         DateTime(timezone=True),
         nullable=False,
         server_default=func.now(),
+    ),
+    Column(
+        "uuid",
+        Uuid(),
+        index=True,
+        nullable=False,
+        unique=True,
+        default=uuid.uuid4,
     ),
 )
 
@@ -44,6 +54,10 @@ class User(db.Model, flask_login.UserMixin):
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
     services: Mapped[list[Service]] = relationship(secondary=subscription)
+    # tokens: Mapped[list["APIToken"]] = relationship(
+    #     "APIToken",
+    #     back_populates="user",
+    # )
 
     # ----------------------------- STANDARD METHODS ----------------------------- #
     def __init__(self, username: str, email: str, password_hash: str):
