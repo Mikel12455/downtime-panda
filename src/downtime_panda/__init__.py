@@ -8,9 +8,9 @@ from flask import Flask
 
 from . import extensions
 from .blueprints.api.routes import api_blueprint
-from .blueprints.home import home_blueprint
-from .blueprints.service import service_api_blueprint, service_blueprint
-from .blueprints.user import user_blueprint
+from .blueprints.home.routes import home_blueprint
+from .blueprints.service.routes import service_api_blueprint, service_blueprint
+from .blueprints.user.routes import user_blueprint
 from .config import Config
 
 
