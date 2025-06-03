@@ -46,6 +46,13 @@ tasks:
     cmds:
       - uv run flask run --port {{.PORT}} --host {{.HOST}} --debug
 
+# ---------------------------------- STAGING --------------------------------- #
+  staging-copy-cert: docker compose -f ./docker-compose.staging.yml cp caddy:/data/caddy/pki/authorities/local/root.crt temp/root.crt
+
+  staging-docker-up: docker compose -f ./docker-compose.staging.yml up -d --build
+
+  staging-docker-down: docker compose -f ./docker-compose.staging.yml down
+
 # -------------------------------- MIGRATIONS -------------------------------- #
   dev-migrate-up: uv run flask db upgrade head
 

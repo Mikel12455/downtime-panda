@@ -1,0 +1,45 @@
+name: downtime-panda-staging
+
+services:
+  # ------------------------------ DOWNTIME PANDA ------------------------------ #
+  dtpanda:
+    build: .
+    environment:
+      DTPANDA_DEBUG: false
+      DTPANDA_SECRET_KEY: test
+      DTPANDA_DB_URL: root:root@db:5432/postgres
+
+  # --------------------------------- DATABASE --------------------------------- #
+  db:
+    image: postgres:17.5
+    restart: unless-stopped
+    shm_size: 128mb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-U", "root" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ------------------------------- REVERSE PROXY ------------------------------ #
+  caddy:
+    image: caddy:2.10
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_config:
+  caddy_data:
+  pgdata:

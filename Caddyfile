@@ -1,0 +1,3 @@
+dtpanda.localhost
+
+reverse_proxy dtpanda:80
