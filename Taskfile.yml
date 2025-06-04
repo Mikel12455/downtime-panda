@@ -19,7 +19,6 @@ tasks:
 # -------------------------------- DEVELOPMENT ------------------------------- #
   dev-up:
     cmds:
-      - task: docker-up
       - task: run-flask
 
   docker-up: docker compose -f docker-compose.dev.yml up -d --build
@@ -42,7 +41,6 @@ tasks:
     env:
       DTPANDA_DEBUG: true
       DTPANDA_SECRET_KEY: test
-      DTPANDA_DB_URL: root:root@localhost:5432/postgres
     cmds:
       - uv run flask run --port {{.PORT}} --host {{.HOST}} --debug
 

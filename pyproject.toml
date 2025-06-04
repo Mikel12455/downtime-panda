@@ -32,9 +32,11 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "coverage>=7.8.2",
     "djlint>=1.36.4",
     "go-task-bin>=3.43.3",
     "pre-commit>=4.2.0",
+    "pytest>=8.4.0",
     "ruff>=0.11.9",
 ]
 

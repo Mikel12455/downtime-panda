@@ -23,11 +23,12 @@ class Config:
     SQLALCHEMY_DATABASE_URI = (
         f"postgresql+psycopg://{os.getenv('DTPANDA_DB_URL')}"
         if os.getenv("DTPANDA_DB_URL")
-        else "postgresql+psycopg://root:root@localhost:5432/postgres"
+        else "sqlite:///dtpanda.db"
     )
     """
-    The database connection URL for PostgreSQL using the psycopg driver.
-    Constructed from the environment variable 'DTPANDA_DB_URL'.
+    The database connection URL for the database, constructed from the environment variable 'DTPANDA_DB_URL'.
+
+    Defaults to a SQLite database file named `dtpanda.db` if the environment variable is not set, which is saved inside the `src/instance` directory.
     """
 
     SECRET_KEY = os.getenv("DTPANDA_SECRET_KEY") or "a_very_secret_key"
@@ -39,7 +40,10 @@ class Config:
     # -------------------------------- APSCHEDULER ------------------------------- #
     SCHEDULER_JOBSTORES = {
         "default": SQLAlchemyJobStore(
-            url=SQLALCHEMY_DATABASE_URI, tablename="apscheduler_jobs"
+            url=SQLALCHEMY_DATABASE_URI
+            if os.getenv("DTPANDA_DB_URL")
+            else "sqlite:///src/instance/dtpanda.db",
+            tablename="apscheduler_jobs",
         ),
     }
     """
@@ -50,4 +54,34 @@ class Config:
     """
     The timezone used by the APScheduler.
     Set to UTC by default.
+    """
+
+
+class TestingConfig(Config):
+    """
+    Configuration class for testing environment.
+    Inherits from Config and overrides specific settings for testing.
+    """
+
+    DEBUG = True
+    """
+    Enables debug mode for testing.
+    """
+
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    """
+    Uses an in-memory SQLite database for testing purposes.
+    This allows for fast tests without needing a persistent database.
+    """
+
+    TESTING = True
+    """
+    Indicates that the application is in testing mode.
+    This can enable additional testing features or behaviors.
+    """
+
+    WTF_CSRF_ENABLED = False
+    """
+    Disables CSRF protection for testing.
+    This is often done in tests to simplify form submissions.
     """

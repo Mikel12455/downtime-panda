@@ -9,6 +9,7 @@ from sqlalchemy import (
     Column,
     DateTime,
     ForeignKey,
+    Integer,
     String,
     Table,
     Uuid,
@@ -22,7 +23,12 @@ from downtime_panda.extensions import db
 subscription = Table(
     "subscription",
     db.metadata,
-    Column("user_id", BigInteger(), ForeignKey("user.id"), primary_key=True),
+    Column(
+        "user_id",
+        BigInteger().with_variant(Integer, "sqlite"),
+        ForeignKey("user.id"),
+        primary_key=True,
+    ),
     Column("service_id", BigInteger(), ForeignKey("service.id"), primary_key=True),
     Column(
         "created_at",
@@ -47,7 +53,9 @@ class User(db.Model, flask_login.UserMixin):
     __tablename__ = "user"
 
     # ---------------------------------- COLUMNS --------------------------------- #
-    id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
+    id: Mapped[int] = mapped_column(
+        BigInteger().with_variant(Integer, "sqlite"), primary_key=True
+    )
     username: Mapped[str] = mapped_column(String(255), unique=True)
     email: Mapped[str] = mapped_column(String(255), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))

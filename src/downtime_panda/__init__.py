@@ -47,6 +47,10 @@ def create_app(config_class=Config):
     extensions.scheduler.init_app(app)
     extensions.moment.init_app(app)
 
+    with app.app_context():
+        logger.info("Creating database tables...")
+        extensions.db.create_all()
+
     # -------------------------------- BLUEPRINTS -------------------------------- #
     logger.info("Registering blueprints...")
     app.register_blueprint(home_blueprint, url_prefix="/")

@@ -17,7 +17,9 @@ class Service(db.Model):
 
     __tablename__ = "service"
     # ---------------------------------- COLUMNS --------------------------------- #
-    id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
+    id: Mapped[int] = mapped_column(
+        BigInteger().with_variant(Integer, "sqlite"), primary_key=True
+    )
     name: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     uri: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
 
@@ -97,7 +99,9 @@ class Ping(db.Model):
 
     __tablename__ = "ping"
     # ---------------------------------- COLUMNS --------------------------------- #
-    id: Mapped[int] = mapped_column(BigInteger(), primary_key=True)
+    id: Mapped[int] = mapped_column(
+        BigInteger().with_variant(Integer, "sqlite"), primary_key=True
+    )
     service_id: Mapped[int] = mapped_column(
         ForeignKey(Service.id, onupdate="CASCADE", ondelete="RESTRICT"), nullable=False
     )
