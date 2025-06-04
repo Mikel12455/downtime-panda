@@ -5,7 +5,7 @@ from typing import Self
 import pytz
 import requests
 from apscheduler.triggers.interval import IntervalTrigger
-from flask import current_app
+from loguru import logger
 from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, String, select
 from sqlalchemy.orm import Mapped, WriteOnlyMapped, mapped_column, relationship
 
@@ -73,7 +73,7 @@ class Service(db.Model):
     def ping_service(cls, service_id: int) -> None:
         with scheduler.app.app_context():
             service = db.session.get(cls, service_id)
-            current_app.logger.info(service)
+            logger.info(service)
 
             pinged_at = datetime.now(pytz.utc)
             response = requests.head(service.uri)
