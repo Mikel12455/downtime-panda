@@ -2,28 +2,45 @@
 
 __all__ = ["create_app"]
 
+import logging
 import os
 
 from flask import Flask
+from loguru import logger
 
-from . import extensions
-from .blueprints.api.routes import api_blueprint
-from .blueprints.home.routes import home_blueprint
-from .blueprints.service.routes import service_api_blueprint, service_blueprint
-from .blueprints.user.routes import user_blueprint
-from .config import Config
+from downtime_panda import extensions
+from downtime_panda.blueprints.api.routes import api_blueprint
+from downtime_panda.blueprints.home.routes import home_blueprint
+from downtime_panda.blueprints.service.api import service_api_blueprint
+from downtime_panda.blueprints.service.routes import service_blueprint
+from downtime_panda.blueprints.user.routes import user_blueprint
+from downtime_panda.config import Config
 
 
-def create_app():
+def create_app(config_class=Config):
     """Create and configure the Flask application."""
     app = Flask(__name__)
 
+    # ---------------------------------- LOGGING --------------------------------- #
+    class InterceptHandler(logging.Handler):
+        def emit(self, record):
+            # Retrieve context where the logging call occurred, this happens to be in the 6th frame upward
+            logger_opt = logger.opt(depth=6, exception=record.exc_info)
+            logger_opt.log(record.levelno, record.getMessage())
+
+    handler = InterceptHandler()
+    app.logger.addHandler(handler)
+
+    from flask.logging import default_handler
+
+    app.logger.removeHandler(default_handler)
+
     # ------------------------------- CONFIGURATION ------------------------------ #
-    app.logger.info("Configuring Downtime Panda application...")
-    app.config.from_object(Config())
+    logger.info("Setting up configuration...")
+    app.config.from_object(config_class())
 
     # -------------------------------- EXTENSIONS -------------------------------- #
-    app.logger.info("Initializing extensions...")
+    logger.info("Initializing extensions...")
     extensions.login_manager.init_app(app)
     extensions.db.init_app(app)
     extensions.migrate.init_app(app, extensions.db)
@@ -31,7 +48,7 @@ def create_app():
     extensions.moment.init_app(app)
 
     # -------------------------------- BLUEPRINTS -------------------------------- #
-    app.logger.info("Registering blueprints...")
+    logger.info("Registering blueprints...")
     app.register_blueprint(home_blueprint, url_prefix="/")
     app.register_blueprint(user_blueprint, url_prefix="/user")
     app.register_blueprint(service_blueprint, url_prefix="/service")
@@ -43,9 +60,9 @@ def create_app():
         not (app.debug or app.config["DEBUG"])
         or os.environ.get("WERKZEUG_RUN_MAIN") == "true"
     ):
-        app.logger.info("Configuring APScheduler...")
+        logger.info("Configuring APScheduler...")
         extensions.scheduler.start()
-        app.logger.info(extensions.scheduler.scheduler._jobstores)
+        logger.info(extensions.scheduler.scheduler._jobstores)
 
-    app.logger.info("Downtime Panda application configured successfully.")
+    logger.info("Downtime Panda application configured successfully.")
     return app

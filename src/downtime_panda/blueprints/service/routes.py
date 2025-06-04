@@ -6,7 +6,6 @@ from flask import (
     Blueprint,
     Response,
     abort,
-    current_app,
     flash,
     redirect,
     render_template,
@@ -15,6 +14,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
+from loguru import logger
 
 from downtime_panda.blueprints.service.forms import ServiceForm
 from downtime_panda.extensions import db
@@ -27,7 +27,7 @@ service_blueprint = Blueprint("service", __name__, template_folder="templates")
 # ------------------------------------ SSE ----------------------------------- #
 def stream(service: Service, last_pinged_at: datetime):
     while True:
-        current_app.logger.info("Test")
+        logger.info("Test")
         new_pings = db.session.scalars(
             service.ping.select()
             .where(Ping.pinged_at > last_pinged_at)

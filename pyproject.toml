@@ -18,6 +18,7 @@ dependencies = [
     "flask-moment>=1.0.6",
     "flask-sqlalchemy>=3.1.1",
     "flask-wtf[email]>=1.2.2",
+    "loguru>=0.7.3",
     "psycopg[binary,pool]>=3.2.9",
     "pytz>=2025.2",
     "requests>=2.32.3",
