@@ -20,6 +20,20 @@ def app():
 
 
 @pytest.fixture()
+def existing_user(app: Flask):
+    from downtime_panda.blueprints.user.models import User
+
+    with app.app_context():
+        existing_user = User.register(
+            username="existing_user",
+            email="existing_user@mail.com",
+            password="password",
+        )
+
+    return existing_user
+
+
+@pytest.fixture()
 def client(app: Flask):
     return app.test_client()
 
