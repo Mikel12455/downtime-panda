@@ -5,6 +5,14 @@ from downtime_panda.blueprints.user.forms import (
     LoginForm,
     RegisterForm,
 )
+from downtime_panda.blueprints.user.messages import (
+    ERROR_INVALID_CREDENTIALS,
+    SUCCESS_LOGIN,
+    SUCCESS_LOGOUT,
+    SUCCESS_REGISTRATION,
+    SUCCESS_TOKEN_CREATED,
+    SUCCESS_TOKEN_REVOKED,
+)
 from downtime_panda.extensions import login_manager
 
 from .models import User
@@ -42,7 +50,7 @@ def register():
     user = User.get_by_email(form.email.data)
     flask_login.login_user(user)
 
-    flash("You have been registered successfully.", "success")
+    flash(SUCCESS_REGISTRATION, "success")
     return redirect(url_for("home.index"))
 
 
@@ -58,10 +66,10 @@ def login():
     user = User.get_by_email(form.email.data)
     if user and user.verify_password(form.password.data):
         flask_login.login_user(user)
-        flash("You have been logged in successfully.", "success")
+        flash(SUCCESS_LOGIN, "success")
         return redirect(url_for("home.index"))
 
-    flash("Invalid email or password.", "danger")
+    flash(ERROR_INVALID_CREDENTIALS, "danger")
     return render_template("login.html.jinja", form=form)
 
 
@@ -71,7 +79,7 @@ def login():
 @user_blueprint.route("/logout")
 def logout():
     flask_login.logout_user()
-    flash("You have been logged out successfully.", "success")
+    flash(SUCCESS_LOGOUT, "success")
     return redirect(url_for("home.index"))
 
 
@@ -97,7 +105,7 @@ def tokens():
 @flask_login.login_required
 def generate_token():
     flask_login.current_user.create_token()
-    flash("New API token created successfully.", "success")
+    flash(SUCCESS_TOKEN_CREATED, "success")
     return redirect(url_for("user.tokens"))
 
 
@@ -106,5 +114,5 @@ def generate_token():
 def revoke_token(token_id: int):
     """Delete an API token."""
     flask_login.current_user.revoke_token(token_id)
-    flash("API token revoked successfully.", "success")
+    flash(SUCCESS_TOKEN_REVOKED, "success")
     return redirect(url_for("user.tokens"))
