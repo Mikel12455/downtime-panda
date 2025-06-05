@@ -36,4 +36,5 @@ COPY --from=builder --chown=app:app /app /app
 ENV PATH="/app/.venv/bin:$PATH"
 STOPSIGNAL SIGINT
 
-ENTRYPOINT ["waitress-serve", "--host", "0.0.0.0", "--port", "80", "--call", "downtime_panda.create_app"]
+ENTRYPOINT ["waitress-serve"]
+CMD [ "--host", "0.0.0.0", "--port", "5000", "--call", "downtime_panda.create_app"]
