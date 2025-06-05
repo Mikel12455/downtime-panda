@@ -1,4 +1,9 @@
-"""Defines the Flask application factory for Downtime Panda."""
+"""
+Defines the Flask application factory for Downtime Panda.
+
+exports:
+    - create_app: Function to create and configure the Flask application.
+"""
 
 __all__ = ["create_app"]
 

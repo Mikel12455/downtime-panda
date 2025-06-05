@@ -1,5 +1,9 @@
 """
 This module contains both Flask configuration and application constants for Downtime Panda.
+
+exports:
+    - Config: Configuration class for the Downtime Panda application.
+    - TestingConfig: Configuration class for testing environment.
 """
 
 import os

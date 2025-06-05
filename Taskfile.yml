@@ -49,6 +49,12 @@ tasks:
     cmds:
       - uv run pytest
 
+# ----------------------------------- DOCS ----------------------------------- #
+  mkdocs:
+    cmds:
+      - uv run mkdocs build
+      - uv run mkdocs serve
+
 
 # ---------------------------------- STAGING --------------------------------- #
   staging-copy-cert: docker compose -f ./docker-compose.staging.yml cp caddy:/data/caddy/pki/authorities/local/root.crt temp/root.crt

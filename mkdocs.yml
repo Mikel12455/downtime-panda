@@ -1,0 +1,17 @@
+site_name: downtime-panda
+
+theme:
+  name: "material"
+
+plugins:
+- search
+- mkdocs-autoapi:
+    autoapi_dir: src
+- mkdocstrings:
+    handlers:
+      python:
+        paths: [src]
+
+
+nav:
+  - Index: index.md
