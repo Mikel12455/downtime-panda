@@ -44,6 +44,9 @@ dev = [
     "pytest-cov>=6.1.1",
     "ruff>=0.11.9",
 ]
+task = [
+    "go-task-bin>=3.43.3",
+]
 
 [tool.djlint]
 profile = "jinja"

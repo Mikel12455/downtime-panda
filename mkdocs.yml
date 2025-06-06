@@ -12,6 +12,6 @@ plugins:
       python:
         paths: [src]
 
-
 nav:
-  - Index: index.md
+  - Indice: index.md
+  - Guida allo sviluppo: developer-guide.md
