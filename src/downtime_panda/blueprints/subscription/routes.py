@@ -34,4 +34,4 @@ def service_subscribe():
         "You have successfully subscribed.",
         "success",
     )
-    return redirect(url_for("index"))
+    return redirect(url_for("home.index"))
