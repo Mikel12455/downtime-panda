@@ -2,7 +2,8 @@ from flask import Blueprint, abort
 from sqlalchemy import select
 
 from downtime_panda.blueprints.service.models import Service
-from downtime_panda.blueprints.user.models import User, subscription
+from downtime_panda.blueprints.subscription.models import Subscription
+from downtime_panda.blueprints.user.models import User
 from downtime_panda.extensions import db, token_auth
 
 service_api_blueprint = Blueprint("service_api", __name__)
@@ -36,7 +37,7 @@ def subscription_status(subscription_uuid: str):
     query = (
         select(Service)
         .join(User.services)
-        .where(User.id == user.id, subscription.c.uuid == subscription_uuid)
+        .where(User.id == user.id, Subscription.uuid == subscription_uuid)
     )
     service = db.session.execute(query).scalar_one_or_none()
     if not service:

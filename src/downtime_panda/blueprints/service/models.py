@@ -20,15 +20,13 @@ class Service(db.Model):
     id: Mapped[int] = mapped_column(
         BigInteger().with_variant(Integer, "sqlite"), primary_key=True
     )
-    name: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     uri: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
     ping: WriteOnlyMapped["Ping"] = relationship(order_by="Ping.pinged_at.desc()")
 
     # ----------------------------- STANDARD METHODS ----------------------------- #
-    def __init__(self, name: str, uri: str):
-        self.name = name
+    def __init__(self, uri: str):
         self.uri = uri
 
     def __repr__(self) -> str:
@@ -36,17 +34,16 @@ class Service(db.Model):
 
     # -------------------------------- CONSTRUCTOR ------------------------------- #
     @classmethod
-    def create_if_not_exists(cls, name: str, uri: str) -> Self:
+    def create_if_not_exists(cls, uri: str) -> Self:
         """Create a new service if it does not already exist."""
         if cls.uri_exists(uri):
             return cls.get_by_uri(uri)
 
         service = Service(
-            name=name,
             uri=uri,
         )
         db.session.add(service)
-        db.session.flush((service,))
+        db.session.commit()
         db.session.refresh(service)
 
         # Schedule the ping job for the new service

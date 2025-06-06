@@ -1,50 +1,17 @@
 import secrets
-import uuid
 from typing import Self
 
 import flask_login
 from argon2 import PasswordHasher
 from sqlalchemy import (
     BigInteger,
-    Column,
-    DateTime,
-    ForeignKey,
     Integer,
     String,
-    Table,
-    Uuid,
-    func,
     select,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from downtime_panda.extensions import db
-
-subscription = Table(
-    "subscription",
-    db.metadata,
-    Column(
-        "user_id",
-        BigInteger().with_variant(Integer, "sqlite"),
-        ForeignKey("user.id"),
-        primary_key=True,
-    ),
-    Column("service_id", BigInteger(), ForeignKey("service.id"), primary_key=True),
-    Column(
-        "created_at",
-        DateTime(timezone=True),
-        nullable=False,
-        server_default=func.now(),
-    ),
-    Column(
-        "uuid",
-        Uuid(),
-        index=True,
-        nullable=False,
-        unique=True,
-        default=uuid.uuid4,
-    ),
-)
 
 
 class User(db.Model, flask_login.UserMixin):
@@ -61,7 +28,9 @@ class User(db.Model, flask_login.UserMixin):
     password_hash: Mapped[str] = mapped_column(String(255))
 
     # ------------------------------- RELATIONSHIPS ------------------------------ #
-    services: Mapped[list["Service"]] = relationship(secondary=subscription)
+    subscriptions: Mapped[list["Subscription"]] = relationship(
+        "Subscription", back_populates="user", cascade="all, delete-orphan"
+    )
     api_tokens: Mapped[list["APIToken"]] = relationship(
         "APIToken",
         back_populates="user",
@@ -92,12 +61,6 @@ class User(db.Model, flask_login.UserMixin):
         Returns:
             Self: The created user instance
         """
-        if cls.username_exists(username):
-            raise ValueError(f"Username '{username}' already exists.")
-
-        if cls.email_exists(email):
-            raise ValueError(f"Email '{email}' already exists.")
-
         ph = PasswordHasher()
         password_hash = ph.hash(password)
 
@@ -190,3 +153,4 @@ class User(db.Model, flask_login.UserMixin):
 
 from downtime_panda.blueprints.api.models import APIToken  # noqa: E402
 from downtime_panda.blueprints.service.models import Service  # noqa: E402
+from downtime_panda.blueprints.subscription.models import Subscription  # noqa: E402

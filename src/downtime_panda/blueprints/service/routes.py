@@ -6,17 +6,12 @@ from flask import (
     Blueprint,
     Response,
     abort,
-    flash,
-    redirect,
     render_template,
     request,
     stream_with_context,
-    url_for,
 )
-from flask_login import current_user, login_required
 from loguru import logger
 
-from downtime_panda.blueprints.service.forms import ServiceForm
 from downtime_panda.extensions import db
 
 from .models import Ping, Service
@@ -85,26 +80,26 @@ def service_stream(id):
     )
 
 
-@service_blueprint.route("/create", methods=["GET", "POST"])
-@login_required
-def service_subscribe():
-    form = ServiceForm()
-    if not form.validate_on_submit():
-        # Render the service creation form with validation errors
-        return render_template("subscribe.html.jinja", form=form)
+# @service_blueprint.route("/create", methods=["GET", "POST"])
+# @login_required
+# def service_subscribe():
+#     form = ServiceForm()
+#     if not form.validate_on_submit():
+#         # Render the service creation form with validation errors
+#         return render_template("subscribe.html.jinja", form=form)
 
-    # This tricks the user into thinking the service is created
-    # even if it already exists.
-    #
-    # Sorry user :(
-    service = Service.create_if_not_exists(
-        name=form.name.data,
-        uri=form.uri.data,
-    )
-    current_user.subscribe_to_service(service)
+#     # This tricks the user into thinking the service is created
+#     # even if it already exists.
+#     #
+#     # Sorry user :(
+#     service = Service.create_if_not_exists(
+#         name=form.name.data,
+#         uri=form.uri.data,
+#     )
+#     current_user.subscribe_to_service(service)
 
-    flash(
-        f"You have successfully subscribed to {service.name}.",
-        "success",
-    )
-    return redirect(url_for(".service_detail", id=service.id))
+#     flash(
+#         f"You have successfully subscribed to {service.name}.",
+#         "success",
+#     )
+#     return redirect(url_for(".service_detail", id=service.id))
