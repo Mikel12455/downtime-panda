@@ -57,6 +57,7 @@ class Service(db.Model):
         )
 
         db.session.commit()
+        return service
 
     @classmethod
     def get_by_uri(cls, uri: str) -> Self | None:

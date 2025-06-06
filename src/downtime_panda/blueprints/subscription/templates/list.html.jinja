@@ -1,0 +1,35 @@
+{% extends "base.html.jinja" %}
+{% block title %}
+    Your Service Subscriptions
+{% endblock title %}
+{% block head %}
+    {{ super() }}
+{% endblock head %}
+{% block body %}
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            <h1 class="mb-0">Your Subscriptions</h1>
+        </div>
+        <div class="col-auto">
+            <a class="btn btn-primary" href="{{ url_for('.service_subscribe') }}">Subscribe to a New Service</a>
+        </div>
+    </div>
+    <hr />
+    {% if subscriptions %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for subscription in subscriptions %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="#">{{ subscription.name }}</a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No subscriptions found.</p>
+    {% endif %}
+{% endblock body %}

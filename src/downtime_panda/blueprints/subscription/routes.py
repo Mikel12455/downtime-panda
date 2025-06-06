@@ -28,6 +28,7 @@ def service_subscribe():
     Subscription.subscribe_user_to_service(
         user=current_user,
         service=service,
+        name=form.name.data,
     )
 
     flash(
@@ -35,3 +36,14 @@ def service_subscribe():
         "success",
     )
     return redirect(url_for("home.index"))
+
+
+@subscription_blueprint.route("/subscriptions", methods=["GET"])
+@login_required
+def list_subscriptions():
+    """List all subscriptions for the current user."""
+    subscriptions = Subscription.get_subscriptions_by_user(current_user)
+    return render_template(
+        "list.html.jinja",
+        subscriptions=subscriptions,
+    )

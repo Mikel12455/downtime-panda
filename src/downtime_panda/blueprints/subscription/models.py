@@ -1,7 +1,7 @@
 import uuid
 from typing import Self
 
-from sqlalchemy import DateTime, ForeignKey, Uuid, func, select
+from sqlalchemy import DateTime, ForeignKey, String, Uuid, func, select
 from sqlalchemy.orm import Mapped, mapped_column
 
 from downtime_panda.extensions import db
@@ -16,8 +16,14 @@ class Subscription(db.Model):
         primary_key=True,
     )
     service_id: Mapped[int] = mapped_column(ForeignKey("service.id"), primary_key=True)
+    name: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+        index=False,
+        unique=False,
+    )
     created_at: Mapped[DateTime] = mapped_column(
-        db.DateTime(timezone=True), nullable=False, server_default=func.now()
+        DateTime(timezone=True), nullable=False, server_default=func.now()
     )
     uuid: Mapped[str] = mapped_column(
         Uuid(),
@@ -32,18 +38,21 @@ class Subscription(db.Model):
     service: Mapped["Service"] = db.relationship("Service")
 
     # ----------------------------- STANDARD METHODS ----------------------------- #
-    def __init__(self, user_id: int, service_id: int):
+    def __init__(self, user_id: int, service_id: int, name: str):
         self.user_id = user_id
         self.service_id = service_id
+        self.name = name
 
     def __repr__(self):
         return f"<Subscription {self.id}>"
 
     # ------------------------------- CONSTRUCTORS ------------------------------- #
     @classmethod
-    def subscribe_user_to_service(cls, user: "User", service: "Service") -> Self:
+    def subscribe_user_to_service(
+        cls, user: "User", service: "Service", name: str
+    ) -> Self:
         """Create a new subscription for a user to a service."""
-        subscription = cls(user_id=user.id, service_id=service.id)
+        subscription = cls(user_id=user.id, service_id=service.id, name=name)
         db.session.add(subscription)
         db.session.commit()
         return subscription

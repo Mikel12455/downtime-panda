@@ -12,7 +12,8 @@
                     <a class="dropdown-item" href="{{ url_for('user.profile') }}">Your Profile</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">Your Services</a>
+                    <a class="dropdown-item"
+                       href="{{ url_for('subscription.list_subscriptions') }}">Your Subscriptions</a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="{{ url_for('user.tokens') }}">Your API Tokens</a>
