@@ -57,13 +57,19 @@ class Subscription(db.Model):
         db.session.commit()
         return subscription
 
-    # ---------------------------------- METHODS --------------------------------- #
     @classmethod
-    def get_subscriptions_by_user(cls, user: "User") -> list["Subscription"]:
+    def get_subscriptions_by_user(cls, user: "User") -> list[Self]:
         """Get all subscriptions for a user."""
         query = select(cls).filter_by(user_id=user.id)
         subscriptions = db.session.execute(query).scalars().all()
         return subscriptions
+
+    @classmethod
+    def get_user_subscription_by_uuid(cls, user: "User", sub_uuid: str) -> Self | None:
+        sub_uuid = uuid.UUID(sub_uuid)
+        query = select(cls).filter_by(user_id=user.id, uuid=sub_uuid)
+        subscription = db.session.execute(query).scalars().one()
+        return subscription
 
 
 from downtime_panda.blueprints.service.models import Service  # noqa: E402

@@ -22,7 +22,7 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <a href="#">{{ subscription.name }}</a>
+                                <a href="{{ url_for('.view_subscription', uuid=subscription.uuid) }}">{{ subscription.name }}</a>
                             </h5>
                         </div>
                     </div>

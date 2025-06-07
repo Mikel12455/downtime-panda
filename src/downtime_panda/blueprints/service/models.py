@@ -1,6 +1,5 @@
-import json
 from datetime import datetime
-from typing import Self
+from typing import Self, Sequence
 
 import pytz
 import requests
@@ -91,6 +90,24 @@ class Service(db.Model):
             select(Ping).filter_by(service_id=self.id).order_by(Ping.pinged_at.desc())
         ).scalar()
 
+    def get_latest_n_pings(self, n: int) -> Sequence["Ping"]:
+        query = (
+            select(Ping)
+            .filter_by(service_id=self.id)
+            .order_by(Ping.pinged_at.desc())
+            .limit(n)
+        )
+        return db.session.execute(query).scalars().all()
+
+    def get_pings_since_date(self, since: datetime) -> Sequence["Ping"]:
+        query = (
+            select(Ping)
+            .filter_by(service_id=self.id)
+            .where(Ping.pinged_at >= since)
+            .order_by(Ping.pinged_at.desc())
+        )
+        return db.session.execute(query).scalars().all()
+
 
 class Ping(db.Model):
     """Ping model to store service ping data."""
@@ -116,13 +133,8 @@ class Ping(db.Model):
         return f"<Ping {self.id} for Service {self.service_id}>"
 
     # ---------------------------------- METHODS --------------------------------- #
-    def dump_json(self):
-        return json.dumps(self.to_dict())
-
     def to_dict(self) -> dict:
         return {
-            "id": self.id,
-            "service_id": self.service_id,
             "http_response": self.http_response,
             "pinged_at": self.pinged_at.isoformat(),
         }

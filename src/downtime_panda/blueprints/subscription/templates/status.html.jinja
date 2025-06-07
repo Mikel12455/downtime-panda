@@ -1,0 +1,25 @@
+{% extends "base.html.jinja" %}
+{% block head %}
+    {{ super() }}
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+{% endblock head %}
+{% block title %}
+    Service {{ subscription.name }}
+{% endblock title %}
+{% block body %}
+    Service {{ subscription.name }}
+    <div id="myDiv"></div>
+    <script>
+        const data = {{ pings|tojson }};
+
+        const graph_data = {
+            'x': data.x.map((date) => new Date(date)),
+            'y': data.y,
+            'type': 'scatter',
+        };
+        Plotly.newPlot(
+            'myDiv',
+            [graph_data],
+        );
+    </script>
+{% endblock body %}

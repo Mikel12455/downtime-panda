@@ -3,6 +3,9 @@ from flask_login import current_user, login_required
 
 from downtime_panda.blueprints.service.models import Service
 from downtime_panda.blueprints.subscription.forms import SubscriptionForm
+from downtime_panda.blueprints.subscription.messages import (
+    SUBSCRIPTION_REGISTRATION_SUCCESSFUL,
+)
 from downtime_panda.blueprints.subscription.models import Subscription
 
 subscription_blueprint = Blueprint(
@@ -25,17 +28,17 @@ def service_subscribe():
     service = Service.create_if_not_exists(
         uri=form.uri.data,
     )
-    Subscription.subscribe_user_to_service(
+    subscription = Subscription.subscribe_user_to_service(
         user=current_user,
         service=service,
         name=form.name.data,
     )
 
     flash(
-        "You have successfully subscribed.",
+        SUBSCRIPTION_REGISTRATION_SUCCESSFUL,
         "success",
     )
-    return redirect(url_for("home.index"))
+    return redirect(url_for(".view_subscription", uuid=subscription.uuid))
 
 
 @subscription_blueprint.route("/subscriptions", methods=["GET"])
@@ -47,3 +50,17 @@ def list_subscriptions():
         "list.html.jinja",
         subscriptions=subscriptions,
     )
+
+
+@subscription_blueprint.route("/subscriptions/<uuid>", methods=["GET"])
+@login_required
+def view_subscription(uuid: str):
+    """View the status of a subscribed service"""
+    subscription = Subscription.get_user_subscription_by_uuid(current_user, uuid)
+    pings = subscription.service.get_latest_n_pings(10)
+    pings = {
+        "x": [ping.pinged_at for ping in reversed(pings)],
+        "y": [ping.http_response for ping in reversed(pings)],
+        "type": "scatter",
+    }
+    return render_template("status.html.jinja", subscription=subscription, pings=pings)
