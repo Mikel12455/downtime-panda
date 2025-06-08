@@ -4,9 +4,6 @@ SUCCESS_REGISTRATION = "You have been registered successfully."
 SUCCESS_LOGIN = "You have logged in successfully."
 SUCCESS_LOGOUT = "You have logged out successfully."
 
-SUCCESS_TOKEN_CREATED = "New API token created successfully."
-SUCCESS_TOKEN_REVOKED = "API token revoked successfully."
-
 # ------------------------------ ERROR MESSAGES ------------------------------ #
 ERROR_EMAIL_NOT_VALID = "Email is not valid"
 ERROR_EMAIL_REQUIRED = "Email is required"

@@ -151,6 +151,6 @@ class User(db.Model, flask_login.UserMixin):
         return None
 
 
-from downtime_panda.blueprints.api.models import APIToken  # noqa: E402
 from downtime_panda.blueprints.service.models import Service  # noqa: E402
 from downtime_panda.blueprints.subscription.models import Subscription  # noqa: E402
+from downtime_panda.blueprints.token.models import APIToken  # noqa: E402

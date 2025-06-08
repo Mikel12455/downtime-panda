@@ -1,3 +1,10 @@
+"""
+User management routes for Downtime Panda.
+
+This module handles user registration, login, logout, profile management,
+and API token management.
+"""
+
 import flask_login
 from flask import Blueprint, flash, redirect, render_template, url_for
 
@@ -10,8 +17,6 @@ from downtime_panda.blueprints.user.messages import (
     SUCCESS_LOGIN,
     SUCCESS_LOGOUT,
     SUCCESS_REGISTRATION,
-    SUCCESS_TOKEN_CREATED,
-    SUCCESS_TOKEN_REVOKED,
 )
 from downtime_panda.extensions import login_manager
 
@@ -33,6 +38,7 @@ def user_loader(id: str):
 # ---------------------------------------------------------------------------- #
 @user_blueprint.route("/register", methods=["GET", "POST"])
 def register():
+    """Register a new user."""
     form = RegisterForm()
     if not form.validate_on_submit():
         return render_template("register.html.jinja", form=form)
@@ -59,6 +65,7 @@ def register():
 # ---------------------------------------------------------------------------- #
 @user_blueprint.route("/login", methods=["GET", "POST"])
 def login():
+    """Log in an existing user."""
     form = LoginForm()
     if not form.validate_on_submit():
         return render_template("login.html.jinja", form=form)
@@ -78,6 +85,7 @@ def login():
 # ---------------------------------------------------------------------------- #
 @user_blueprint.route("/logout")
 def logout():
+    """Log out the current user."""
     flask_login.logout_user()
     flash(SUCCESS_LOGOUT, "success")
     return redirect(url_for("home.index"))
@@ -89,30 +97,5 @@ def logout():
 @user_blueprint.route("/profile")
 @flask_login.login_required
 def profile():
+    """Display the user's profile."""
     return render_template("profile.html.jinja")
-
-
-# ---------------------------------------------------------------------------- #
-#                                    TOKENS                                    #
-# ---------------------------------------------------------------------------- #
-@user_blueprint.get("/tokens")
-@flask_login.login_required
-def tokens():
-    return render_template("tokens.html.jinja")
-
-
-@user_blueprint.post("/tokens/new")
-@flask_login.login_required
-def generate_token():
-    flask_login.current_user.create_token()
-    flash(SUCCESS_TOKEN_CREATED, "success")
-    return redirect(url_for("user.tokens"))
-
-
-@user_blueprint.post("/tokens/revoke/<int:token_id>")
-@flask_login.login_required
-def revoke_token(token_id: int):
-    """Delete an API token."""
-    flask_login.current_user.revoke_token(token_id)
-    flash(SUCCESS_TOKEN_REVOKED, "success")
-    return redirect(url_for("user.tokens"))
