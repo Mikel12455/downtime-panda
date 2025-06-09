@@ -1,22 +1,11 @@
 from http import HTTPStatus
 
-import pytest
 from flask import Flask, url_for
 from flask.testing import FlaskClient
 
 from downtime_panda.blueprints.token.messages import ERROR_TOKEN_DOESNT_EXIST
 from downtime_panda.blueprints.token.models import APIToken
-from downtime_panda.blueprints.user.models import User
 from downtime_panda.extensions import db
-
-
-@pytest.fixture
-def alice_token(client: FlaskClient, app: Flask, user_alice: User):
-    with app.app_context():
-        db.session.add(user_alice)
-        token = APIToken.create_for_user(user_alice)
-
-    return token
 
 
 def test_generate_new_token(client: FlaskClient, app: Flask, is_alice_logged_in: True):

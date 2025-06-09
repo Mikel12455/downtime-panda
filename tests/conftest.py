@@ -5,6 +5,7 @@ from flask import Flask
 from flask.testing import FlaskClient, FlaskCliRunner
 
 from downtime_panda import create_app
+from downtime_panda.blueprints.token.models import APIToken
 from downtime_panda.blueprints.user.models import User
 from downtime_panda.config import TestingConfig
 from downtime_panda.extensions import db
@@ -89,3 +90,12 @@ def client(app: Flask) -> FlaskClient:
 @pytest.fixture()
 def runner(app: Flask) -> FlaskCliRunner:
     return app.test_cli_runner()
+
+
+@pytest.fixture
+def alice_token(client: FlaskClient, app: Flask, user_alice: User):
+    with app.app_context():
+        db.session.add(user_alice)
+        token = APIToken.create_for_user(user_alice)
+
+    return token

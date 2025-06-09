@@ -20,7 +20,7 @@ def heartbeat():
 
 @subscription_api_blueprint.get("<subscription_uuid>/status")
 @token_auth.login_required
-def subscription_status(subscription_uuid: str):
+def get_status(subscription_uuid: str):
     """
     Endpoint to check the status of a subscription.
 

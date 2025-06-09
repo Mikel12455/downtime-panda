@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Self, Sequence
+from typing import Any, Self, Sequence
 
 import pytz
 import requests
@@ -133,7 +133,7 @@ class Ping(db.Model):
         return f"<Ping {self.id} for Service {self.service_id}>"
 
     # ---------------------------------- METHODS --------------------------------- #
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "http_response": self.http_response,
             "pinged_at": self.pinged_at.isoformat(),

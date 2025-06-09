@@ -68,7 +68,7 @@ class Subscription(db.Model):
     def get_user_subscription_by_uuid(cls, user: "User", sub_uuid: str) -> Self | None:
         sub_uuid = uuid.UUID(sub_uuid)
         query = select(cls).filter_by(user_id=user.id, uuid=sub_uuid)
-        subscription = db.session.execute(query).scalars().one()
+        subscription = db.session.execute(query).scalars().one_or_none()
         return subscription
 
 
