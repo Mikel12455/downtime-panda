@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import flask_login
 from flask import Flask
 from flask.testing import FlaskClient
@@ -32,7 +34,7 @@ def test_user_registration(client: FlaskClient, app: Flask):
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert current_user.is_authenticated
 
         user = User.get_by_email(USER_EMAIL)
@@ -40,14 +42,14 @@ def test_user_registration(client: FlaskClient, app: Flask):
         assert user.username == USERNAME
 
 
-def test_username_already_exists(client: FlaskClient, app: Flask, existing_user: User):
+def test_username_already_exists(client: FlaskClient, app: Flask, user_alice: User):
     with app.test_request_context():
-        db.session.add(existing_user)
+        db.session.add(user_alice)
 
         response = client.post(
             "/user/register",
             data={
-                "username": existing_user.username,
+                "username": user_alice.username,
                 "email": "new_user@mail.com",
                 "password": "testpassword",
                 "confirm_password": "testpassword",
@@ -55,26 +57,26 @@ def test_username_already_exists(client: FlaskClient, app: Flask, existing_user:
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert ERROR_USERNAME_TAKEN.encode() in response.data
 
 
-def test_email_already_exists(client: FlaskClient, app: Flask, existing_user: User):
+def test_email_already_exists(client: FlaskClient, app: Flask, user_alice: User):
     with app.test_request_context():
-        db.session.add(existing_user)
+        db.session.add(user_alice)
 
         response = client.post(
             "/user/register",
             data={
                 "username": "new_user",
-                "email": existing_user.email,
+                "email": user_alice.email,
                 "password": "testpassword",
                 "confirm_password": "testpassword",
             },
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert ERROR_EMAIL_TAKEN.encode() in response.data
 
 
@@ -91,7 +93,7 @@ def test_confirm_password_mismatch(client: FlaskClient, app: Flask):
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert ERROR_PASSWORD_MISMATCH.encode() in response.data
 
 
@@ -100,27 +102,27 @@ def test_confirm_password_mismatch(client: FlaskClient, app: Flask):
 # ---------------------------------------------------------------------------- #
 
 
-def test_user_login(client: FlaskClient, app: Flask, existing_user: User):
+def test_user_login(client: FlaskClient, app: Flask, user_alice: User):
     with app.test_request_context():
-        db.session.add(existing_user)
+        db.session.add(user_alice)
 
         response = client.post(
             "/user/login",
             data={
-                "email": existing_user.email,
+                "email": user_alice.email,
                 "password": "password",
             },
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert current_user.is_authenticated
-        assert current_user.username == existing_user.username
+        assert current_user.username == user_alice.username
 
 
-def test_invalid_email_login(client: FlaskClient, app: Flask, existing_user: User):
+def test_invalid_email_login(client: FlaskClient, app: Flask, user_alice: User):
     with app.test_request_context():
-        db.session.add(existing_user)
+        db.session.add(user_alice)
 
         response = client.post(
             "/user/login",
@@ -131,25 +133,25 @@ def test_invalid_email_login(client: FlaskClient, app: Flask, existing_user: Use
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert not current_user.is_authenticated
         assert ERROR_INVALID_CREDENTIALS.encode() in response.data
 
 
-def test_invalid_password_login(client: FlaskClient, app: Flask, existing_user: User):
+def test_invalid_password_login(client: FlaskClient, app: Flask, user_alice: User):
     with app.test_request_context():
-        db.session.add(existing_user)
+        db.session.add(user_alice)
 
         response = client.post(
             "/user/login",
             data={
-                "email": existing_user.email,
+                "email": user_alice.email,
                 "password": "wrongpassword",
             },
             follow_redirects=True,
         )
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert not current_user.is_authenticated
         assert ERROR_INVALID_CREDENTIALS.encode() in response.data
 
@@ -159,13 +161,13 @@ def test_invalid_password_login(client: FlaskClient, app: Flask, existing_user: 
 # ---------------------------------------------------------------------------- #
 
 
-def test_user_logout(client: FlaskClient, app: Flask, existing_user: User):
+def test_user_logout(client: FlaskClient, app: Flask, user_alice: User):
     with app.test_request_context():
-        db.session.add(existing_user)
-        flask_login.login_user(existing_user)
+        db.session.add(user_alice)
+        flask_login.login_user(user_alice)
         assert current_user.is_authenticated
 
         response = client.get("/user/logout", follow_redirects=True)
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert not current_user.is_authenticated

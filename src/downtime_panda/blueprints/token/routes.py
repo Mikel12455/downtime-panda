@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import flask_login
 from flask import Blueprint, flash, redirect, render_template, url_for
 
@@ -37,7 +39,7 @@ def revoke_token(token_id: int):
     token = APIToken.find_by_id(token_id=token_id, user=flask_login.current_user)
     if not token:
         flash(ERROR_TOKEN_DOESNT_EXIST, "danger")
-        return redirect(url_for(".list_tokens"))
+        return redirect(url_for(".list_tokens"), code=HTTPStatus.NOT_FOUND)
 
     token.revoke()
     flash(SUCCESS_TOKEN_REVOKED, "success")

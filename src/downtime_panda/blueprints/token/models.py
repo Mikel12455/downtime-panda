@@ -82,5 +82,10 @@ class APIToken(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def exists(self) -> bool:
+        query = select(APIToken).filter_by(id=self.id)
+        token = db.session.execute(query).scalar_one_or_none()
+        return True if token else False
+
 
 from downtime_panda.blueprints.user.models import User  # noqa: E402

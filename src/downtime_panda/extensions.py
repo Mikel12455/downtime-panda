@@ -33,7 +33,7 @@ from downtime_panda.blueprints.user.models import User  # noqa: E402
 
 @token_auth.verify_token
 def verify_token(token):
-    return User.get_by_token(token) if token else None
+    return User.get_by_token(token)
 
 
 @token_auth.error_handler

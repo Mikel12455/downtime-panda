@@ -15,11 +15,11 @@ from flask import Flask
 from loguru import logger
 
 from downtime_panda import extensions
-from downtime_panda.blueprints.api.routes import api_blueprint
 from downtime_panda.blueprints.home.routes import home_blueprint
 from downtime_panda.blueprints.service.api import service_api_blueprint
 from downtime_panda.blueprints.service.routes import service_blueprint
 from downtime_panda.blueprints.subscription.routes import subscription_blueprint
+from downtime_panda.blueprints.token.routes import token_blueprint
 from downtime_panda.blueprints.user.routes import user_blueprint
 from downtime_panda.config import Config
 
@@ -72,7 +72,7 @@ def create_app(config_class=Config):
     app.register_blueprint(service_blueprint, url_prefix="/service")
     app.register_blueprint(service_api_blueprint, url_prefix="/api/service")
     app.register_blueprint(subscription_blueprint, url_prefix="/subscription")
-    app.register_blueprint(api_blueprint, url_prefix="/api")
+    app.register_blueprint(token_blueprint, url_prefix="/you/tokens")
 
     # -------------------------- SCHEDULER CONFIGURATION ------------------------- #
     if (

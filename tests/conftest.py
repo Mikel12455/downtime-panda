@@ -1,7 +1,11 @@
+from typing import Literal
+
 import pytest
 from flask import Flask
+from flask.testing import FlaskClient, FlaskCliRunner
 
 from downtime_panda import create_app
+from downtime_panda.blueprints.user.models import User
 from downtime_panda.config import TestingConfig
 from downtime_panda.extensions import db
 
@@ -20,13 +24,11 @@ def app():
 
 
 @pytest.fixture()
-def existing_user(app: Flask):
-    from downtime_panda.blueprints.user.models import User
-
+def user_alice(app: Flask) -> User:
     with app.app_context():
         existing_user = User.register(
-            username="existing_user",
-            email="existing_user@mail.com",
+            username="alice",
+            email="alice@mail.com",
             password="password",
         )
 
@@ -34,10 +36,56 @@ def existing_user(app: Flask):
 
 
 @pytest.fixture()
-def client(app: Flask):
+def is_alice_logged_in(
+    app: Flask, client: FlaskClient, user_alice: User
+) -> Literal[True]:
+    with app.app_context():
+        db.session.add(user_alice)
+        client.post(
+            "/user/login",
+            data={
+                "email": user_alice.email,
+                "password": "password",
+            },
+            follow_redirects=True,
+        )
+
+    return True
+
+
+@pytest.fixture()
+def user_bob(app: Flask) -> User:
+    with app.app_context():
+        existing_user = User.register(
+            username="bob",
+            email="bob@mail.com",
+            password="password",
+        )
+
+    return existing_user
+
+
+@pytest.fixture()
+def is_bob_logged_in(app: Flask, client: FlaskClient, user_bob: User) -> Literal[True]:
+    with app.app_context():
+        db.session.add(user_bob)
+        client.post(
+            "/user/login",
+            data={
+                "email": user_bob.email,
+                "password": "password",
+            },
+            follow_redirects=True,
+        )
+
+    return True
+
+
+@pytest.fixture()
+def client(app: Flask) -> FlaskClient:
     return app.test_client()
 
 
 @pytest.fixture()
-def runner(app: Flask):
+def runner(app: Flask) -> FlaskCliRunner:
     return app.test_cli_runner()
