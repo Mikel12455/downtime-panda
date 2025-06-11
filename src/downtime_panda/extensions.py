@@ -1,4 +1,13 @@
-"""Extensions for Flask applications."""
+"""This module contains all extensions for the Flask application."""
+
+__all__ = [
+    "db",
+    "migrate",
+    "login_manager",
+    "scheduler",
+    "moment",
+    "token_auth",
+]
 
 from flask_apscheduler import APScheduler
 from flask_httpauth import HTTPTokenAuth

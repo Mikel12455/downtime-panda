@@ -1,7 +1,13 @@
 site_name: downtime-panda
 
+repo_url: https://github.com/Mikel12455/downtime-panda/
+repo_name: Downtime Panda
+
 theme:
   name: "material"
+
+markdown_extensions:
+  - admonition
 
 plugins:
 - search
@@ -14,4 +20,5 @@ plugins:
 
 nav:
   - Indice: index.md
+  - Architettura: architecture.md
   - Guida allo sviluppo: developer-guide.md

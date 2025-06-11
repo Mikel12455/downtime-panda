@@ -1,17 +1,7 @@
-# Welcome to MkDocs
+# Benvenuto su Downtime Panda!
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+![Downtime Panda Logo](assets/downtime-panda.png)
 
-## Commands
+Questa è la documentazione di Downtime Panda, un progetto ispirato ad [Uptime Kuma](https://github.com/louislam/uptime-kuma) e sviluppato per il corso di "Sicurezza negli Ambienti Orientati ai Servizi" tenuto all'Università degli Studi di Bari "Aldo Moro".
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Questa documentazione è prodotta grazie a [mkdocs.org](https://www.mkdocs.org).
