@@ -1,6 +1,6 @@
 # Downtime Panda
 
-![Downtime Panda Logo](./assets/downtime-panda.png)
+![Downtime Panda Logo](./docs/assets/downtime-panda.png)
 
 ## Tabella dei Contenuti
 
@@ -20,4 +20,4 @@ Questo software è stato sviluppato per il corso di "Sicurezza negli Ambienti Or
 
 ## Schema ER
 
-![Entity Relationship Diagram](./assets/er_schema.drawio.svg)
+![Entity Relationship Diagram](./docs/assets/er_schema.drawio.svg)
