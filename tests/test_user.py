@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 import flask_login
-from flask import Flask
+from flask import Flask, url_for
 from flask.testing import FlaskClient
 from flask_login import current_user
 
@@ -24,7 +24,7 @@ def test_user_registration(client: FlaskClient, app: Flask):
     USER_EMAIL = "new_user@mail.com"
     with app.test_request_context():
         response = client.post(
-            "/user/register",
+            url_for("auth.register"),
             data={
                 "username": USERNAME,
                 "email": USER_EMAIL,
@@ -47,7 +47,7 @@ def test_username_already_exists(client: FlaskClient, app: Flask, user_alice: Us
         db.session.add(user_alice)
 
         response = client.post(
-            "/user/register",
+            url_for("auth.register"),
             data={
                 "username": user_alice.username,
                 "email": "new_user@mail.com",
@@ -66,7 +66,7 @@ def test_email_already_exists(client: FlaskClient, app: Flask, user_alice: User)
         db.session.add(user_alice)
 
         response = client.post(
-            "/user/register",
+            url_for("auth.register"),
             data={
                 "username": "new_user",
                 "email": user_alice.email,
@@ -83,7 +83,7 @@ def test_email_already_exists(client: FlaskClient, app: Flask, user_alice: User)
 def test_confirm_password_mismatch(client: FlaskClient, app: Flask):
     with app.test_request_context():
         response = client.post(
-            "/user/register",
+            url_for("auth.register"),
             data={
                 "username": "user",
                 "email": "user@mail.com",
@@ -107,7 +107,7 @@ def test_user_login(client: FlaskClient, app: Flask, user_alice: User):
         db.session.add(user_alice)
 
         response = client.post(
-            "/user/login",
+            url_for("auth.login"),
             data={
                 "email": user_alice.email,
                 "password": "password",
@@ -125,7 +125,7 @@ def test_invalid_email_login(client: FlaskClient, app: Flask, user_alice: User):
         db.session.add(user_alice)
 
         response = client.post(
-            "/user/login",
+            url_for("auth.login"),
             data={
                 "email": "invalid_email@mail.com",
                 "password": "password",
@@ -143,7 +143,7 @@ def test_invalid_password_login(client: FlaskClient, app: Flask, user_alice: Use
         db.session.add(user_alice)
 
         response = client.post(
-            "/user/login",
+            url_for("auth.login"),
             data={
                 "email": user_alice.email,
                 "password": "wrongpassword",
@@ -167,7 +167,7 @@ def test_user_logout(client: FlaskClient, app: Flask, user_alice: User):
         flask_login.login_user(user_alice)
         assert current_user.is_authenticated
 
-        response = client.get("/user/logout", follow_redirects=True)
+        response = client.get(url_for("auth.logout"), follow_redirects=True)
 
         assert response.status_code == HTTPStatus.OK
         assert not current_user.is_authenticated

@@ -1,7 +1,7 @@
 from typing import Literal
 
 import pytest
-from flask import Flask
+from flask import Flask, url_for
 from flask.testing import FlaskClient, FlaskCliRunner
 
 from downtime_panda import create_app
@@ -40,10 +40,10 @@ def user_alice(app: Flask) -> User:
 def is_alice_logged_in(
     app: Flask, client: FlaskClient, user_alice: User
 ) -> Literal[True]:
-    with app.app_context():
+    with app.test_request_context():
         db.session.add(user_alice)
         client.post(
-            "/user/login",
+            url_for("auth.login"),
             data={
                 "email": user_alice.email,
                 "password": "password",
@@ -68,10 +68,10 @@ def user_bob(app: Flask) -> User:
 
 @pytest.fixture()
 def is_bob_logged_in(app: Flask, client: FlaskClient, user_bob: User) -> Literal[True]:
-    with app.app_context():
+    with app.test_request_context():
         db.session.add(user_bob)
         client.post(
-            "/user/login",
+            url_for("auth.login"),
             data={
                 "email": user_bob.email,
                 "password": "password",
