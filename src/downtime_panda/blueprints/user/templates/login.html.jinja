@@ -5,7 +5,7 @@
 {% endblock title %}
 {% block body %}
     <h1>Login</h1>
-    <form method="post" action="{{ url_for('user.login') }}">
+    <form method="post" action="{{ url_for('auth.login') }}">
         {{ form.hidden_tag() }}
         {{ bootstrap_field(form.email) }}
         {{ bootstrap_field(form.password) }}

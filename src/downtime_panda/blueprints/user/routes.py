@@ -22,8 +22,16 @@ from downtime_panda.extensions import login_manager
 
 from .models import User
 
-user_blueprint = Blueprint(
-    "user", __name__, static_folder="static", template_folder="templates"
+# ---------------------------------------------------------------------------- #
+#                                AUTHENTICATION                                #
+# ---------------------------------------------------------------------------- #
+
+auth_blueprint = Blueprint(
+    "auth",
+    __name__,
+    static_folder="static",
+    template_folder="templates",
+    url_prefix="/auth",
 )
 
 
@@ -33,10 +41,7 @@ def user_loader(id: str):
     return User.get_by_id(id)
 
 
-# ---------------------------------------------------------------------------- #
-#                                 REGISTRATION                                 #
-# ---------------------------------------------------------------------------- #
-@user_blueprint.route("/register", methods=["GET", "POST"])
+@auth_blueprint.route("/register", methods=["GET", "POST"])
 def register():
     """Register a new user."""
     form = RegisterForm()
@@ -60,10 +65,7 @@ def register():
     return redirect(url_for("home.index"))
 
 
-# ---------------------------------------------------------------------------- #
-#                                     LOGIN                                    #
-# ---------------------------------------------------------------------------- #
-@user_blueprint.route("/login", methods=["GET", "POST"])
+@auth_blueprint.route("/login", methods=["GET", "POST"])
 def login():
     """Log in an existing user."""
     form = LoginForm()
@@ -80,10 +82,7 @@ def login():
     return render_template("login.html.jinja", form=form)
 
 
-# ---------------------------------------------------------------------------- #
-#                                    LOGOUT                                    #
-# ---------------------------------------------------------------------------- #
-@user_blueprint.route("/logout")
+@auth_blueprint.route("/logout")
 def logout():
     """Log out the current user."""
     flask_login.logout_user()
@@ -94,8 +93,15 @@ def logout():
 # ---------------------------------------------------------------------------- #
 #                                    PROFILE                                   #
 # ---------------------------------------------------------------------------- #
+
+
+user_blueprint = Blueprint(
+    "user", __name__, template_folder="templates", url_prefix="/you"
+)
+
+
 @user_blueprint.route("/profile")
 @flask_login.login_required
-def profile():
+def show_profile():
     """Display the user's profile."""
     return render_template("profile.html.jinja")

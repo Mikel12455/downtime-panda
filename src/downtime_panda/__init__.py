@@ -20,7 +20,7 @@ from downtime_panda.blueprints.service.routes import service_blueprint
 from downtime_panda.blueprints.subscription.api import subscription_api_blueprint
 from downtime_panda.blueprints.subscription.routes import subscription_blueprint
 from downtime_panda.blueprints.token.routes import token_blueprint
-from downtime_panda.blueprints.user.routes import user_blueprint
+from downtime_panda.blueprints.user.routes import auth_blueprint, user_blueprint
 from downtime_panda.config import Config
 
 
@@ -68,10 +68,11 @@ def create_app(config_class=Config):
     # -------------------------------- BLUEPRINTS -------------------------------- #
     logger.info("Registering blueprints...")
     app.register_blueprint(home_blueprint, url_prefix="/")
-    app.register_blueprint(user_blueprint, url_prefix="/user")
+    app.register_blueprint(auth_blueprint, url_prefix="/auth")
+    app.register_blueprint(user_blueprint, url_prefix="/you")
     app.register_blueprint(service_blueprint, url_prefix="/service")
     app.register_blueprint(subscription_api_blueprint, url_prefix="/api/service")
-    app.register_blueprint(subscription_blueprint, url_prefix="/subscription")
+    app.register_blueprint(subscription_blueprint, url_prefix="/you/subscriptions")
     app.register_blueprint(token_blueprint, url_prefix="/you/tokens")
 
     # -------------------------- SCHEDULER CONFIGURATION ------------------------- #

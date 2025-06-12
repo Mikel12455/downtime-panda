@@ -41,7 +41,7 @@ def service_subscribe():
     return redirect(url_for(".view_subscription", uuid=subscription.uuid))
 
 
-@subscription_blueprint.route("/subscriptions", methods=["GET"])
+@subscription_blueprint.route("/", methods=["GET"])
 @login_required
 def list_subscriptions():
     """List all subscriptions for the current user."""
@@ -52,7 +52,7 @@ def list_subscriptions():
     )
 
 
-@subscription_blueprint.route("/subscriptions/<uuid>", methods=["GET"])
+@subscription_blueprint.route("/<uuid>", methods=["GET"])
 @login_required
 def view_subscription(uuid: str):
     """View the status of a subscribed service"""

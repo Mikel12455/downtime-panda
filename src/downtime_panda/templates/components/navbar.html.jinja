@@ -7,9 +7,9 @@
                role="button"
                data-bs-toggle="dropdown"
                aria-expanded="false">Welcome, {{ current_user.username }}!</a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu  dropdown-menu-end">
                 <li>
-                    <a class="dropdown-item" href="{{ url_for('user.profile') }}">Your Profile</a>
+                    <a class="dropdown-item" href="{{ url_for('user.show_profile') }}">Your Profile</a>
                 </li>
                 <li>
                     <a class="dropdown-item"
@@ -22,7 +22,7 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <a class="dropdown-item text-danger" href="{{ url_for('user.logout') }}">Logout</a>
+                    <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">Logout</a>
                 </li>
             </ul>
         </li>
@@ -30,10 +30,10 @@
 {% endmacro %}
 {% macro user_login_buttons() %}
     <div class="btn-group" role="group">
-        <a class="btn btn-primary {{ active if request.path == url_for("user.login") else '' }}"
-           href="{{ url_for('user.login') }}">Login</a>
-        <a class="btn btn-primary {{ 'active' if request.path == url_for("user.register") else '' }}"
-           href="{{ url_for('user.register') }}">Register</a>
+        <a class="btn btn-primary {{ active if request.path == url_for("auth.login") else '' }}"
+           href="{{ url_for('auth.login') }}">Login</a>
+        <a class="btn btn-primary {{ 'active' if request.path == url_for("auth.register") else '' }}"
+           href="{{ url_for('auth.register') }}">Register</a>
     </div>
 {% endmacro %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">

@@ -26,7 +26,7 @@ migrate = Migrate()
 
 # ----------------------------------- LOGIN ---------------------------------- #
 login_manager = LoginManager()
-login_manager.login_view = "user.login"
+login_manager.login_view = "auth.login"
 
 # -------------------------------- APSCHEDULER ------------------------------- #
 scheduler = APScheduler()
