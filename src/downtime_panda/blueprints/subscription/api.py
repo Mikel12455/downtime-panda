@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from flask import Blueprint, abort
+from flask import Blueprint, abort, request
 
 from downtime_panda.blueprints.subscription.models import Subscription
 from downtime_panda.blueprints.user.models import User
@@ -10,7 +10,6 @@ subscription_api_blueprint = Blueprint("subscription_api", __name__)
 
 
 @subscription_api_blueprint.get("/heartbeat")
-@token_auth.login_required
 def heartbeat():
     """
     Endpoint to check if the service API is running.
@@ -18,14 +17,11 @@ def heartbeat():
     return {"status": "ok"}
 
 
-@subscription_api_blueprint.get("<subscription_uuid>/status")
+@subscription_api_blueprint.get("/status")
 @token_auth.login_required
-def get_status(subscription_uuid: str):
+def get_status():
     """
     Endpoint to check the status of a subscription.
-
-    Args:
-        subscription_uuid (str): The UUID of the subscription.
 
     Returns:
         dict: A dictionary containing the status of the subscription.
@@ -33,6 +29,8 @@ def get_status(subscription_uuid: str):
     user: User | None = token_auth.current_user()
     if not user:
         abort(HTTPStatus.UNAUTHORIZED)
+
+    subscription_uuid = request.args.get("subscription_uuid")
 
     subscription = Subscription.get_user_subscription_by_uuid(user, subscription_uuid)
     if not subscription:

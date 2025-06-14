@@ -71,7 +71,7 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
     app.register_blueprint(user_blueprint, url_prefix="/you")
     app.register_blueprint(service_blueprint, url_prefix="/service")
-    app.register_blueprint(subscription_api_blueprint, url_prefix="/api/service")
+    app.register_blueprint(subscription_api_blueprint, url_prefix="/api/subscriptions")
     app.register_blueprint(subscription_blueprint, url_prefix="/you/subscriptions")
     app.register_blueprint(token_blueprint, url_prefix="/you/tokens")
 
