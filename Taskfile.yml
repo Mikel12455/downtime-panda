@@ -52,7 +52,6 @@ tasks:
 # ----------------------------------- DOCS ----------------------------------- #
   mkdocs:
     cmds:
-      - uv run mkdocs build
       - uv run mkdocs serve
 
 

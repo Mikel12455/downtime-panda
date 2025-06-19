@@ -8,17 +8,27 @@ theme:
 
 markdown_extensions:
   - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
 
 plugins:
-- search
-- mkdocs-autoapi:
-    autoapi_dir: src
-- mkdocstrings:
-    handlers:
-      python:
-        paths: [src]
+  - search
+  - mkdocs-autoapi:
+      autoapi_dir: src
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
 
 nav:
-  - Indice: index.md
-  - Architettura: architecture.md
-  - Guida allo sviluppo: developer-guide.md
+  - Indice: 1-index.md
+  - Guida allo sviluppo: 2-developer-guide.md
+  - Architettura: 3-architecture.md
+  - Caratteristiche: 4-features.md
+  - Sviluppi Futuri: 5-future-developments.md
