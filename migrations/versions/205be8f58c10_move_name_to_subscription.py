@@ -6,9 +6,8 @@ Create Date: 2025-06-20 11:05:26.329948
 
 """
 
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "205be8f58c10"
@@ -23,7 +22,10 @@ def upgrade():
         batch_op.drop_column("name")
 
     with op.batch_alter_table("subscription", schema=None) as batch_op:
-        batch_op.add_column(sa.Column("name", sa.String(length=255), nullable=False))
+        batch_op.add_column(
+            sa.Column("name", sa.String(length=255), nullable=False, server_default="")
+        )
+        batch_op.alter_column("name", server_default=None)
 
     # ### end Alembic commands ###
 
@@ -34,6 +36,9 @@ def downgrade():
         batch_op.drop_column("name")
 
     with op.batch_alter_table("service", schema=None) as batch_op:
-        batch_op.add_column(sa.Column("name", sa.VARCHAR(length=255), nullable=False))
+        batch_op.add_column(
+            sa.Column("name", sa.VARCHAR(length=255), nullable=False, server_default="")
+        )
+        batch_op.alter_column("name", server_default=None)
 
     # ### end Alembic commands ###
