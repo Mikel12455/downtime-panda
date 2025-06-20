@@ -58,9 +58,11 @@ def view_subscription(uuid: str):
     """View the status of a subscribed service"""
     subscription = Subscription.get_user_subscription_by_uuid(current_user, uuid)
     pings = subscription.service.get_latest_n_pings(10)
+    pings = list(reversed(pings))
     pings = {
-        "x": [ping.pinged_at for ping in reversed(pings)],
-        "y": [ping.http_response for ping in reversed(pings)],
+        "x": [ping.pinged_at for ping in pings],
+        "y": [ping.response_time.total_seconds() for ping in pings],
+        "status": [ping.http_response for ping in pings],
         "type": "scatter",
     }
     return render_template("status.html.jinja", subscription=subscription, pings=pings)

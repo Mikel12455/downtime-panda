@@ -1,11 +1,19 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Self, Sequence
 
 import pytz
 import requests
 from apscheduler.triggers.interval import IntervalTrigger
 from loguru import logger
-from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, String, select
+from sqlalchemy import (
+    BigInteger,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Interval,
+    String,
+    select,
+)
 from sqlalchemy.orm import Mapped, WriteOnlyMapped, mapped_column, relationship
 
 from downtime_panda.extensions import db, scheduler
@@ -79,6 +87,7 @@ class Service(db.Model):
             ping = Ping(
                 service_id=f"ping_service_{service.id}",
                 http_status=response.status_code,
+                response_time=response.elapsed,
                 pinged_at=pinged_at,
             )
             service.ping.add(ping)
@@ -121,12 +130,20 @@ class Ping(db.Model):
         ForeignKey(Service.id, onupdate="CASCADE", ondelete="RESTRICT"), nullable=False
     )
     http_response: Mapped[int] = mapped_column(Integer(), nullable=False)
+    response_time: Mapped[timedelta] = mapped_column(Interval(), nullable=False)
     pinged_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     # ----------------------------- STANDARD METHODS ----------------------------- #
-    def __init__(self, service_id: int, http_status: int, pinged_at: datetime):
+    def __init__(
+        self,
+        service_id: int,
+        http_status: int,
+        response_time: timedelta,
+        pinged_at: datetime,
+    ):
         self.service_id = service_id
         self.http_response = http_status
+        self.response_time = response_time
         self.pinged_at = pinged_at
 
     def __repr__(self) -> str:
@@ -136,5 +153,6 @@ class Ping(db.Model):
     def to_dict(self) -> dict[str, Any]:
         return {
             "http_response": self.http_response,
+            "response_time": self.response_time,
             "pinged_at": self.pinged_at.isoformat(),
         }

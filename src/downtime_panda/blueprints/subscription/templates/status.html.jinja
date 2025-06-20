@@ -7,7 +7,8 @@
     Service {{ subscription.name }}
 {% endblock title %}
 {% block body %}
-    Service {{ subscription.name }}
+    <p>Service {{ subscription.name }}</p>
+    <p>Latest Status: {{ pings.status[-1] }}</p>
     <div id="myDiv"></div>
     <script>
         const data = {{ pings|tojson }};
@@ -17,9 +18,27 @@
             'y': data.y,
             'type': 'scatter',
         };
+
+        const layout = {
+            xaxis: {
+                title: {
+                    text: "Orario"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Tempo di risposta (s)"
+                }
+            },
+        };
+
+        const config = {responsive: true}
+
         Plotly.newPlot(
             'myDiv',
             [graph_data],
+            layout,
+            config,
         );
     </script>
 {% endblock body %}
