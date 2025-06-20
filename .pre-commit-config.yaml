@@ -24,3 +24,12 @@ repos:
     hooks:
       - id: djlint-reformat-jinja
       - id: djlint-jinja
+
+  - repo: local
+    hooks:
+      - id: migrations-up-to-date
+        name: check missing migrations
+        stages: [pre-push]
+        entry: uv run flask --app downtime_panda db check
+        language: system
+        pass_filenames: false
