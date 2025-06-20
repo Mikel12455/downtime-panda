@@ -5,16 +5,15 @@
 {% block head %}
     {{ super() }}
 {% endblock head %}
-{% block body %}
-    <div class="row align-items-center mb-3">
-        <div class="col">
-            <h1 class="mb-0">Your Subscriptions</h1>
-        </div>
-        <div class="col-auto">
-            <a class="btn btn-primary" href="{{ url_for('.service_subscribe') }}">Subscribe to a New Service</a>
-        </div>
+{% block header %}
+    <div class="col">
+        <h1 class="mb-0">Your Subscriptions</h1>
     </div>
-    <hr />
+    <div class="col-auto">
+        <a class="btn btn-primary" href="{{ url_for('.service_subscribe') }}">Subscribe to a New Service</a>
+    </div>
+{% endblock header %}
+{% block body %}
     {% if subscriptions %}
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for subscription in subscriptions %}

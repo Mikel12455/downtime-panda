@@ -6,8 +6,12 @@
 {% block title %}
     Service {{ subscription.name }}
 {% endblock title %}
+{% block header %}
+    <div class="col">
+        <h1 class="mb-0">Service {{ subscription.name }}</h1>
+    </div>
+{% endblock header %}
 {% block body %}
-    <p>Service {{ subscription.name }}</p>
     <p>Latest Status: {{ pings.status[-1] }} ({{ pings.status[-1] | httpstatus }})</p>
     <div id="myDiv"></div>
     <script>

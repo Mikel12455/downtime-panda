@@ -2,8 +2,10 @@
 {% block title %}
     Your Profile
 {% endblock title %}
-{% block body %}
+{% block header %}
     <h1>Your Profile</h1>
+{% endblock header %}
+{% block body %}
     <p>Username: {{ current_user.username }}</p>
     <p>Email: {{ current_user.email }}</p>
 {% endblock body %}

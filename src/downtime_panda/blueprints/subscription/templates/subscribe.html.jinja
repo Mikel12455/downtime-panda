@@ -6,8 +6,10 @@
 {% block head %}
     {{ super() }}
 {% endblock head %}
-{% block body %}
+{% block header %}
     <h1>Subscribe to a New Service</h1>
+{% endblock header %}
+{% block body %}
     <form method="post" action="{{ url_for('.service_subscribe') }}">
         {{ form.hidden_tag() }}
         {{ bootstrap_field(form.name) }}

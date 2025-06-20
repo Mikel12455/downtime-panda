@@ -43,6 +43,11 @@
         {% include "components/navbar.html.jinja" %}
         <div class="container p-1">
             {{ display_flash_messages() }}
+            <div class="row align-items-center mb-3">
+                {% block header %}
+                {% endblock header %}
+            </div>
+            <hr />
             {% block body %}
             {% endblock body %}
         </div>

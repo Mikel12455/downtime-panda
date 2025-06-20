@@ -3,8 +3,10 @@
 {% block title %}
     Login
 {% endblock title %}
-{% block body %}
+{% block header %}
     <h1>Login</h1>
+{% endblock header %}
+{% block body %}
     <form method="post" action="{{ url_for('auth.login') }}">
         {{ form.hidden_tag() }}
         {{ bootstrap_field(form.email) }}
