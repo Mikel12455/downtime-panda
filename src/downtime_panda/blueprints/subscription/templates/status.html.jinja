@@ -8,7 +8,7 @@
 {% endblock title %}
 {% block body %}
     <p>Service {{ subscription.name }}</p>
-    <p>Latest Status: {{ pings.status[-1] }}</p>
+    <p>Latest Status: {{ pings.status[-1] }} ({{ pings.status[-1] | httpstatus }})</p>
     <div id="myDiv"></div>
     <script>
         const data = {{ pings|tojson }};

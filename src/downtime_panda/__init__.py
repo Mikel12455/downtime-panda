@@ -46,6 +46,13 @@ def create_app(config_class=Config):
     logger.info("Setting up configuration...")
     app.config.from_object(config_class())
 
+    # ---------------------------------- FILTERS --------------------------------- #
+    @app.template_filter()
+    def httpstatus(s):
+        from http.client import responses
+
+        return responses[s]
+
     # -------------------------------- EXTENSIONS -------------------------------- #
     logger.info("Initializing extensions...")
     extensions.login_manager.init_app(app)
