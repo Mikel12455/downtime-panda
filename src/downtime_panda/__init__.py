@@ -72,7 +72,9 @@ def create_app(config_class=Config):
     with app.app_context():
         logger.info("Creating database tables...")
         extensions.db.create_all()
-        stamp()
+        if app.debug:
+            logger.info("Stamping...")
+            stamp()
 
     # -------------------------------- BLUEPRINTS -------------------------------- #
     logger.info("Registering blueprints...")
