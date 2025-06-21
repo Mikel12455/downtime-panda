@@ -16,7 +16,7 @@ from downtime_panda.extensions import db
 
 from .models import Ping, Service
 
-service_blueprint = Blueprint("service", __name__, template_folder="templates")
+service_blueprint = Blueprint("service", __name__)
 
 
 # ------------------------------------ SSE ----------------------------------- #
@@ -42,7 +42,7 @@ def stream(service: Service, last_pinged_at: datetime):
 @service_blueprint.route("/<int:id>")
 def service_detail(id):
     service = db.get_or_404(Service, id)
-    return render_template("detail.html.jinja", service=service)
+    return render_template("blueprints/service/detail.html.jinja", service=service)
 
 
 @service_blueprint.route("/fetch/<int:id>")
@@ -78,28 +78,3 @@ def service_stream(id):
         stream_with_context(stream(service, last_pinged_at)),
         mimetype="text/event-stream",
     )
-
-
-# @service_blueprint.route("/create", methods=["GET", "POST"])
-# @login_required
-# def service_subscribe():
-#     form = ServiceForm()
-#     if not form.validate_on_submit():
-#         # Render the service creation form with validation errors
-#         return render_template("subscribe.html.jinja", form=form)
-
-#     # This tricks the user into thinking the service is created
-#     # even if it already exists.
-#     #
-#     # Sorry user :(
-#     service = Service.create_if_not_exists(
-#         name=form.name.data,
-#         uri=form.uri.data,
-#     )
-#     current_user.subscribe_to_service(service)
-
-#     flash(
-#         f"You have successfully subscribed to {service.name}.",
-#         "success",
-#     )
-#     return redirect(url_for(".service_detail", id=service.id))

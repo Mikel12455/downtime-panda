@@ -19,7 +19,9 @@ def service_subscribe():
     form = SubscriptionForm()
     if not form.validate_on_submit():
         # Render the service creation form with validation errors
-        return render_template("subscribe.html.jinja", form=form)
+        return render_template(
+            "blueprints/subscription/subscribe.html.jinja", form=form
+        )
 
     # This tricks the user into thinking the service is created
     # even if it already exists.
@@ -47,7 +49,7 @@ def list_subscriptions():
     """List all subscriptions for the current user."""
     subscriptions = Subscription.get_subscriptions_by_user(current_user)
     return render_template(
-        "list.html.jinja",
+        "blueprints/subscription/list.html.jinja",
         subscriptions=subscriptions,
     )
 
@@ -65,4 +67,8 @@ def view_subscription(uuid: str):
         "status": [ping.http_response for ping in pings],
         "type": "scatter",
     }
-    return render_template("status.html.jinja", subscription=subscription, pings=pings)
+    return render_template(
+        "blueprints/subscription/status.html.jinja",
+        subscription=subscription,
+        pings=pings,
+    )

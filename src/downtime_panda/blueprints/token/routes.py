@@ -10,7 +10,7 @@ from downtime_panda.blueprints.token.messages import (
 )
 from downtime_panda.blueprints.token.models import APIToken
 
-token_blueprint = Blueprint("token", __name__, template_folder="templates")
+token_blueprint = Blueprint("token", __name__)
 
 
 @token_blueprint.get("/")
@@ -18,7 +18,7 @@ token_blueprint = Blueprint("token", __name__, template_folder="templates")
 def list_tokens():
     """Display the user's API tokens."""
 
-    return render_template("tokens.html.jinja")
+    return render_template("blueprints/token/list.html.jinja")
 
 
 @token_blueprint.post("/generate")

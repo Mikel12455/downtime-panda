@@ -26,13 +26,7 @@ from .models import User
 #                                AUTHENTICATION                                #
 # ---------------------------------------------------------------------------- #
 
-auth_blueprint = Blueprint(
-    "auth",
-    __name__,
-    static_folder="static",
-    template_folder="templates",
-    url_prefix="/auth",
-)
+auth_blueprint = Blueprint("auth", __name__)
 
 
 @login_manager.user_loader
@@ -46,7 +40,7 @@ def register():
     """Register a new user."""
     form = RegisterForm()
     if not form.validate_on_submit():
-        return render_template("register.html.jinja", form=form)
+        return render_template("blueprints/user/register.html.jinja", form=form)
 
     try:
         User.register(
@@ -56,7 +50,9 @@ def register():
         )
     except ValueError as e:
         flash("Error: " + str(e), "error")
-        return render_template("register.html.jinja", form=form, error=str(e))
+        return render_template(
+            "blueprints/user/register.html.jinja", form=form, error=str(e)
+        )
 
     user = User.get_by_email(form.email.data)
     flask_login.login_user(user)
@@ -70,7 +66,7 @@ def login():
     """Log in an existing user."""
     form = LoginForm()
     if not form.validate_on_submit():
-        return render_template("login.html.jinja", form=form)
+        return render_template("blueprints/user/login.html.jinja", form=form)
 
     user = User.get_by_email(form.email.data)
     if user and user.verify_password(form.password.data):
@@ -79,7 +75,7 @@ def login():
         return redirect(url_for("home.index"))
 
     flash(ERROR_INVALID_CREDENTIALS, "danger")
-    return render_template("login.html.jinja", form=form)
+    return render_template("blueprints/user/login.html.jinja", form=form)
 
 
 @auth_blueprint.route("/logout")
@@ -95,13 +91,11 @@ def logout():
 # ---------------------------------------------------------------------------- #
 
 
-user_blueprint = Blueprint(
-    "user", __name__, template_folder="templates", url_prefix="/you"
-)
+user_blueprint = Blueprint("user", __name__)
 
 
 @user_blueprint.route("/profile")
 @flask_login.login_required
 def show_profile():
     """Display the user's profile."""
-    return render_template("profile.html.jinja")
+    return render_template("blueprints/user/profile.html.jinja")
