@@ -15,6 +15,7 @@ from downtime_panda.extensions import db
 
 @pytest.fixture
 def service(app: Flask):
+    """Represents a service, saved in the app"""
     with app.app_context():
         service = Service("https://random.nonexistent.service")
         db.session.add(service)
@@ -25,6 +26,7 @@ def service(app: Flask):
 
 @pytest.fixture()
 def ping_for_service(app: Flask, service: Service):
+    """Represents a single status ping done to a service"""
     with app.app_context():
         db.session.add(service)
 
@@ -45,6 +47,7 @@ def ping_for_service(app: Flask, service: Service):
 
 @pytest.fixture()
 def alice_subscription(app: Flask, service: Service, user_alice: User):
+    """Represents the subscription that lets the user Alice monitor a certain service"""
     with app.app_context():
         db.session.add(user_alice)
         db.session.add(service)
@@ -95,6 +98,7 @@ def test_api_unauthorized_access(
     client: FlaskClient,
     alice_subscription: Subscription,
 ):
+    """Tests if an error is issued for unauthorized access to the api"""
     with app.test_request_context():
         db.session.add(alice_subscription)
 
@@ -112,6 +116,7 @@ def test_api_nonexistent_subscription(
     client: FlaskClient,
     alice_token: APIToken,
 ):
+    """Tests whether non-valid requests for a nonexistent subscription return an error"""
     with app.test_request_context():
         db.session.add(alice_token)
 
@@ -132,6 +137,7 @@ def test_api_no_pings(
     alice_token: APIToken,
     alice_subscription: Subscription,
 ):
+    """Tests whether requests for the status of a service without pings returns an error"""
     with app.test_request_context():
         db.session.add(alice_token)
         db.session.add(alice_subscription)

@@ -21,6 +21,7 @@ from downtime_panda.extensions import db
 
 
 def test_user_registration(client: FlaskClient, app: Flask):
+    """Tests the "happy path" for a user registration"""
     USERNAME = "new_user"
     USER_EMAIL = "new_user@mail.com"
     with app.test_request_context():
@@ -44,6 +45,7 @@ def test_user_registration(client: FlaskClient, app: Flask):
 
 
 def test_username_already_exists(client: FlaskClient, app: Flask, user_alice: User):
+    """Tests whether a registration request with an already-existing username throws an error"""
     with app.test_request_context():
         db.session.add(user_alice)
 
@@ -63,6 +65,7 @@ def test_username_already_exists(client: FlaskClient, app: Flask, user_alice: Us
 
 
 def test_email_already_exists(client: FlaskClient, app: Flask, user_alice: User):
+    """Tests whether a registration request with an already-existing email throws an error"""
     with app.test_request_context():
         db.session.add(user_alice)
 
@@ -82,6 +85,7 @@ def test_email_already_exists(client: FlaskClient, app: Flask, user_alice: User)
 
 
 def test_confirm_password_mismatch(client: FlaskClient, app: Flask):
+    """Tests whether a registration request with a wrong "Confirm Password" throws an error"""
     with app.test_request_context():
         response = client.post(
             url_for("auth.register"),
@@ -99,6 +103,7 @@ def test_confirm_password_mismatch(client: FlaskClient, app: Flask):
 
 
 def test_password_shorter_than_8_characters(client: FlaskClient, app: Flask):
+    """Tests whether a registration request with a password shorter than 8 characters throws an error"""
     with app.test_request_context():
         response = client.post(
             url_for("auth.register"),
@@ -121,6 +126,7 @@ def test_password_shorter_than_8_characters(client: FlaskClient, app: Flask):
 
 
 def test_user_login(client: FlaskClient, app: Flask, user_alice: User):
+    """Tests the "happy path" for the login functionality."""
     with app.test_request_context():
         db.session.add(user_alice)
 
@@ -139,6 +145,7 @@ def test_user_login(client: FlaskClient, app: Flask, user_alice: User):
 
 
 def test_invalid_email_login(client: FlaskClient, app: Flask, user_alice: User):
+    """Tests login with an invalid email address and expects an error message."""
     with app.test_request_context():
         db.session.add(user_alice)
 
@@ -157,6 +164,7 @@ def test_invalid_email_login(client: FlaskClient, app: Flask, user_alice: User):
 
 
 def test_invalid_password_login(client: FlaskClient, app: Flask, user_alice: User):
+    """Tests login with an invalid password and expects an error message."""
     with app.test_request_context():
         db.session.add(user_alice)
 
@@ -180,6 +188,7 @@ def test_invalid_password_login(client: FlaskClient, app: Flask, user_alice: Use
 
 
 def test_user_logout(client: FlaskClient, app: Flask, user_alice: User):
+    """Tests the logout functionality for an authenticated user."""
     with app.test_request_context():
         db.session.add(user_alice)
         flask_login.login_user(user_alice)
