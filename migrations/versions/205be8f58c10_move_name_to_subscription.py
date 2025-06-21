@@ -23,7 +23,9 @@ def upgrade():
 
     with op.batch_alter_table("subscription", schema=None) as batch_op:
         batch_op.add_column(
-            sa.Column("name", sa.String(length=255), nullable=False, server_default="")
+            sa.Column(
+                "name", sa.String(length=255), nullable=False, server_default="test"
+            )
         )
         batch_op.alter_column("name", server_default=None)
 
@@ -37,7 +39,9 @@ def downgrade():
 
     with op.batch_alter_table("service", schema=None) as batch_op:
         batch_op.add_column(
-            sa.Column("name", sa.VARCHAR(length=255), nullable=False, server_default="")
+            sa.Column(
+                "name", sa.VARCHAR(length=255), nullable=False, server_default="test"
+            )
         )
         batch_op.alter_column("name", server_default=None)
 
