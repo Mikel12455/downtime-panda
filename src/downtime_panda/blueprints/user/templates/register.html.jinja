@@ -1,11 +1,8 @@
 {% extends "base.html.jinja" %}
-{% from "macro.html.jinja" import bootstrap_field %}
+{% from "macro.html.jinja" import bootstrap_field, bootstrap_form_submit %}
 {% block title %}
     Register
 {% endblock title %}
-{% block header %}
-    <h1>Register</h1>
-{% endblock header %}
 {% block body %}
     <form method="post" action="{{ url_for('auth.register') }}">
         {{ form.hidden_tag() }}
@@ -13,7 +10,6 @@
         {{ bootstrap_field(form.email) }}
         {{ bootstrap_field(form.password) }}
         {{ bootstrap_field(form.confirm_password) }}
-        <br>
-        <input type="submit" class="btn btn-primary" value="Register">
+        {{ bootstrap_form_submit("Register") }}
     </form>
 {% endblock body %}

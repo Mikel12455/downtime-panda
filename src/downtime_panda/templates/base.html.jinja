@@ -26,8 +26,7 @@
             <link rel="manifest"
                   href="{{ url_for('static', filename='favicon/site.webmanifest') }}" />
             <title>
-                {% block title %}
-                    Add a title to this page for Python's sake!
+                {% block title required %}
                 {% endblock title %}
                 | Downtime Panda
             </title>
@@ -41,16 +40,19 @@
     </head>
     <body class="d-flex flex-column min-vh-100">
         {% include "components/navbar.html.jinja" %}
+        <!-- CONTENT -->
         <div class="container p-1">
             {{ display_flash_messages() }}
-            <div class="row align-items-center mb-3">
-                {% block header %}
-                {% endblock header %}
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1>{{ self.title() }}</h1>
+                </div>
+                <hr />
             </div>
-            <hr />
             {% block body %}
             {% endblock body %}
         </div>
+        <!-- /CONTENT -->
         {% include "components/footer.html.jinja" %}
         <!-- SCRIPTS -->
         {% block scripts %}

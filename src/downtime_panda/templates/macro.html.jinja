@@ -10,6 +10,11 @@
         {% endif %}
     </div>
 {% endmacro %}
+<!-- Bootstrap Field Submit -->
+{% macro bootstrap_form_submit(button_value) %}
+    <br />
+    <input type="submit" class="btn btn-primary" value="{{ button_value }}">
+{% endmacro %}
 <!-- Navbar Element Macro -->
 {% macro navbar_element(text, route) %}
     <li class="nav-item">
