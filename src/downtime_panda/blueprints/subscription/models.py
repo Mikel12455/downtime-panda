@@ -71,6 +71,10 @@ class Subscription(db.Model):
         subscription = db.session.execute(query).scalars().one_or_none()
         return subscription
 
+    def get_latest_http_response(self) -> int | None:
+        latest_ping = self.service.get_latest_ping()
+        return latest_ping.http_response if latest_ping else None
+
 
 from downtime_panda.blueprints.service.models import Service  # noqa: E402
 from downtime_panda.blueprints.user.models import User  # noqa: E402

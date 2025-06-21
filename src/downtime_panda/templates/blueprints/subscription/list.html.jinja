@@ -3,24 +3,35 @@
     Your Service Subscriptions
 {% endblock title %}
 {% block body %}
-    <div class="col-auto">
-        <a class="btn btn-primary" href="{{ url_for('.service_subscribe') }}">Subscribe to a New Service</a>
-    </div>
-    {% if subscriptions %}
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for subscription in subscriptions %}
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="{{ url_for('.view_subscription', uuid=subscription.uuid) }}">{{ subscription.name }}</a>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+    <div class="row">
+        <div class="col-auto">
+            <a class="btn btn-primary" href="{{ url_for('.service_subscribe') }}">Subscribe to a New Service</a>
+            <div class="vr"></div>
         </div>
-    {% else %}
-        <p>No subscriptions found.</p>
-    {% endif %}
+        <div class="col-9">
+            {% if subscriptions %}
+                <div class="row row-cols-auto g-4">
+                    {% for subscription in subscriptions %}
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ url_for('.view_subscription', uuid=subscription.uuid) }}">{{ subscription.name }}</a>
+                                    </h5>
+                                    {% set latest_http_response = subscription.get_latest_http_response() %}
+                                    {% if latest_http_response %}
+                                        <p class="card-text">Latest status: {{ latest_http_response }} ({{ latest_http_response | httpstatus }})</p>
+                                    {% else %}
+                                        <p class="card-text">No status</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No subscriptions found.</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock body %}

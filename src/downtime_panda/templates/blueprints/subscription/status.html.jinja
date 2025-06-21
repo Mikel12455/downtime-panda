@@ -7,9 +7,10 @@
     Service {{ subscription.name }}
 {% endblock title %}
 {% block body %}
-    <p>Latest Status: {{ pings.status[-1] }} ({{ pings.status[-1] | httpstatus }})</p>
-    <div id="myDiv"></div>
-    <script>
+    {% if pings.status %}
+        <p>Latest Status: {{ pings.status[-1] }} ({{ pings.status[-1] | httpstatus }})</p>
+        <div id="myDiv"></div>
+        <script>
         const uuid = "{{ subscription.uuid }}";
         const data = {{ pings|tojson }};
 
@@ -63,5 +64,8 @@
         }
 
         setInterval(fetchNewPings, 5000);
-    </script>
+        </script>
+    {% else %}
+        <p>No pings as of yet</p>
+    {% endif %}
 {% endblock body %}
