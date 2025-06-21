@@ -10,6 +10,7 @@ ERROR_EMAIL_REQUIRED = "Email is required"
 ERROR_EMAIL_TAKEN = "Email already exists"
 
 ERROR_PASSWORD_REQUIRED = "Password is required"
+ERROR_PASSWORD_TOO_SHORT = "Password should be longer than 8 characters"
 ERROR_PASSWORD_MISMATCH = "Passwords must match"
 
 ERROR_USERNAME_REQUIRED = "Username is required"

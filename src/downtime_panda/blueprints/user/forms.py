@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, ValidationError
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from downtime_panda.blueprints.user.messages import (
     ERROR_EMAIL_NOT_VALID,
@@ -8,6 +8,7 @@ from downtime_panda.blueprints.user.messages import (
     ERROR_EMAIL_TAKEN,
     ERROR_PASSWORD_MISMATCH,
     ERROR_PASSWORD_REQUIRED,
+    ERROR_PASSWORD_TOO_SHORT,
     ERROR_USERNAME_REQUIRED,
     ERROR_USERNAME_TAKEN,
 )
@@ -23,7 +24,9 @@ class LoginForm(FlaskForm):
     password = PasswordField(
         "Password",
         description="Password",
-        validators=[DataRequired(ERROR_PASSWORD_REQUIRED)],
+        validators=[
+            DataRequired(ERROR_PASSWORD_REQUIRED),
+        ],
     )
 
 
@@ -57,10 +60,15 @@ class RegisterForm(FlaskForm):
         description="Password",
         validators=[
             DataRequired(ERROR_PASSWORD_REQUIRED),
+            Length(min=8, message=ERROR_PASSWORD_TOO_SHORT),
         ],
     )
     confirm_password = PasswordField(
         "Confirm Password",
         description="Confirm password",
-        validators=[EqualTo("password", message=ERROR_PASSWORD_MISMATCH)],
+        validators=[
+            DataRequired(ERROR_PASSWORD_REQUIRED),
+            Length(min=8, message=ERROR_PASSWORD_TOO_SHORT),
+            EqualTo("password", message=ERROR_PASSWORD_MISMATCH),
+        ],
     )
