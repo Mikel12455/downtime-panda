@@ -124,3 +124,24 @@ def test_api_nonexistent_subscription(
         )
 
         assert response.status_code == HTTPStatus.NOT_FOUND
+
+
+def test_api_no_pings(
+    app: Flask,
+    client: FlaskClient,
+    alice_token: APIToken,
+    alice_subscription: Subscription,
+):
+    with app.test_request_context():
+        db.session.add(alice_token)
+        db.session.add(alice_subscription)
+
+        response = client.get(
+            url_for(
+                "subscription_api.get_status",
+                subscription_uuid=alice_subscription.uuid,
+            ),
+            headers={"Authorization": f"Bearer {alice_token.token}"},
+        )
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
