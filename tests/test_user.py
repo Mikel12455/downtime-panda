@@ -9,6 +9,7 @@ from downtime_panda.blueprints.user.messages import (
     ERROR_EMAIL_TAKEN,
     ERROR_INVALID_CREDENTIALS,
     ERROR_PASSWORD_MISMATCH,
+    ERROR_PASSWORD_TOO_SHORT,
     ERROR_USERNAME_TAKEN,
 )
 from downtime_panda.blueprints.user.models import User
@@ -95,6 +96,23 @@ def test_confirm_password_mismatch(client: FlaskClient, app: Flask):
 
         assert response.status_code == HTTPStatus.OK
         assert ERROR_PASSWORD_MISMATCH.encode() in response.data
+
+
+def test_password_shorter_than_8_characters(client: FlaskClient, app: Flask):
+    with app.test_request_context():
+        response = client.post(
+            url_for("auth.register"),
+            data={
+                "username": "user",
+                "email": "user@mail.com",
+                "password": "test",
+                "confirm_password": "test",
+            },
+            follow_redirects=True,
+        )
+
+        assert response.status_code == HTTPStatus.OK
+        assert ERROR_PASSWORD_TOO_SHORT.encode() in response.data
 
 
 # ---------------------------------------------------------------------------- #

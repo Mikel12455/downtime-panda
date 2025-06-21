@@ -153,6 +153,6 @@ class Ping(db.Model):
     def to_dict(self) -> dict[str, Any]:
         return {
             "http_response": self.http_response,
-            "response_time": self.response_time,
+            "response_time": self.response_time.total_seconds(),
             "pinged_at": self.pinged_at.isoformat(),
         }

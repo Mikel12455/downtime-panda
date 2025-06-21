@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from http import HTTPStatus
 
 import pytest
@@ -29,7 +29,13 @@ def ping_for_service(app: Flask, service: Service):
         db.session.add(service)
 
         pinged_at = datetime(2025, 6, 9, 0, 0, 0)
-        ping = Ping(service.id, HTTPStatus.OK, pinged_at)
+        response_time = timedelta(seconds=1)
+        ping = Ping(
+            service_id=service.id,
+            http_status=HTTPStatus.OK,
+            response_time=response_time,
+            pinged_at=pinged_at,
+        )
         service.ping.add(ping)
 
         db.session.commit()
