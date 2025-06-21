@@ -12,6 +12,7 @@ import os
 
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask import Flask
+from flask_migrate import stamp
 from loguru import logger
 
 from downtime_panda import extensions
@@ -67,6 +68,11 @@ def create_app(config_class=Config):
         }
     extensions.scheduler.init_app(app)
     extensions.moment.init_app(app)
+
+    with app.app_context():
+        logger.info("Creating database tables...")
+        extensions.db.create_all()
+        stamp()
 
     # -------------------------------- BLUEPRINTS -------------------------------- #
     logger.info("Registering blueprints...")
