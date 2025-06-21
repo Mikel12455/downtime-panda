@@ -108,7 +108,7 @@ class Service(db.Model):
         )
         return db.session.execute(query).scalars().all()
 
-    def get_pings_since_date(self, since: datetime) -> Sequence["Ping"]:
+    def get_pings_since(self, since: datetime) -> Sequence["Ping"]:
         query = (
             select(Ping)
             .filter_by(service_id=self.id)

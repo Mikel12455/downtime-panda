@@ -1,4 +1,6 @@
-from flask import Blueprint, flash, redirect, render_template, url_for
+from datetime import datetime
+
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
 from downtime_panda.blueprints.service.models import Service
@@ -72,3 +74,21 @@ def view_subscription(uuid: str):
         subscription=subscription,
         pings=pings,
     )
+
+
+@subscription_blueprint.route("/<uuid>/pings_since", methods=["GET"])
+@login_required
+def get_subscription_pings_since(uuid: str):
+    """View the status of a subscribed service"""
+    subscription = Subscription.get_user_subscription_by_uuid(current_user, uuid)
+
+    since_date = datetime.fromisoformat(request.args["since"])
+    pings = subscription.service.get_pings_since(since_date)
+    pings = list(reversed(pings))
+    pings = {
+        "x": [ping.pinged_at for ping in pings],
+        "y": [ping.response_time.total_seconds() for ping in pings],
+        "status": [ping.http_response for ping in pings],
+        "type": "scatter",
+    }
+    return pings

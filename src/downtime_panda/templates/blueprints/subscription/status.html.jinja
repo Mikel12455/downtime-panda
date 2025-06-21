@@ -10,11 +10,15 @@
     <p>Latest Status: {{ pings.status[-1] }} ({{ pings.status[-1] | httpstatus }})</p>
     <div id="myDiv"></div>
     <script>
+        const uuid = "{{ subscription.uuid }}";
         const data = {{ pings|tojson }};
+
+        let lastTimestamp = data.x.length > 0 ? data.x[data.x.length - 1] : null;
 
         const graph_data = {
             'x': data.x.map((date) => new Date(date)),
             'y': data.y,
+            'text': 'test',
             'type': 'scatter',
         };
 
@@ -39,5 +43,25 @@
             layout,
             config,
         );
+
+        function fetchNewPings() {
+            if (!lastTimestamp) return;
+            fetch(`{{url_for("subscription.get_subscription_pings_since", uuid=subscription.uuid)}}?since=${encodeURIComponent(new Date(lastTimestamp).toISOString())}`)
+                .then(response => response.json())
+                .then(newData => {
+                    if (newData.x && newData.x.length > 0) {
+                        // Append new data to the plot
+                        Plotly.extendTraces('myDiv', {
+                            x: [newData.x.map(date => new Date(date))],
+                            y: [newData.y]
+                        }, [0]);
+                        // Update lastTimestamp
+                        lastTimestamp = newData.x[newData.x.length - 1];
+                    }
+                })
+                .catch(console.error);
+        }
+
+        setInterval(fetchNewPings, 5000);
     </script>
 {% endblock body %}
