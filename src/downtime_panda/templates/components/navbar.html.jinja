@@ -22,7 +22,9 @@
                     <hr class="dropdown-divider">
                 </li>
                 <li>
-                    <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">Logout</a>
+                    <form action="{{ url_for('auth.logout') }}" method="post">
+                        <input class="dropdown-item text-danger" type="submit" value="Logout" />
+                    </form>
                 </li>
             </ul>
         </li>

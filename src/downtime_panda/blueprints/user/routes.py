@@ -78,11 +78,12 @@ def login():
     return render_template("blueprints/user/login.html.jinja", form=form)
 
 
-@auth_blueprint.route("/logout")
+@auth_blueprint.route("/logout", methods=["POST"])
 def logout():
     """Log out the current user."""
-    flask_login.logout_user()
-    flash(SUCCESS_LOGOUT, "success")
+    if flask_login.current_user.is_authenticated:
+        flask_login.logout_user()
+        flash(SUCCESS_LOGOUT, "success")
     return redirect(url_for("home.index"))
 
 
