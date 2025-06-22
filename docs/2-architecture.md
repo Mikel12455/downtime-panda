@@ -46,6 +46,7 @@ curl --request GET \
 ```json
 {
   "http_response": 200,
+  "response_time": 0.2,
   "pinged_at": "2025-06-14T16:21:38.856451"
 }
 ```
@@ -76,13 +77,13 @@ I moduli non contenuti in `blueprints` fanno principalmente da configurazione de
 
 Ogni pacchetto Python sotto la cartella `blueprints` contiene, al suo interno, diversi moduli con tutto quello che serve per implementare la relativa funzionalità:
 
-- **`templates`** e **`static`**: Rispettivamente, pagine template Jinja ed asset per costruire le pagine HTML della relativa rotta.
 - **`routes.py`**: Rotte Flask della relativa funzionalità
 - **`messages.py`**: Messaggi di feedback inviati all'utente per quando fa qualcosa (Ex. credenziali non valide durante il login).
 - **`forms.py`**: Tutti i form utili al modulo, implementati tramite [Flask-WTF](https://flask-wtf.readthedocs.io/en/latest/).
 - **`api.py`**: Rotte per servire l'API esposta dalla funzionalità.
 - **`models.py`**: Modelli per interfacciarsi con il database.
 
+I template Jinja di ogni blueprint è incluso nella cartella `templates`. La struttura delle cartelle è la stessa seguita in `blueprints`.
 
 ## Schema E-R
 

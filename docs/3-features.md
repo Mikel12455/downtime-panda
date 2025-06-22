@@ -41,7 +41,7 @@ Più dei "nice-to-have" che delle vere e proprie funzionalità dell'applicazione
 
 ### Accesso all'API tramite Token
 
-
+Il servizio espone una API per recuperare in modo programmatico lo stato di un servizio. L'api è
 
 ### Configurazione sicura
 

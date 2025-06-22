@@ -21,14 +21,15 @@ plugins:
   - search
   - mkdocs-autoapi:
       autoapi_dir: src
+      autoapi_add_nav_entry: Reference
   - mkdocstrings:
       handlers:
         python:
           paths: [src]
 
 nav:
-  - Indice: 1-index.md
-  - Guida allo sviluppo: 2-developer-guide.md
-  - Architettura: 3-architecture.md
-  - Caratteristiche: 4-features.md
-  - Sviluppi Futuri: 5-future-developments.md
+  - Indice: index.md
+  - Guida allo sviluppo: 1-developer-guide.md
+  - Architettura: 2-architecture.md
+  - Caratteristiche: 3-features.md
+  - Sviluppi Futuri: 4-future-developments.md
