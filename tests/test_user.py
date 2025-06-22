@@ -194,7 +194,7 @@ def test_user_logout(client: FlaskClient, app: Flask, user_alice: User):
         flask_login.login_user(user_alice)
         assert current_user.is_authenticated
 
-        response = client.get(url_for("auth.logout"), follow_redirects=True)
+        response = client.post(url_for("auth.logout"), follow_redirects=True)
 
         assert response.status_code == HTTPStatus.OK
         assert not current_user.is_authenticated
