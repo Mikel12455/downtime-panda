@@ -2,13 +2,14 @@
 
 ![Downtime Panda Logo](./docs/assets/downtime-panda.png)
 
+Documentazione su https://mikel12455.github.io/downtime-panda/
+
 ## Tabella dei Contenuti
 
 - [Downtime Panda](#downtime-panda)
   - [Tabella dei Contenuti](#tabella-dei-contenuti)
   - [Cos'è?](#cosè)
     - [Perché?](#perché)
-  - [Schema ER](#schema-er)
 
 ## Cos'è?
 
@@ -17,7 +18,3 @@
 ### Perché?
 
 Questo software è stato sviluppato per il corso di "Sicurezza negli Ambienti Orientati ai Servizi" tenuto all'Università degli Studi di Bari "Aldo Moro".
-
-## Schema ER
-
-![Entity Relationship Diagram](./docs/assets/er_schema.drawio.svg)
