@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from http.client import NOT_FOUND
 from typing import Any, Self, Sequence
 
 import pytz
@@ -83,11 +84,19 @@ class Service(db.Model):
             logger.info(service)
 
             pinged_at = datetime.now(pytz.utc)
-            response = requests.head(service.uri)
+            try:
+                response = requests.head(service.uri, allow_redirects=True)
+
+                status_code = response.status_code
+                response_time = response.elapsed
+            except requests.exceptions.ConnectionError:
+                response_time = timedelta(seconds=-1)
+                status_code = NOT_FOUND
+
             ping = Ping(
                 service_id=f"ping_service_{service.id}",
-                http_status=response.status_code,
-                response_time=response.elapsed,
+                http_status=status_code,
+                response_time=response_time,
                 pinged_at=pinged_at,
             )
             service.ping.add(ping)

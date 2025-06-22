@@ -60,8 +60,9 @@ def list_subscriptions():
 @login_required
 def view_subscription(uuid: str):
     """View the status of a subscribed service"""
+    MAX_POINTS = 20
     subscription = Subscription.get_user_subscription_by_uuid(current_user, uuid)
-    pings = subscription.service.get_latest_n_pings(10)
+    pings = subscription.service.get_latest_n_pings(MAX_POINTS)
     pings = list(reversed(pings))
     pings = {
         "x": [ping.pinged_at for ping in pings],
@@ -73,6 +74,7 @@ def view_subscription(uuid: str):
         "blueprints/subscription/status.html.jinja",
         subscription=subscription,
         pings=pings,
+        max_points=MAX_POINTS,
     )
 
 

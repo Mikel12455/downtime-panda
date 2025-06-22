@@ -2,36 +2,43 @@
 {% block head %}
     {{ super() }}
     <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+    <script src="{{url_for('static', filename='js/statushttp.js')}}"></script>
 {% endblock head %}
 {% block title %}
-    Service {{ subscription.name }}
+    Service - {{ subscription.name }}
 {% endblock title %}
 {% block body %}
     {% if pings.status %}
-        <p>Latest Status: {{ pings.status[-1] }} ({{ pings.status[-1] | httpstatus }})</p>
+        {% set latest_ping = pings.status[-1] %}
+        <p>Service URI: {{ subscription.service.uri }}</p>
+        <p id="latestStatus">Latest Status:</p>
         <div id="myDiv"></div>
         <script>
         const uuid = "{{ subscription.uuid }}";
         const data = {{ pings|tojson }};
+        const latest_ping = {{ latest_ping }};
+
+        document.getElementById('latestStatus').textContent = `Latest Status: ${ latest_ping } (${statusText[latest_ping]})`;
 
         let lastTimestamp = data.x.length > 0 ? data.x[data.x.length - 1] : null;
 
         const graph_data = {
             'x': data.x.map((date) => new Date(date)),
             'y': data.y,
-            'text': 'test',
-            'type': 'scatter',
+            'text': data.status,
+            'mode': 'lines+markers',
+            'line': {'shape': 'hv'},
         };
 
         const layout = {
             xaxis: {
                 title: {
-                    text: "Orario"
+                    text: "Hour"
                 }
             },
             yaxis: {
                 title: {
-                    text: "Tempo di risposta (s)"
+                    text: "Response Time (seconds)"
                 }
             },
         };
@@ -45,6 +52,8 @@
             config,
         );
 
+        const MAX_POINTS = {{max_points}};
+
         function fetchNewPings() {
             if (!lastTimestamp) return;
             fetch(`{{url_for("subscription.get_subscription_pings_since", uuid=subscription.uuid)}}?since=${encodeURIComponent(new Date(lastTimestamp).toISOString())}`)
@@ -54,14 +63,17 @@
                         // Append new data to the plot
                         Plotly.extendTraces('myDiv', {
                             x: [newData.x.map(date => new Date(date))],
-                            y: [newData.y]
-                        }, [0]);
+                            y: [newData.y],
+                            text: [newData.status],
+                        }, [0], MAX_POINTS);
                         // Update lastTimestamp
                         lastTimestamp = newData.x[newData.x.length - 1];
+                        document.getElementById('latestStatus').textContent = `Latest Status: ${newData.status[newData.status.length - 1]} (${statusText[newData.status[newData.status.length - 1]]})`;
                     }
                 })
                 .catch(console.error);
         }
+
 
         setInterval(fetchNewPings, 5000);
         </script>
