@@ -13,7 +13,7 @@ from downtime_panda.blueprints.user.models import User
 from downtime_panda.extensions import db
 
 
-@pytest.fixture
+@pytest.fixture()
 def service(app: Flask):
     """Represents a service, saved in the app"""
     with app.app_context():
