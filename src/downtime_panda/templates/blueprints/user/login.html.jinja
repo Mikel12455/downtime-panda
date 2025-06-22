@@ -1,5 +1,5 @@
 {% extends "base.html.jinja" %}
-{% from "macro.html.jinja" import bootstrap_field, bootstrap_form_submit %}
+{% from "macro.html.jinja" import bootstrap_field, bootstrap_form_submit, bootstrap_field_checkbox %}
 {% block title %}
     Login
 {% endblock title %}
@@ -8,6 +8,8 @@
         {{ form.hidden_tag() }}
         {{ bootstrap_field(form.email) }}
         {{ bootstrap_field(form.password) }}
+        <br />
+        {{ bootstrap_field_checkbox(form.remember_me) }}
         {{ bootstrap_form_submit("Login") }}
     </form>
 {% endblock body %}

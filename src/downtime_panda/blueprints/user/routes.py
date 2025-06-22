@@ -70,7 +70,7 @@ def login():
 
     user = User.get_by_email(form.email.data)
     if user and user.verify_password(form.password.data):
-        flask_login.login_user(user)
+        flask_login.login_user(user, remember=form.remember_me.data)
         flash(SUCCESS_LOGIN, "success")
         return redirect(url_for("home.index"))
 

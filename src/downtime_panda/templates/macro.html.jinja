@@ -10,6 +10,17 @@
         {% endif %}
     </div>
 {% endmacro %}
+{% macro bootstrap_field_checkbox(field) %}
+    <div class="form-check form-switch">
+        {{ field.label(class = "form-check-label") }}
+        {{ field(class="form-check-input {}".format("is-invalid" if field.errors) , placeholder=field.description, size=32, aria_describedby="{}Feedback".format(field.name) ) }}
+        {% if field.errors %}
+            <div id="{{ field.name }}Feedback" class="invalid-feedback">
+                {% for error in field.errors %}{{ error }}{% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
 <!-- Bootstrap Field Submit -->
 {% macro bootstrap_form_submit(button_value) %}
     <br />
