@@ -37,6 +37,7 @@ dev = [
     "go-task-bin>=3.43.3",
     "mkdocs>=1.6.1",
     "mkdocs-autoapi>=0.4.1",
+    "mkdocs-caption>=1.3.0",
     "mkdocs-material>=9.6.14",
     "mkdocstrings[python]>=0.29.1",
     "pre-commit>=4.2.0",

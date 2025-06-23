@@ -56,7 +56,7 @@ Da un browser vai su `https://localhost:8080/` per vedere le modifiche che appor
 Se vuoi fare qualche test più reale, completo di database PostgreSQL e di Reverse Proxy, usa questo comando
 
 ``` sh
-task docker-up
+task staging-up
 ```
 
 Questo costruirà un container Docker del progetto, e lo metterà su tramite `#!sh docker compose up`

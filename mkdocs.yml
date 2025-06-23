@@ -26,6 +26,7 @@ plugins:
       handlers:
         python:
           paths: [src]
+  - caption
 
 nav:
   - Indice: index.md
