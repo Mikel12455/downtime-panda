@@ -1,0 +1,1784 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../2-architecture/">
+      
+      
+        <link rel="next" href="../4-future-developments/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Caratteristiche - downtime-panda</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#principali-caratteristiche-dellapplicazione" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="downtime-panda" class="md-header__button md-logo" aria-label="downtime-panda" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            downtime-panda
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Caratteristiche
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Mikel12455/downtime-panda/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Downtime Panda
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="downtime-panda" class="md-nav__button md-logo" aria-label="downtime-panda" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    downtime-panda
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Mikel12455/downtime-panda/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Downtime Panda
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Indice
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1-developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guida allo sviluppo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architettura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Caratteristiche
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Caratteristiche
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#generale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping-di-servizi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ping di servizi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versionamento-delle-migrazioni-del-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versionamento delle Migrazioni del DB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ambiente-di-test-sviluppo-e-staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ambiente di test, sviluppo e staging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-tramite-pytest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test tramite PyTest
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit-task-e-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-Commit, Task e MkDocs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sicurezza" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sicurezza
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sicurezza">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gestione-dellutente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestione dell'utente
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestione dell&#39;utente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registrazione" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registrazione
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login-e-logout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Login e Logout
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoraggio-dei-servizi-ed-accesso-allapi-tramite-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoraggio dei servizi ed accesso all'API tramite Token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoraggio dei servizi ed accesso all&#39;API tramite Token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-per-il-monitoraggio" class="md-nav__link">
+    <span class="md-ellipsis">
+      API per il monitoraggio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-e-autenticazione-con-lapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token e autenticazione con l'API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurazione-sicura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configurazione sicura
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-come-container-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy come Container Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4-future-developments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sviluppi Futuri
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    downtime_panda
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            downtime_panda
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1" id="__nav_6_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    blueprints
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            blueprints
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1_1" id="__nav_6_1_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    errors
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            errors
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/errors/routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1_2" id="__nav_6_1_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    home
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/home/routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1_3" id="__nav_6_1_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    service
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            service
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/service/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/service/routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1_4" id="__nav_6_1_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    subscription
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            subscription
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/subscription/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    api
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/subscription/forms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    forms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/subscription/messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    messages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/subscription/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/subscription/routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1_5" id="__nav_6_1_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    token
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            token
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/token/messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    messages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/token/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/token/routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_1_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1_1_6" id="__nav_6_1_1_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    user
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_6_1_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            user
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/user/forms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    forms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/user/messages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    messages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/user/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/blueprints/user/routes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    routes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    config
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../autoapi/downtime_panda/extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    extensions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#generale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping-di-servizi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ping di servizi
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#versionamento-delle-migrazioni-del-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versionamento delle Migrazioni del DB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ambiente-di-test-sviluppo-e-staging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ambiente di test, sviluppo e staging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-tramite-pytest" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test tramite PyTest
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit-task-e-mkdocs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-Commit, Task e MkDocs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sicurezza" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sicurezza
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sicurezza">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gestione-dellutente" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gestione dell'utente
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestione dell&#39;utente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registrazione" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registrazione
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login-e-logout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Login e Logout
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoraggio-dei-servizi-ed-accesso-allapi-tramite-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoraggio dei servizi ed accesso all'API tramite Token
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoraggio dei servizi ed accesso all&#39;API tramite Token">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-per-il-monitoraggio" class="md-nav__link">
+    <span class="md-ellipsis">
+      API per il monitoraggio
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-e-autenticazione-con-lapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token e autenticazione con l'API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurazione-sicura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configurazione sicura
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-come-container-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy come Container Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="principali-caratteristiche-dellapplicazione">Principali Caratteristiche dell'Applicazione</h1>
+<p>In questa sezione sono elencate le principali caratteristiche dell'applicazione, che siano correlate alla sicurezza o meno.</p>
+<h2 id="generale">Generale</h2>
+<h3 id="ping-di-servizi">Ping di servizi</h3>
+<p>Il principale servizio offerto dall'applicazione è il monitoraggio dello stato di risorse o servizi in rete: l'utente chiede all'applicazione, ad esempio, di monitorare lo stato di un sito web, e questa farà, in background, richieste periodiche al sito web per verificarne lo stato.</p>
+<p>Questa feature è implementata tramite il pacchetto <a href="https://apscheduler.readthedocs.io/en/latest/">APScheduler</a>, gestito dall'estensione <a href="https://viniciuschiele.github.io/flask-apscheduler/">Flask-APScheduler</a>.</p>
+<h3 id="versionamento-delle-migrazioni-del-db">Versionamento delle Migrazioni del DB</h3>
+<p>Lo schema dell'intero DB è versionato grazie all'uso di <a href="https://alembic.sqlalchemy.org/en/latest/">Alembic</a>, gestito tramite l'estensione <a href="https://flask-migrate.readthedocs.io/en/latest/index.html">Flask-Migrate</a>.</p>
+<p>La cartella <code>migrations/versions</code> versiona ogni modifica fatta allo schema del DB, in modo da poter ricreare lo stesso db ovunque.</p>
+<h3 id="ambiente-di-test-sviluppo-e-staging">Ambiente di test, sviluppo e staging</h3>
+<p>Questo progetto offre tre ambienti diversi:</p>
+<ul>
+<li><strong>Test</strong>: E' l'ambiente usato da <code>pytest</code> per far girare gli unit test. Fa uso di un database SQLite in memoria, unico per ogni singolo test.</li>
+<li><strong>Sviluppo</strong>: E' l'ambiente per sviluppare. L'applicazione <em>gira localmente</em> su <code>localhost:8080</code>, è abilitata al <em>DEBUG</em> e all'<em>autorefresh</em> dopo ogni modifica, e fa uso di un <em>database <code>SQLite</code></em> creato automaticamente in <code>src/instance/dtpanda.db</code>. Il file del database è ignorato da <code>git</code>.</li>
+<li><strong>Staging</strong>: E' un ambiente che cerca di copiare un ambiente di produzione. Monta su non solo l'applicazione, ma anche un database Postgres e un Reverse Proxy con Caddy. Funziona grazie a <code>docker compose</code></li>
+</ul>
+<p>Per quanto non sia direttamente una feature di sicurezza, avere questi tre ambienti ha comunque un effetto indiretto sulla stessa:</p>
+<ul>
+<li>L'ambiente di test permette di verificare automaticamente il <strong>corretto funzionamento</strong> dell'applicazione, individuando eventuali <strong>regressioni e bug</strong> scaturiti dall'aggiunta di nuove feature.</li>
+<li>L'ambiente di sviluppo cerca di essere quanto meno oneroso nell'utilizzo da parte dello sviluppatore. Con i log di Debug abilitati e il refresh della pagina automatico dopo ogni nuova feature, si cerca di rendere lo sviluppo quanto più rapido possibile.</li>
+<li>L'ambiente di staging offre un modo di testare l'applicazione in un ambiente simile a quello di produzione. L'idea è così catturare problemi che non sarebbe possibile verificare durante il solo sviluppo (ad esempio, scaturiti dall'uso di un Reverse Proxy tra l'utente e l'applicazione)</li>
+</ul>
+<h3 id="test-tramite-pytest">Test tramite PyTest</h3>
+<p>Per verificare il funzionamento dell'applicazione durante il suo sviluppo è stato utilizzato <code>pytest</code>. Tramite questa libreria, è possibile implementare degli unit-test per la nostra applicazione come delle semplici funzioni.</p>
+<p>Come già detto nella sezione precedente, mettere su dei test automatici permette di catturare rapidamente bug e regressioni durante lo sviluppo.</p>
+<h3 id="pre-commit-task-e-mkdocs">Pre-Commit, Task e MkDocs</h3>
+<p>Più dei "nice-to-have" che delle vere e proprie funzionalità dell'applicazione, hanno comunque la loro utilità:</p>
+<ul>
+<li><strong>Pre-commit</strong> configura automaticamente dei git hooks, script eseguiti automaticamente all'atto di una commit. Utilissimi per formattare automaticamente il codice o anche controllare se vengono incluse informazioni sensibili tra i file di una commit.</li>
+<li><strong>Task</strong> permette di dare un nome ad una serie di comandi usati di frequente, tramite la definizione di un <code>Taskfile</code>.</li>
+<li><strong>MkDocs</strong> alimenta la documentazione che stai leggendo in questo momento ;).</li>
+</ul>
+<h2 id="sicurezza">Sicurezza</h2>
+<h3 id="gestione-dellutente">Gestione dell'utente</h3>
+<p>Sul database, l'utente è un record della tabella <code>User</code> che salva uno username, una email, e l'hash della sua password per effettuare il login. Questo è stato già delineato nella sezione <a href="../2-architecture/">Architettura</a>.</p>
+<p>All'interno dell'applicazione Flask, l'utente è gestito tramite l'estensione <a href="https://flask-login.readthedocs.io/en/latest/"><code>Flask-Login</code></a>. L'estensione implementa la gestione dei cookie di sessione dell'utente, senza però imporre l'suo di un certo modello o rappresentazione per lo stesso.</p>
+<h4 id="registrazione">Registrazione</h4>
+<p>La registrazione dell'utente avviene compilando un semplice form, composto da username, email, password ed una conferma password.</p>
+<p>La verifica del form è lasciata a Flask-WTF, il quale fa sia semplici controlli (quali rendere i campi obbligatori o controllare la lunghezza della password) che controlli più legati alla logica dell'applicazione (controllare che username ed email non siano già stati usati da altri utenti).</p>
+<p>Nella registrazione, dalla password dell'utente viene ricavato il digest tramite l'algoritmo Argon2id, implementato tramite la libreria <a href="https://argon2-cffi.readthedocs.io/en/stable/">argon2-cffi</a>.</p>
+<p>Se la registrazione va a buon fine, l'applicazione effettua automaticamente il login come "cortesia" all'utente.</p>
+<h4 id="login-e-logout">Login e Logout</h4>
+<p>Come già detto, l'autenticazione è fornita da Flask-Login. L'implementazione è relativamente semplice: Flask-Login si occupa di salvare l'id dell'utente in un cookie di sessione all'atto del login, mentre l'unica cosa che va fatta dal nostro lato è specificare come recuperare un utente dato l'id dal cookie.</p>
+<div class="language-py highlight"><span class="filename">blueprints/user/routes.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">downtime_panda.extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">login_manager</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">...</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nd">@login_manager</span><span class="o">.</span><span class="n">user_loader</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">user_loader</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="k">return</span> <span class="n">User</span><span class="o">.</span><span class="n">get_by_id</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Flask-Login si appoggia alle <a href="https://flask.palletsprojects.com/en/stable/quickstart/#sessions">sessioni di Flask</a>. La sessione è crittograficamente firmata tramite la FLASK_SECRET_KEY, che nel nostro caso è impostata tramite variabili d'ambiente (vedi di più nella sezione <a href="#configurazione-sicura">Configurazione Sicura</a>)</p>
+<h3 id="monitoraggio-dei-servizi-ed-accesso-allapi-tramite-token">Monitoraggio dei servizi ed accesso all'API tramite Token</h3>
+<p>Quando un utente decide di monitorare un servizio, questo inserisce il <strong>nome</strong> e l'<strong>uri</strong> del servizio che vuole monitorare. All'invio dei dati, downtime-panda fa una ricerca dell'uri fornito nel db per vedere se tale servizio è stato già registrato in passato.</p>
+<p>Un esito negativo porta alla <strong>registrazione dell'URI</strong> del servizio nella tabella <code>Service</code> del database, assieme alla creazione di un nuovo job in background tramite <strong>APScheduler</strong>.
+Questo job, ogni 5 secondi, manda una <strong>richiesta HTTP HEAD</strong> all'URI del relativo servizio e salva il risultato della richiesta nella tabella <code>Ping</code>.</p>
+<p>Un esito positivo semplicemente prende il riferimento a quel servizio, saltando tutta la fase elencata sopra.</p>
+<p>Avendo il servizio, il monitoraggio dello stesso da parte dell'utente viene registrato nella tabella <code>Subscriptions</code>. Oltre a contenere i riferimenti all'utente e al servizio, la tabella contiene anche la data di creazione del record, il nome dato dall'utente al servizio, ed un UUID generato per identificare l'iscrizione senza far riferimento all'ID del servizio stesso.</p>
+<p>L'utente a quel punto è in grado di vedere lo stato del servizio accedendo alla rotta <code>/you/subscriptions/&lt;uuid&gt;</code>.</p>
+<h4 id="api-per-il-monitoraggio">API per il monitoraggio</h4>
+<p>Con una iscrizione attiva, l'utente è in grado di richiedere l'ultimo stato del servizio monitorato tramite l'API esposta alla rotta <code>/api/subscriptions/status</code>, fornendo un <strong>subscription_uuid</strong> come query parameter ed un <strong>token</strong> a suo nome nell'intestazione.</p>
+<p>La rotta ritorna le seguenti risposte:</p>
+<ul>
+<li><strong>401 UNAUTHORIZED</strong>: Non è stato fornito il token per l'autenticazione</li>
+<li><strong>404 NOT FOUND</strong>: Non vi è nessuna iscrizione con quell'uuid per l'utente con quel token, oppure non è ancora stato fatto alcun ping al servizio.</li>
+<li><strong>200 OK</strong>: Token e uuid sono corretti,ed è stato fatto almeno un ping al servizio.</li>
+</ul>
+<p>Con i dati corretti, la rotta ritorna un file JSON contenente lo stato HTTP del servizio più il timestamp dell'ultima richiesta fatta allo stesso.</p>
+<p>Ad esempio, una richiesta fatta con <a href="https://curl.se/">curl</a> potrebbe essere fatta come segue...</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>curl<span class="w"> </span>--request<span class="w"> </span>GET<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--url<span class="w"> </span><span class="s1">'http://localhost:8080/api/subscriptions/status?subscription_uuid=00000000-0000-0000-0000-000000000000'</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--header<span class="w"> </span><span class="s1">'authorization: Bearer abcdefghijklmnopqrstuvwxyz123456'</span>
+</span></code></pre></div>
+<p>...ed una possibile risposta potrebbe essere questa</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"http_response"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">"pinged_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-06-14T16:21:38.856451"</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">"response_time"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Di seguito è riportata una richiesta fatta correttamente al servizio, tramite il client <a href="https://www.usebruno.com/">Bruno</a>.</p>
+<p><figure id="_figure-1"><img alt="Una richiesta fatta correttamente all'API" src="../assets/3.1%20-%20Richiesta%20API%20Tramite%20Bruno.PNG"><figcaption>Figure 1: Una richiesta fatta correttamente all'API</figcaption></figure></p>
+<h4 id="token-e-autenticazione-con-lapi">Token e autenticazione con l'API</h4>
+<p>Come detto sopra, l'utente ha bisogno di un token per autenticarsi con l'API.</p>
+<p>I token dell'utente autenticato vengono gestiti sulla rotta <code>/you/tokens</code>. Tramite gli appositi pulsanti, l'utente può registrare o revocare token a suo nome.</p>
+<p>L'autenticazione con l'API è implementata tramite l'estensione <a href="https://flask-httpauth.readthedocs.io/en/latest/">Flask-HTTPAuth</a>, in particolare usando <strong><code>TokenHTTPAuth</code></strong>. L'autenticazione implementata dall'estensione è di tipo <strong>Bearer</strong>: chiunque sia in possesso del token è in grado di fare richieste all'API, senza dover fornire prova di essere il legittimo detentore della stringa.</p>
+<p>Nel fare la richiesta GET all'API è necessario fornire il token nell'intestazione della richiesta. In particolare, va incluso nell'intestazione <code>Authorization</code>, nella forma <code>Bearer &lt;token&gt;</code>, come indicato sopra.</p>
+<h3 id="configurazione-sicura">Configurazione sicura</h3>
+<p>Come consigliato per la <a href="https://12factor.net/config">Twelve-Factor App</a>, la configurazione del codice andrebbe fatta usando le variabili d'ambiente del sistema che ospita l'app. In questo modo si evita di legare la configurazione al codice, e si evitano problemi comuni come includere dati sensibili nel Sistema di Controllo delle Versioni (VCS).</p>
+<p>Il file <code>config.py</code> contiene le classi che definiscono la configurazione dell'applicazione. L'uso di una classe per la configurazione dell'applicazione Flask è una pratica <a href="https://flask.palletsprojects.com/en/stable/config/">documentata dai manutentori stessi</a>.</p>
+<p>La classe <code>Config</code> viene caricata all'avvio dell'applicazione</p>
+<div class="language-py highlight"><span class="filename">__init__.py</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">downtime_panda.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">...</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">create_app</span><span class="p">(</span><span class="n">config_class</span><span class="o">=</span><span class="n">Config</span><span class="p">):</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="sd">"""Create and configure the Flask application."""</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="o">...</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="c1"># ------------------------------- CONFIGURATION ------------------------------ #</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Setting up configuration..."</span><span class="p">)</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">config_class</span><span class="p">())</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Una 'falla' voluta</p>
+<p>Si noti come, anche dopo quanto detto sopra, le configurazioni dell'applicazione nell'ambiente di staging siano codificate nel file <code>docker-compose.staging.yml</code>. In un vero ambiente di produzione, tale pratica sarebbe considerata ovviamente (e giustamente) una <strong><em>falla di sicurezza</em></strong>.</p>
+<p>In questo caso, però, l'ambiente di staging è stato pensato come una copia del possibile ambiente di produzione ma in locale. Per rendere la vita dello sviluppatore più semplice, ogni servizio nel file è già preconfigurato in modo tale da funzionare da subito, fin dal primo <code>git clone</code>.</p>
+<p>Se questa cosa non va bene, è sempre possibile sostituire la definizione delle variabili d'ambiente nel file <code>docker-compose.staging.yml</code> con un file <code>.env</code>: in questo modo si potrebbe mettere nel repository un file <code>.env.example</code>, che elenchi tutte le variabili d'ambiente in uso.</p>
+<div class="language-ini highlight"><span class="filename">.env.example</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="na">DTPANDA_SECRET_KEY</span><span class="o">=</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="na">DTPANDA_DB_URL</span><span class="o">=</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="na">...</span>
+</span></code></pre></div>
+<p>Lo sviluppatore potrà poi copiare tale definizione in un file <code>.env</code> dove configurare a proprio piacimento l'applicazione in locale.</p>
+<p>In questo caso, visto che l'ambiente di staging non è pensato per essere messo direttamente in produzione, si è optato per la soluzione più comoda per lo sviluppatore.</p>
+</div>
+<p>Una alternativa più avanzata potrebbe far uso di un servizio separato per mantenere chiavi e segreti cifrati. Si veda la sezione <a href="5-future-developments.md#gestione-della-configurazione-piu-avanzata">Gestione della Configurazione più Avanzata</a> per maggiori dettagli.</p>
+<h3 id="deploy-come-container-docker">Deploy come Container Docker</h3>
+<p>Docker è una tecnologia per la containerizzazione di processi.</p>
+<p>Nel repository è presente un <code>Dockerfile</code>, che descrive come costruire e mettere su l'applicazione.  Tale file viene elaborato da docker per creare una immagine, un pacchetto contenente sorgenti, librerie, e qualsiasi altra cosa richiesta dall'applicazione per funzionare. Infine, data una immagine, Docker può mettere su un container, un processo eseguito in un ambiente isolato.</p>
+<p>Docker non aiuta soltanto isolando i container: grazie a Docker il deploy dell'applicazione è veramente facile, dovendo solo costruire/recuperare l'immagine (in questo caso costruire, tramite <code>docker build</code>) ed avviare il container (<code>docker run</code>), o ancor più facile utilizzando sistemi per l'orchestrazione dei container (ex. <code>docker compose</code>)</p>
+<h3 id="https">HTTPS</h3>
+<p>L'accesso sicuro all'applicazione tramite HTTPS non è gestito dall'applicazione stessa; bensì, nel <code>docker-compose.staging.yml</code> fornito è montato su un Reverse Proxy, <a href="https://caddyserver.com/">Caddy</a>, che si occupa di elaborare, gestire ed instradare ogni richiesta proveniente dall'esterno verso la rete interna.</p>
+<p>Caddy genera di default un certificato autofirmato, che permette di comunicare in modo sicuro con HTTPS senza dover mettere su alcuna configurazione extra.</p>
+<div class="admonition warning">
+<p class="admonition-title">Certificato autofirmato</p>
+<p>Essendo un <strong>certificato autofirmato</strong> da una Certificate Authority (CA) interna a Caddy, qualsiasi browser andrà ad informare l'utente che la connessione in realtà non è privata, perché il certificato dell'ente certificatore non è presente tra i certificati installati nella macchina e/o nel browser.</p>
+<p>La soluzione a questo problema è semplice: basta prendere il certificato della CA dal container Caddy, ed installarlo sulla macchina locale.</p>
+<p>A questo scopo è definito un task per recuperare e salvare in locale il certificato della CA di Caddy.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>task<span class="w"> </span>staging-copy-cert
+</span></code></pre></div>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Contesto reale</p>
+<p>Ovviamente, in un contesto reale l'utilizzo di un certificato autofirmato è inaccettabile. In un ambiente di produzione, quello che si dovrebbe fare sarebbe:</p>
+<ul>
+<li>Comprare/essere in possesso di un dominio</li>
+<li>Fare affidamento ad un ente certificatore (Ex. <a href="https://letsencrypt.org/">Let's Encrypt</a>) per creare e rinnovare i certificati HTTPS per quel dominio.</li>
+</ul>
+</div>
+<p>Di seguito è mostrato come nell'ambiente di sviluppo sia possibile ricavare l'API token semplicemente sniffando il traffico HTTP tra il client ed il server.</p>
+<p><figure id="_figure-2"><img alt="Cattura di pacchetti dell'API in HTTP, usando Wireshark" src="../assets/3.2%20-%20Cattura%20Pacchetto%20API%20HTTP.PNG"><figcaption>Figure 2: Cattura di pacchetti dell'API in HTTP, usando Wireshark</figcaption></figure></p>
+<p>Di seguito, invece, vi è lo stesso tentativo di attacco, ma fatto nel contesto dell'ambiente di staging: la comunicazione presa di mira è quella tra il client ed il reverse proxy Caddy.</p>
+<p><figure id="_figure-3"><img alt="Cattura di pacchetti dell'API in HTTPS, usando Wireshark" src="../assets/3.3%20-%20Cattura%20Pacchetti%20API%20HTTPS.PNG"><figcaption>Figure 3: Cattura di pacchetti dell'API in HTTPS, usando Wireshark</figcaption></figure></p>
+<div class="admonition warning">
+<p class="admonition-title">Traffico tra Proxy e Servizio</p>
+<p>E' bene precisare che comunque il traffico tra il reverse proxy ed il servizio (qui downtime-panda) rimane in HTTP. In un contesto isolato questo può andare bene, ma un attaccante nella rete interna potrebbe tranquillamente intercettare traffico HTTP tra i container.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
