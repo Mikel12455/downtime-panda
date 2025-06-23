@@ -21,13 +21,6 @@ tasks:
     cmds:
       - task: run-flask
 
-  docker-up: docker compose -f docker-compose.dev.yml up -d --build
-
-  docker-down:
-    aliases: [dev-down]
-    cmds:
-      - docker compose -f docker-compose.dev.yml down --remove-orphans
-
   run-flask-command:*:
     vars:
       command: "{{ index .MATCH 0 }}"
@@ -58,9 +51,9 @@ tasks:
 # ---------------------------------- STAGING --------------------------------- #
   staging-copy-cert: docker compose -f ./docker-compose.staging.yml cp caddy:/data/caddy/pki/authorities/local/root.crt temp/root.crt
 
-  staging-docker-up: docker compose -f ./docker-compose.staging.yml up -d --build
+  staging-up: docker compose -f ./docker-compose.staging.yml up -d --build
 
-  staging-docker-down: docker compose -f ./docker-compose.staging.yml down
+  staging-down: docker compose -f ./docker-compose.staging.yml down
 
 # -------------------------------- MIGRATIONS -------------------------------- #
   dev-migrate-up: uv run flask db upgrade head
